@@ -10,23 +10,8 @@ This is a guide on how to setup the tools & processes needed for testing out Ame
 ------------------
 
 Go to `Doxygen's Download Page <https://www.doxygen.nl/download.html>`_ and download doxygen,
-then just simply install doxygen and look if the path is configured.
-
-To look if the path is configured successfully simply run this in your terminal:
-
-.. code-block::
-
-    doxygen.exe -v
-
-The output, if it was successful, should look about like this:
-
-.. code-block:: bat
-
-    1.9.7
-
-(Don't worry, you don't need the exact version)
-
-If not add it to your system's path variable.
+then simply install doxygen and add it to your system's path variable,
+if not already done automatically.
 
 2. Install Python
 -----------------
