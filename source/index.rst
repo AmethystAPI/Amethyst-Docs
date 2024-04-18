@@ -25,7 +25,6 @@ Please consider starring the `repository <https://github.com/FrederoxDev/Amethys
 Installation & Setup
 --------------------
 
-
 If you're someone keen on installing Amethyst for an enhanced modded MCBE adventure,
 check out the guide for
 :doc:`Installing Amethyst <getting_started/end_user/installing_amethyst>`.
