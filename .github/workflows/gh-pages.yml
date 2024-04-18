@@ -5,11 +5,11 @@ name: Build-Documentation and deploy it to ghp.
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
-  # push:
-  #   branches: [ main ]
-  # pull_request:
-  #   branches: [ main ]
-  # Try top sync this with amethyst repo
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  # Add build on push to amethyst repo
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
