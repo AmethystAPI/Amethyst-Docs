@@ -34,7 +34,7 @@ html_static_path = ['_static']
 html_theme_options = {
     'show_breadcrumbs': True,
     'main_nav_links': {
-        'Api AutoDocs': 'autodocs',
+        'AmethystAPI AutoDocs': 'autodocs',
         'Examples': 'examples/index',
         'Getting Started': 'getting_started/index',
         'Reverse Engineering': 'reverse_engineering/index',
