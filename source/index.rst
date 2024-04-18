@@ -15,7 +15,6 @@
     provided data might be false.
     That is why you should not use this documentation until it is finally released.
 
-
 Project Amethyst
 ================
 
