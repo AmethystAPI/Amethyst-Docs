@@ -20,9 +20,14 @@ help:
 
 .PHONY: help Makefile
 
+github_clone:
+	git clone https://github.com/FrederoxDev/Amethyst.git github_clone
+
+.PHONY: github_clone Makefile
+
 # Generate all doxyfiles
 doxygen:
-	doxygen ../AmethystAPI/.doxyfile
+	doxygen .doxyfile
 
 .PHONY: doxygen Makefile
 
@@ -36,7 +41,7 @@ breathe_apidoc:
 sphinx_build:
 	make html
 
-.PHONY: build Makefile
+.PHONY: sphinx_build Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new
 # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
