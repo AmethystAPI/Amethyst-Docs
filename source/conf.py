@@ -41,7 +41,7 @@ html_theme_options = {
     }
 }
 
-html_favicon = "assets/branding/logo-512.png"
+html_favicon = "_static/branding/logo-512.png"
 
 html_sidebars = {
     "**": ["sidebar_toc.html"]
