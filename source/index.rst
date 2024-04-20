@@ -1,7 +1,7 @@
 .. raw:: html
 
     <div align="center">
-        <img src="https://github.com/FrederoxDev/Amethyst/assets/69014593/08e43b26-05e2-4646-968b-0d3ab6699d78" alt="Image" width="300" height="300" />
+        <img src="assets/branding/logo-512.png" alt="Image" width="300" height="300" />
         <h1>
             <br />
             <a style="display: inline-block" href="https://discord.gg/Cxrj9UXnDB"><img style="display: inline-block" alt="Discord" src="https://img.shields.io/discord/1184966397864980601?color=5865f2&label=Discord&style=flat" /></a>

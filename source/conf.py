@@ -34,15 +34,14 @@ html_static_path = ['_static']
 html_theme_options = {
     'show_breadcrumbs': True,
     'main_nav_links': {
-        'API AutoDocs': 'autodocs',
+        'AmethystAPI': 'autodocs',
         'Examples': 'examples/index',
         'Getting Started': 'getting_started/index',
-        'Reverse Engineering': 'reverse_engineering/index',
-        'How to Doc': 'how_to_doc/index',
+        'Reverse Engineering': 'reverse_engineering/index'
     }
 }
 
-html_favicon = "https://github.com/FrederoxDev/Amethyst/assets/69014593/08e43b26-05e2-4646-968b-0d3ab6699d78"
+html_favicon = "assets/branding/logo-512.png"
 
 html_sidebars = {
     "**": ["sidebar_toc.html"]
