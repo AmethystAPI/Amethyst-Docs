@@ -1,7 +1,9 @@
 .. raw:: html
 
     <div align="center">
-        <img src="_static/branding/logo-512.png"" alt="Image" width="300" height="300" />
+        <img src="test.png" alt="Image" width="300" height="300" />
+        <img src="/test.png" alt="Image" width="300" height="300" />
+        <img src="./test.png" alt="Image" width="300" height="300" />
         <h1>
             <br />
             <a style="display: inline-block" href="https://discord.gg/Cxrj9UXnDB"><img style="display: inline-block" alt="Discord" src="https://img.shields.io/discord/1184966397864980601?color=5865f2&label=Discord&style=flat" /></a>
