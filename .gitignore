@@ -1,0 +1,4 @@
+# Temporary files & Output
+source/breathe/
+source/doxygen/
+build/
