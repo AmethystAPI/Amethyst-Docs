@@ -1,0 +1,5 @@
+File ItemStackBase.hpp
+======================
+
+.. doxygenfile:: ItemStackBase.hpp
+   :project: AmethystApi

@@ -1,0 +1,5 @@
+File Result.hpp
+===============
+
+.. doxygenfile:: Result.hpp
+   :project: AmethystApi

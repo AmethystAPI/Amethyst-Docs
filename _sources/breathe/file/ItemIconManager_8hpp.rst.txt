@@ -1,0 +1,5 @@
+File ItemIconManager.hpp
+========================
+
+.. doxygenfile:: ItemIconManager.hpp
+   :project: AmethystApi

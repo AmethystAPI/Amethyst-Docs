@@ -1,0 +1,5 @@
+File GetCollisionShapeInterface.hpp
+===================================
+
+.. doxygenfile:: GetCollisionShapeInterface.hpp
+   :project: AmethystApi

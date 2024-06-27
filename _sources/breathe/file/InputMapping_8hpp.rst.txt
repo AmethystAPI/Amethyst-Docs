@@ -1,0 +1,5 @@
+File InputMapping.hpp
+=====================
+
+.. doxygenfile:: InputMapping.hpp
+   :project: AmethystApi

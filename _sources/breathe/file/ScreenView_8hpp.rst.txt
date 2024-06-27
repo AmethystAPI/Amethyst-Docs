@@ -1,0 +1,5 @@
+File ScreenView.hpp
+===================
+
+.. doxygenfile:: ScreenView.hpp
+   :project: AmethystApi

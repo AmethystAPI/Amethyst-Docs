@@ -1,0 +1,5 @@
+File InputManager.hpp
+=====================
+
+.. doxygenfile:: InputManager.hpp
+   :project: AmethystApi

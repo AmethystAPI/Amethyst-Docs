@@ -1,0 +1,5 @@
+File Matrix.hpp
+===============
+
+.. doxygenfile:: Matrix.hpp
+   :project: AmethystApi

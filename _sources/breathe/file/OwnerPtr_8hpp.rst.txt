@@ -1,0 +1,5 @@
+File OwnerPtr.hpp
+=================
+
+.. doxygenfile:: OwnerPtr.hpp
+   :project: AmethystApi

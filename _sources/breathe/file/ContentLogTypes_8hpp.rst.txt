@@ -1,0 +1,5 @@
+File ContentLogTypes.hpp
+========================
+
+.. doxygenfile:: ContentLogTypes.hpp
+   :project: AmethystApi

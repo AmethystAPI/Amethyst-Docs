@@ -1,0 +1,5 @@
+File AmethystContext.hpp
+========================
+
+.. doxygenfile:: AmethystContext.hpp
+   :project: AmethystApi

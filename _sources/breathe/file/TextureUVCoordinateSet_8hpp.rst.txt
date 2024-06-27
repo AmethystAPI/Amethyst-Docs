@@ -1,0 +1,5 @@
+File TextureUVCoordinateSet.hpp
+===============================
+
+.. doxygenfile:: TextureUVCoordinateSet.hpp
+   :project: AmethystApi

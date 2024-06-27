@@ -1,0 +1,5 @@
+File Camera.hpp
+===============
+
+.. doxygenfile:: Camera.hpp
+   :project: AmethystApi

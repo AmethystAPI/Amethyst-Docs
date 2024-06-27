@@ -1,0 +1,5 @@
+File ItemRegistryManager.hpp
+============================
+
+.. doxygenfile:: ItemRegistryManager.hpp
+   :project: AmethystApi

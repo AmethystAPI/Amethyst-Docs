@@ -1,0 +1,5 @@
+File ActorShaderManager.hpp
+===========================
+
+.. doxygenfile:: ActorShaderManager.hpp
+   :project: AmethystApi

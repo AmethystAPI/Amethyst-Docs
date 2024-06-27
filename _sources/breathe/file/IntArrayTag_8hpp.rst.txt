@@ -1,0 +1,5 @@
+File IntArrayTag.hpp
+====================
+
+.. doxygenfile:: IntArrayTag.hpp
+   :project: AmethystApi

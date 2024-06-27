@@ -1,0 +1,5 @@
+File Utility.hpp
+================
+
+.. doxygenfile:: Utility.hpp
+   :project: AmethystApi

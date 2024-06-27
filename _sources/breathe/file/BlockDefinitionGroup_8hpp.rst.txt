@@ -1,0 +1,5 @@
+File BlockDefinitionGroup.hpp
+=============================
+
+.. doxygenfile:: BlockDefinitionGroup.hpp
+   :project: AmethystApi

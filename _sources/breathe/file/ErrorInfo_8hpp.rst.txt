@@ -1,0 +1,5 @@
+File ErrorInfo.hpp
+==================
+
+.. doxygenfile:: ErrorInfo.hpp
+   :project: AmethystApi

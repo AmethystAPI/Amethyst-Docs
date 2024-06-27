@@ -1,0 +1,5 @@
+File ResourceHelper.hpp
+=======================
+
+.. doxygenfile:: ResourceHelper.hpp
+   :project: AmethystApi

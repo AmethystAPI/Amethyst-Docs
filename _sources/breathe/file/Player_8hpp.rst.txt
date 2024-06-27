@@ -1,0 +1,5 @@
+File Player.hpp
+===============
+
+.. doxygenfile:: Player.hpp
+   :project: AmethystApi

@@ -1,0 +1,5 @@
+File GuiData.hpp
+================
+
+.. doxygenfile:: GuiData.hpp
+   :project: AmethystApi

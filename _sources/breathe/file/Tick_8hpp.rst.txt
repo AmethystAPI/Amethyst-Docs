@@ -1,0 +1,5 @@
+File Tick.hpp
+=============
+
+.. doxygenfile:: Tick.hpp
+   :project: AmethystApi

@@ -1,0 +1,5 @@
+File ItemCategory.hpp
+=====================
+
+.. doxygenfile:: ItemCategory.hpp
+   :project: AmethystApi

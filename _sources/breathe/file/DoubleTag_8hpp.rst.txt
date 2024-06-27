@@ -1,0 +1,5 @@
+File DoubleTag.hpp
+==================
+
+.. doxygenfile:: DoubleTag.hpp
+   :project: AmethystApi

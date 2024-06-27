@@ -1,0 +1,5 @@
+File Minecraft.hpp
+==================
+
+.. doxygenfile:: Minecraft.hpp
+   :project: AmethystApi

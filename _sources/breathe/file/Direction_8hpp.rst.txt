@@ -1,0 +1,5 @@
+File Direction.hpp
+==================
+
+.. doxygenfile:: Direction.hpp
+   :project: AmethystApi

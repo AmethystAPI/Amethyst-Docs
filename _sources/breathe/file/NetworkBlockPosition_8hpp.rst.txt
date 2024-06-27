@@ -1,0 +1,5 @@
+File NetworkBlockPosition.hpp
+=============================
+
+.. doxygenfile:: NetworkBlockPosition.hpp
+   :project: AmethystApi

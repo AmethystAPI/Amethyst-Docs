@@ -1,0 +1,5 @@
+File Log.hpp
+============
+
+.. doxygenfile:: Log.hpp
+   :project: AmethystApi

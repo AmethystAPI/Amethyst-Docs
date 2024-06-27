@@ -1,0 +1,5 @@
+File SemVersion.hpp
+===================
+
+.. doxygenfile:: SemVersion.hpp
+   :project: AmethystApi

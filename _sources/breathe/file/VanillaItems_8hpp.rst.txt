@@ -1,0 +1,5 @@
+File VanillaItems.hpp
+=====================
+
+.. doxygenfile:: VanillaItems.hpp
+   :project: AmethystApi

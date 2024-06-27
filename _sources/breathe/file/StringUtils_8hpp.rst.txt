@@ -1,0 +1,5 @@
+File StringUtils.hpp
+====================
+
+.. doxygenfile:: StringUtils.hpp
+   :project: AmethystApi

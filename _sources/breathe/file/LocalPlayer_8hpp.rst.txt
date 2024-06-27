@@ -1,0 +1,5 @@
+File LocalPlayer.hpp
+====================
+
+.. doxygenfile:: LocalPlayer.hpp
+   :project: AmethystApi

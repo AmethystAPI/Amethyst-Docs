@@ -1,0 +1,5 @@
+File StringTag.hpp
+==================
+
+.. doxygenfile:: StringTag.hpp
+   :project: AmethystApi

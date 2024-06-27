@@ -1,0 +1,5 @@
+File Item.hpp
+=============
+
+.. doxygenfile:: Item.hpp
+   :project: AmethystApi

@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+
+<html :class="{'dark': darkMode === 'dark' || (darkMode === 'system' &amp;&amp; window.matchMedia('(prefers-color-scheme: dark)').matches)}" class="scroll-smooth" data-content_root="../../" lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') || localStorage.setItem('darkMode', 'system'), activeSection: '' }" x-init="$watch('darkMode', val =&gt; localStorage.setItem('darkMode', val))">
+<head>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="white" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="black" metia="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>File BlockShape.hpp | Amethyst  documentation</title>
+<meta content="File BlockShape.hpp | Amethyst  documentation" property="og:title"/>
+<meta content="File BlockShape.hpp | Amethyst  documentation" name="twitter:title"/>
+<link href="../../_static/pygments.css?v=5432af51" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=5b4133db" rel="stylesheet" type="text/css"/>
+<link href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-sphinx-design.css?v=a54cf077" rel="stylesheet" type="text/css"/>
+<link href="../../_static/logo-512x.png" rel="icon"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="BlockSourceListener_8hpp.html" rel="next" title="File BlockSourceListener.hpp"/>
+<link href="BlockRenderLayer_8hpp.html" rel="prev" title="File BlockRenderLayer.hpp"/>
+<script>
+    <!-- Prevent Flash of wrong theme -->
+      const userPreference = localStorage.getItem('darkMode');
+      let mode;
+      if (userPreference === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        mode = 'dark';
+        document.documentElement.classList.add('dark');
+      } else {
+        mode = 'light';
+      }
+      if (!userPreference) {localStorage.setItem('darkMode', mode)}
+    </script>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-sm border-border supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a><nav class="flex items-center space-x-6 text-sm font-medium">
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../autodocs.html">AmethystAPI</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../examples/index.html">Examples</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../getting_started/index.html">Getting Started</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../reverse_engineering/index.html">Reverse Engineering</a>
+</nav></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center space-x-1">
+<button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full shrink-0 overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="!justify-start text-sm md:!hidden bg-background" href="../../index.html"><span class="font-bold text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0 h-[calc(100vh-8rem)] md:h-auto">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../autodocs.html">AmethystAPI<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../filelist.html">File list<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="AABB_8hpp.html">File AABB.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorBlock_8hpp.html">File ActorBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorHeadRotationComponent_8hpp.html">File ActorHeadRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorRotationComponent_8hpp.html">File ActorRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorShaderManager_8hpp.html">File ActorShaderManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorTerrainInterlockData_8hpp.html">File ActorTerrainInterlockData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actor_8hpp.html">File Actor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AmethystContext_8hpp.html">File AmethystContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AuxDataBlockItem_8hpp.html">File AuxDataBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderContext_8hpp.html">File BaseActorRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderer_8hpp.html">File BaseActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseGameVersion_8hpp.html">File BaseGameVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseOptions_8hpp.html">File BaseOptions.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BinaryStream_8hpp.html">File BinaryStream.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorDataPacket_8hpp.html">File BlockActorDataPacket.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html">File BlockActorRendererDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererId_8hpp.html">File BlockActorRendererId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRenderer_8hpp.html">File BlockActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActor_8hpp.html">File BlockActor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentBase_8hpp.html">File BlockComponentBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentStorage_8hpp.html">File BlockComponentStorage.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockDefinitionGroup_8hpp.html">File BlockDefinitionGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockGraphics_8hpp.html">File BlockGraphics.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockItem_8hpp.html">File BlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockLegacy_8hpp.html">File BlockLegacy.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockMapColorComponent_8hpp.html">File BlockMapColorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockPos_8hpp.html">File BlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockRenderLayer_8hpp.html">File BlockRenderLayer.hpp</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">File BlockShape.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSourceListener_8hpp.html">File BlockSourceListener.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSource_8hpp.html">File BlockSource.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockState_8hpp.html">File BlockState.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTessellator_8hpp.html">File BlockTessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTypeRegistry_8hpp.html">File BlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Block_8hpp.html">File Block.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteArrayTag_8hpp.html">File ByteArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteTag_8hpp.html">File ByteTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CallStack_8hpp.html">File CallStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Camera_8hpp.html">File Camera.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChestBlock_8hpp.html">File ChestBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkBlockPos_8hpp.html">File ChunkBlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkPos_8hpp.html">File ChunkPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputHandler_8hpp.html">File ClientInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputMappingFactory_8hpp.html">File ClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInstance_8hpp.html">File ClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientNetworkHandler_8hpp.html">File ClientNetworkHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Color_8hpp.html">File Color.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CommonTypes_8hpp.html">File CommonTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTagVariant_8hpp.html">File CompoundTagVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTag_8hpp.html">File CompoundTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Config_8hpp.html">File Config.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Container_8hpp.html">File Container.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLogTypes_8hpp.html">File ContentLogTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLog_8hpp.html">File ContentLog.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Dimension_8hpp.html">File Dimension.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Direction_8hpp.html">File Direction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DoubleTag_8hpp.html">File DoubleTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EndTag_8hpp.html">File EndTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityContext_8hpp.html">File EntityContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityIdTraits_8hpp.html">File EntityIdTraits.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityId_8hpp.html">File EntityId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ErrorInfo_8hpp.html">File ErrorInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EventManager_8hpp.html">File EventManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Event_8hpp.html">File Event.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FertilizerType_8hpp.html">File FertilizerType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FillingContainer_8hpp.html">File FillingContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FloatTag_8hpp.html">File FloatTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameEvent_8hpp.html">File GameEvent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameModuleClient_8hpp.html">File GameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRefsSharePtr_8hpp.html">File GameRefsSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRules_8hpp.html">File GameRules.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GetCollisionShapeInterface_8hpp.html">File GetCollisionShapeInterface.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GuiData_8hpp.html">File GuiData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HeightRange_8hpp.html">File HeightRange.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HitResult_8hpp.html">File HitResult.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HookManager_8hpp.html">File HookManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverRenderer_8hpp.html">File HoverRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverTextRenderer_8hpp.html">File HoverTextRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IClientInstance_8hpp.html">File IClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ILevel_8hpp.html">File ILevel.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IPacketHandlerDispatcher_8hpp.html">File IPacketHandlerDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IWorldRegistriesProvider_8hpp.html">File IWorldRegistriesProvider.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ImageInfo_8hpp.html">File ImageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InPackagePacks_8hpp.html">File InPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputAction_8hpp.html">File InputAction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputHandler_8hpp.html">File InputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputManager_8hpp.html">File InputManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMappingFactory_8hpp.html">File InputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMapping_8hpp.html">File InputMapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Int64Tag_8hpp.html">File Int64Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntArrayTag_8hpp.html">File IntArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntTag_8hpp.html">File IntTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Inventory_8hpp.html">File Inventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IsotropicFaceData_8hpp.html">File IsotropicFaceData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemCategory_8hpp.html">File ItemCategory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemGroup_8hpp.html">File ItemGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemIconManager_8hpp.html">File ItemIconManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemInstance_8hpp.html">File ItemInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryManager_8hpp.html">File ItemRegistryManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryRef_8hpp.html">File ItemRegistryRef.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistry_8hpp.html">File ItemRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRenderer_8hpp.html">File ItemRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackBase_8hpp.html">File ItemStackBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackNetIdVariant_8hpp.html">File ItemStackNetIdVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStack_8hpp.html">File ItemStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Item_8hpp.html">File Item.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Keymapping_8hpp.html">File Keymapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelChunk_8hpp.html">File LevelChunk.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRendererPlayer_8hpp.html">File LevelRendererPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRenderer_8hpp.html">File LevelRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Level_8hpp.html">File Level.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ListTag_8hpp.html">File ListTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LocalPlayer_8hpp.html">File LocalPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Log_8hpp.html">File Log.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LoopbackPacketSender_8hpp.html">File LoopbackPacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialPtr_8hpp.html">File MaterialPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialType_8hpp.html">File MaterialType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Material_8hpp.html">File Material.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Math_8hpp.html">File Math.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MatrixStack_8hpp.html">File MatrixStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Matrix_8hpp.html">File Matrix.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Memory_8hpp.html">File Memory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshContext_8hpp.html">File MeshContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshData_8hpp.html">File MeshData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshHelpers_8hpp.html">File MeshHelpers.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mesh_8hpp.html">File Mesh.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftGame_8hpp.html">File MinecraftGame.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftInputHandler_8hpp.html">File MinecraftInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftPackageInfo_8hpp.html">File MinecraftPackageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftUIRenderContext_8hpp.html">File MinecraftUIRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftVtables_8hpp.html">File MinecraftVtables.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Minecraft_8hpp.html">File Minecraft.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mob_8hpp.html">File Mob.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mod_8hpp.html">File Mod.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetEventCallback_8hpp.html">File NetEventCallback.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkBlockPosition_8hpp.html">File NetworkBlockPosition.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkPeer_8hpp.html">File NetworkPeer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NewType_8hpp.html">File NewType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceHelper_8hpp.html">File NinesliceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceInfo_8hpp.html">File NinesliceInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NonOwnerPointer_8hpp.html">File NonOwnerPointer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Options_8hpp.html">File Options.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerPtr_8hpp.html">File OwnerPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerStorageSharePtr_8hpp.html">File OwnerStorageSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketHandlerDispatcherInstance_8hpp.html">File PacketHandlerDispatcherInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketPriority_8hpp.html">File PacketPriority.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketSender_8hpp.html">File PacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_8hpp.html">File Packet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PatchManager_8hpp.html">File PatchManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Path_8hpp.html">File Path.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerInventory_8hpp.html">File PlayerInventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerUIContainer_8hpp.html">File PlayerUIContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Player_8hpp.html">File Player.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RandomizableBlockActorContainerBase_8hpp.html">File RandomizableBlockActorContainerBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RemappingLayout_8hpp.html">File RemappingLayout.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderContext_8hpp.html">File RenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroupBase_8hpp.html">File RenderMaterialGroupBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroup_8hpp.html">File RenderMaterialGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResolvedItemIconInfo_8hpp.html">File ResolvedItemIconInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceHelper_8hpp.html">File ResourceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceUtil_8hpp.html">File ResourceUtil.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Result_8hpp.html">File Result.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenContext_8hpp.html">File ScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenView_8hpp.html">File ScreenView.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SemVersion_8hpp.html">File SemVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShapeType_8hpp.html">File ShapeType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SharedPtr_8hpp.html">File SharedPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShortTag_8hpp.html">File ShortTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShulkerBoxBlockItem_8hpp.html">File ShulkerBoxBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SimpleContainer_8hpp.html">File SimpleContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SliderComponent_8hpp.html">File SliderComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StateVectorComponent_8hpp.html">File StateVectorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringHash_8hpp.html">File StringHash.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringTag_8hpp.html">File StringTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringUtils_8hpp.html">File StringUtils.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tag_8hpp.html">File Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tessellator_8hpp.html">File Tessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextComponent_8hpp.html">File TextComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureAtlasItem_8hpp.html">File TextureAtlasItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TexturePtr_8hpp.html">File TexturePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureUVCoordinateSet_8hpp.html">File TextureUVCoordinateSet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tick_8hpp.html">File Tick.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ToggleComponent_8hpp.html">File ToggleComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIComponent_8hpp.html">File UIComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIControl_8hpp.html">File UIControl.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIScreenContext_8hpp.html">File UIScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UUID_8hpp.html">File UUID.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UseAnim_8hpp.html">File UseAnim.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Utility_8hpp.html">File Utility.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaBlockTypeRegistry_8hpp.html">File VanillaBlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaClientInputMappingFactory_8hpp.html">File VanillaClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaGameModuleClient_8hpp.html">File VanillaGameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaInPackagePacks_8hpp.html">File VanillaInPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaItems_8hpp.html">File VanillaItems.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec2_8hpp.html">File Vec2.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec3_8hpp.html">File Vec3.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VisualTree_8hpp.html">File VisualTree.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expected_8hpp.html">File expected.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsl__includes_8hpp.html">File gsl_includes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optional__ref_8hpp.html">File optional_ref.hpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/index.html">Examples<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/networking/index.html">Networking<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../../examples/networking/udp.html">UDP Networking Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../getting_started/index.html">Getting Started<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/end_user/installing_amethyst.html">Installing Amethyst</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/devs/compiling_amethyst.html">Compiling Amethyst</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reverse_engineering/index.html">Reverse Engineering</a></li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../how_to_doc/index.html">How to doc<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/setup.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/doxygen.html">Doxygen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/sphinx.html">Sphinx</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../../index.html">
+<span class="hidden md:inline">Amethyst  documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../../autodocs.html">AmethystAPI</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../filelist.html">File list</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">File BlockShape.hpp</span>
+</nav>
+<div id="content" role="main">
+<section id="file-blockshape-hpp">
+<h1>File BlockShape.hpp<a class="headerlink" href="#file-blockshape-hpp" title="Link to this heading">¶</a></h1>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv410BlockShape">
+<span id="_CPPv310BlockShape"></span><span id="_CPPv210BlockShape"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5c"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BlockShape</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><a class="headerlink" href="#_CPPv410BlockShape" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv410BlockShape'">¶</a><br/></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9INVISIBLEE">
+<span id="_CPPv3N10BlockShape9INVISIBLEE"></span><span id="_CPPv2N10BlockShape9INVISIBLEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca5fb351568336ebb294804f81e3c8663d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INVISIBLE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9INVISIBLEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9INVISIBLEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape5BLOCKE">
+<span id="_CPPv3N10BlockShape5BLOCKE"></span><span id="_CPPv2N10BlockShape5BLOCKE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca4d34f53389ed7f28ca91fc31ea360a66"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BLOCK</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape5BLOCKE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape5BLOCKE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape13CROSS_TEXTUREE">
+<span id="_CPPv3N10BlockShape13CROSS_TEXTUREE"></span><span id="_CPPv2N10BlockShape13CROSS_TEXTUREE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cad2892e31f79dc794c6c62cc379c4f41b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CROSS_TEXTURE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape13CROSS_TEXTUREE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape13CROSS_TEXTUREE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape5TORCHE">
+<span id="_CPPv3N10BlockShape5TORCHE"></span><span id="_CPPv2N10BlockShape5TORCHE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca8c68cc99eab6bfb9c58da2ae96e42a3b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TORCH</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape5TORCHE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape5TORCHE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape4FIREE">
+<span id="_CPPv3N10BlockShape4FIREE"></span><span id="_CPPv2N10BlockShape4FIREE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cab7426fb9c3932995306fceba2874d057"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FIRE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape4FIREE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape4FIREE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape5WATERE">
+<span id="_CPPv3N10BlockShape5WATERE"></span><span id="_CPPv2N10BlockShape5WATERE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca2add2964642f39099cb51edf4a4f5a70"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WATER</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape5WATERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape5WATERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape8RED_DUSTE">
+<span id="_CPPv3N10BlockShape8RED_DUSTE"></span><span id="_CPPv2N10BlockShape8RED_DUSTE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca88c6d6287ba273a33f7039ae880a418e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RED_DUST</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape8RED_DUSTE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape8RED_DUSTE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape4ROWSE">
+<span id="_CPPv3N10BlockShape4ROWSE"></span><span id="_CPPv2N10BlockShape4ROWSE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cace4aae3bd64ecf94981ad98294919a63"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ROWS</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape4ROWSE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape4ROWSE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape4DOORE">
+<span id="_CPPv3N10BlockShape4DOORE"></span><span id="_CPPv2N10BlockShape4DOORE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca37ce845535b7c13f529505fdfdb04942"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOOR</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape4DOORE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape4DOORE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape6LADDERE">
+<span id="_CPPv3N10BlockShape6LADDERE"></span><span id="_CPPv2N10BlockShape6LADDERE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cabcffb3ecb8e8fcf587bd04f363ce6977"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LADDER</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape6LADDERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape6LADDERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape4RAILE">
+<span id="_CPPv3N10BlockShape4RAILE"></span><span id="_CPPv2N10BlockShape4RAILE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca20efd1e532d10c15b658a382058c4fdb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RAIL</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape4RAILE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape4RAILE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape6STAIRSE">
+<span id="_CPPv3N10BlockShape6STAIRSE"></span><span id="_CPPv2N10BlockShape6STAIRSE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca0b2918cc4f3f0f320637c26126b519c4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">STAIRS</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape6STAIRSE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape6STAIRSE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape5FENCEE">
+<span id="_CPPv3N10BlockShape5FENCEE"></span><span id="_CPPv2N10BlockShape5FENCEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca680f61224afe352a026a616896f47a29"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FENCE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape5FENCEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape5FENCEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape5LEVERE">
+<span id="_CPPv3N10BlockShape5LEVERE"></span><span id="_CPPv2N10BlockShape5LEVERE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca012b9ef16ed4701b30d86f1ec74f9653"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LEVER</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape5LEVERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape5LEVERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape6CACTUSE">
+<span id="_CPPv3N10BlockShape6CACTUSE"></span><span id="_CPPv2N10BlockShape6CACTUSE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca3c67654bfd9e9021128eb98cc5884450"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CACTUS</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape6CACTUSE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape6CACTUSE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape3BEDE">
+<span id="_CPPv3N10BlockShape3BEDE"></span><span id="_CPPv2N10BlockShape3BEDE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cac3698cb1d7f218b991d68438f5fc4829"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BED</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape3BEDE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape3BEDE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape5DIODEE">
+<span id="_CPPv3N10BlockShape5DIODEE"></span><span id="_CPPv2N10BlockShape5DIODEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca27a3be7c1707f2fc3e9df9054eed8b4e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DIODE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape5DIODEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape5DIODEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_16E">
+<span id="_CPPv3N10BlockShape9UNUSED_16E"></span><span id="_CPPv2N10BlockShape9UNUSED_16E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca83bf66fe6bea5bec1848a0f37ea46e2c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_16</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_16E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_16E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_17E">
+<span id="_CPPv3N10BlockShape9UNUSED_17E"></span><span id="_CPPv2N10BlockShape9UNUSED_17E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caa8e8c58770e8594c0308fe4974109c97"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_17</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_17E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_17E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10IRON_FENCEE">
+<span id="_CPPv3N10BlockShape10IRON_FENCEE"></span><span id="_CPPv2N10BlockShape10IRON_FENCEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cacffdd8ef274b65845289ad3ae9e6f5bb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IRON_FENCE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10IRON_FENCEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10IRON_FENCEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape4STEME">
+<span id="_CPPv3N10BlockShape4STEME"></span><span id="_CPPv2N10BlockShape4STEME"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca2295e0750a84297532f2a8197bb76b5e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">STEM</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape4STEME" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape4STEME'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape4VINEE">
+<span id="_CPPv3N10BlockShape4VINEE"></span><span id="_CPPv2N10BlockShape4VINEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caf8f5b99c2ac7ef92c5767ee0d62f10e8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">VINE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape4VINEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape4VINEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10FENCE_GATEE">
+<span id="_CPPv3N10BlockShape10FENCE_GATEE"></span><span id="_CPPv2N10BlockShape10FENCE_GATEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca602ecf2f0ded444931afb426635893ff"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FENCE_GATE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10FENCE_GATEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10FENCE_GATEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape5CHESTE">
+<span id="_CPPv3N10BlockShape5CHESTE"></span><span id="_CPPv2N10BlockShape5CHESTE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca5bdccd55677ef3fc449ed476ade69fb7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CHEST</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape5CHESTE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape5CHESTE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape7LILYPADE">
+<span id="_CPPv3N10BlockShape7LILYPADE"></span><span id="_CPPv2N10BlockShape7LILYPADE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cac45787ada35f12973c8ae9a11f6722e8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LILYPAD</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape7LILYPADE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape7LILYPADE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_24E">
+<span id="_CPPv3N10BlockShape9UNUSED_24E"></span><span id="_CPPv2N10BlockShape9UNUSED_24E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cac61a3d895cc151af02c573bf2982f11f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_24</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_24E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_24E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape13BREWING_STANDE">
+<span id="_CPPv3N10BlockShape13BREWING_STANDE"></span><span id="_CPPv2N10BlockShape13BREWING_STANDE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca722b0d756b0f1a74ddd91179ae158c42"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BREWING_STAND</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape13BREWING_STANDE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape13BREWING_STANDE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape12PORTAL_FRAMEE">
+<span id="_CPPv3N10BlockShape12PORTAL_FRAMEE"></span><span id="_CPPv2N10BlockShape12PORTAL_FRAMEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca190eeded252c3c3a11109a14ffb4c201"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PORTAL_FRAME</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape12PORTAL_FRAMEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape12PORTAL_FRAMEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_27E">
+<span id="_CPPv3N10BlockShape9UNUSED_27E"></span><span id="_CPPv2N10BlockShape9UNUSED_27E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cadc9a7b8d6a889ae66d65367b7f29a2d8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_27</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_27E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_27E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape5COCOAE">
+<span id="_CPPv3N10BlockShape5COCOAE"></span><span id="_CPPv2N10BlockShape5COCOAE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca0439e3cee63c8741e500230121911962"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">COCOA</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape5COCOAE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape5COCOAE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_29E">
+<span id="_CPPv3N10BlockShape9UNUSED_29E"></span><span id="_CPPv2N10BlockShape9UNUSED_29E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cab9d621c096f05bec37220a968c5addb2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_29</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_29E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_29E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_30E">
+<span id="_CPPv3N10BlockShape9UNUSED_30E"></span><span id="_CPPv2N10BlockShape9UNUSED_30E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cab7b26aabb09155959f04ec3513885fbc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_30</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_30E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_30E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape4TREEE">
+<span id="_CPPv3N10BlockShape4TREEE"></span><span id="_CPPv2N10BlockShape4TREEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cac0f8e24cf041639c4fc457ebec9490eb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TREE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape4TREEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape4TREEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape4WALLE">
+<span id="_CPPv3N10BlockShape4WALLE"></span><span id="_CPPv2N10BlockShape4WALLE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca48d536b2de1195d0c9f6ea8ab884085e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WALL</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape4WALLE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape4WALLE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_33E">
+<span id="_CPPv3N10BlockShape9UNUSED_33E"></span><span id="_CPPv2N10BlockShape9UNUSED_33E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca8e81639dea61df2230b7399fa03c5568"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_33</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_33E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_33E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_34E">
+<span id="_CPPv3N10BlockShape9UNUSED_34E"></span><span id="_CPPv2N10BlockShape9UNUSED_34E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caf0c149291588fa4e4a5f900d66c4cbb1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_34</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_34E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_34E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_35E">
+<span id="_CPPv3N10BlockShape9UNUSED_35E"></span><span id="_CPPv2N10BlockShape9UNUSED_35E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca36414a2e11506dbb792dc66c59e50117"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_35</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_35E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_35E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_36E">
+<span id="_CPPv3N10BlockShape9UNUSED_36E"></span><span id="_CPPv2N10BlockShape9UNUSED_36E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca1d75f69fe92d65450c3b90135429da73"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_36</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_36E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_36E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_37E">
+<span id="_CPPv3N10BlockShape9UNUSED_37E"></span><span id="_CPPv2N10BlockShape9UNUSED_37E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca71d24d6f741701c97311b8a5d4791883"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_37</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_37E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_37E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_38E">
+<span id="_CPPv3N10BlockShape9UNUSED_38E"></span><span id="_CPPv2N10BlockShape9UNUSED_38E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca31a324d2a7e8d5073f2d17ff051d4bac"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_38</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_38E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_38E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_39E">
+<span id="_CPPv3N10BlockShape9UNUSED_39E"></span><span id="_CPPv2N10BlockShape9UNUSED_39E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca2008da55163222265b2cc8a2d574b4b9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_39</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_39E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_39E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape12DOUBLE_PLANTE">
+<span id="_CPPv3N10BlockShape12DOUBLE_PLANTE"></span><span id="_CPPv2N10BlockShape12DOUBLE_PLANTE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cab95da539ecc10d9be05b5d8ca349b7a0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_PLANT</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape12DOUBLE_PLANTE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape12DOUBLE_PLANTE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_41E">
+<span id="_CPPv3N10BlockShape9UNUSED_41E"></span><span id="_CPPv2N10BlockShape9UNUSED_41E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cab745f8826e00d6d87d0cacfb82354002"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_41</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_41E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_41E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10FLOWER_POTE">
+<span id="_CPPv3N10BlockShape10FLOWER_POTE"></span><span id="_CPPv2N10BlockShape10FLOWER_POTE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca06a698296342fae834f1ec67368a14b8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FLOWER_POT</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10FLOWER_POTE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10FLOWER_POTE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape5ANVILE">
+<span id="_CPPv3N10BlockShape5ANVILE"></span><span id="_CPPv2N10BlockShape5ANVILE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca8371d5261a01ddae3e9b308a9c735791"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ANVIL</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape5ANVILE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape5ANVILE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10DRAGON_EGGE">
+<span id="_CPPv3N10BlockShape10DRAGON_EGGE"></span><span id="_CPPv2N10BlockShape10DRAGON_EGGE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca97a6502b10bf1fb52a6f7bdc62a0caf2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DRAGON_EGG</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10DRAGON_EGGE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10DRAGON_EGGE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_45E">
+<span id="_CPPv3N10BlockShape9UNUSED_45E"></span><span id="_CPPv2N10BlockShape9UNUSED_45E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca779662e82c2c487abfa4a12db06766dc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_45</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_45E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_45E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_46E">
+<span id="_CPPv3N10BlockShape9UNUSED_46E"></span><span id="_CPPv2N10BlockShape9UNUSED_46E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca21cc24107d78f73fd847ecd0ae046dd3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_46</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_46E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_46E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_47E">
+<span id="_CPPv3N10BlockShape9UNUSED_47E"></span><span id="_CPPv2N10BlockShape9UNUSED_47E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca07ee436b2149a9670aec23fbc2d2b5aa"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_47</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_47E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_47E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape14STRUCTURE_VOIDE">
+<span id="_CPPv3N10BlockShape14STRUCTURE_VOIDE"></span><span id="_CPPv2N10BlockShape14STRUCTURE_VOIDE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca670d6b88843f36fbcc74d15fbe8d1fda"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">STRUCTURE_VOID</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape14STRUCTURE_VOIDE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape14STRUCTURE_VOIDE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_49E">
+<span id="_CPPv3N10BlockShape9UNUSED_49E"></span><span id="_CPPv2N10BlockShape9UNUSED_49E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cadd91b373a39cf071d25d11c4e19870b1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_49</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_49E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_49E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_50E">
+<span id="_CPPv3N10BlockShape9UNUSED_50E"></span><span id="_CPPv2N10BlockShape9UNUSED_50E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caad676d89e71cd7454e62dd925cf19226"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_50</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_50E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_50E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_51E">
+<span id="_CPPv3N10BlockShape9UNUSED_51E"></span><span id="_CPPv2N10BlockShape9UNUSED_51E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cab143bbd1483d273e21bbcb782e798572"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_51</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_51E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_51E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_52E">
+<span id="_CPPv3N10BlockShape9UNUSED_52E"></span><span id="_CPPv2N10BlockShape9UNUSED_52E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cada383fd66a0f36fceb87cdaaf4f353cc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_52</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_52E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_52E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_53E">
+<span id="_CPPv3N10BlockShape9UNUSED_53E"></span><span id="_CPPv2N10BlockShape9UNUSED_53E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca0f0e1e2315f34b7b75f418b8a2c16ca6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_53</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_53E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_53E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_54E">
+<span id="_CPPv3N10BlockShape9UNUSED_54E"></span><span id="_CPPv2N10BlockShape9UNUSED_54E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca9ea1f831828dd4f35a495c89f2e59128"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_54</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_54E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_54E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_55E">
+<span id="_CPPv3N10BlockShape9UNUSED_55E"></span><span id="_CPPv2N10BlockShape9UNUSED_55E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caa8250741aad7e6daab85e95987d46891"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_55</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_55E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_55E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_56E">
+<span id="_CPPv3N10BlockShape9UNUSED_56E"></span><span id="_CPPv2N10BlockShape9UNUSED_56E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca4ed6ce5d8d028ab0036967e819ca510b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_56</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_56E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_56E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_57E">
+<span id="_CPPv3N10BlockShape9UNUSED_57E"></span><span id="_CPPv2N10BlockShape9UNUSED_57E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca7fec523b390c743770b47d3dc55c73c9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_57</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_57E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_57E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_58E">
+<span id="_CPPv3N10BlockShape9UNUSED_58E"></span><span id="_CPPv2N10BlockShape9UNUSED_58E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca9b504c3a7e089ce7b277dca66bcc93ca"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_58</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_58E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_58E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_59E">
+<span id="_CPPv3N10BlockShape9UNUSED_59E"></span><span id="_CPPv2N10BlockShape9UNUSED_59E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca8685e4603c6fb8c93385787c09f3e96a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_59</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_59E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_59E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_60E">
+<span id="_CPPv3N10BlockShape9UNUSED_60E"></span><span id="_CPPv2N10BlockShape9UNUSED_60E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca8bed6fb209652b2e68dd33ced8ff7b5a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_60</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_60E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_60E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_61E">
+<span id="_CPPv3N10BlockShape9UNUSED_61E"></span><span id="_CPPv2N10BlockShape9UNUSED_61E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cae805dce38a896b2a910f97c25234d988"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_61</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_61E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_61E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_62E">
+<span id="_CPPv3N10BlockShape9UNUSED_62E"></span><span id="_CPPv2N10BlockShape9UNUSED_62E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cadae3fe106f8be91b7062562122d142c4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_62</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_62E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_62E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_63E">
+<span id="_CPPv3N10BlockShape9UNUSED_63E"></span><span id="_CPPv2N10BlockShape9UNUSED_63E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca933ba6ca73a4d16c080797a033dec4d7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_63</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_63E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_63E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_64E">
+<span id="_CPPv3N10BlockShape9UNUSED_64E"></span><span id="_CPPv2N10BlockShape9UNUSED_64E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca58d2d9bc5972e9a5dc314ab8484d0b57"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_64</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_64E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_64E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_65E">
+<span id="_CPPv3N10BlockShape9UNUSED_65E"></span><span id="_CPPv2N10BlockShape9UNUSED_65E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca8a399bd1324aead64e324ca216d47146"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_65</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_65E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_65E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_66E">
+<span id="_CPPv3N10BlockShape9UNUSED_66E"></span><span id="_CPPv2N10BlockShape9UNUSED_66E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cac9f3ee453f4455a5b5919075a13a1efd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_66</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_66E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_66E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10BLOCK_HALFE">
+<span id="_CPPv3N10BlockShape10BLOCK_HALFE"></span><span id="_CPPv2N10BlockShape10BLOCK_HALFE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca0bb3fa3390bed58ea59692c762bf22a1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BLOCK_HALF</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10BLOCK_HALFE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10BLOCK_HALFE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape8TOP_SNOWE">
+<span id="_CPPv3N10BlockShape8TOP_SNOWE"></span><span id="_CPPv2N10BlockShape8TOP_SNOWE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca9f95f94735d1f089c6407df14972809b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TOP_SNOW</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape8TOP_SNOWE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape8TOP_SNOWE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape8TRIPWIREE">
+<span id="_CPPv3N10BlockShape8TRIPWIREE"></span><span id="_CPPv2N10BlockShape8TRIPWIREE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caad9889d5ff651352693a7f0c73c7a5c7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TRIPWIRE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape8TRIPWIREE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape8TRIPWIREE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape13TRIPWIRE_HOOKE">
+<span id="_CPPv3N10BlockShape13TRIPWIRE_HOOKE"></span><span id="_CPPv2N10BlockShape13TRIPWIRE_HOOKE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca68f39e18d06eb3d90c47fc41ba0111fc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TRIPWIRE_HOOK</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape13TRIPWIRE_HOOKE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape13TRIPWIRE_HOOKE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape8CAULDRONE">
+<span id="_CPPv3N10BlockShape8CAULDRONE"></span><span id="_CPPv2N10BlockShape8CAULDRONE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca0f204b0b8eb1f2d8528b269c0bb0daae"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAULDRON</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape8CAULDRONE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape8CAULDRONE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape8REPEATERE">
+<span id="_CPPv3N10BlockShape8REPEATERE"></span><span id="_CPPv2N10BlockShape8REPEATERE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cad31b9025a6321e1dddf76266123d7e99"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">REPEATER</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape8REPEATERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape8REPEATERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10COMPARATORE">
+<span id="_CPPv3N10BlockShape10COMPARATORE"></span><span id="_CPPv2N10BlockShape10COMPARATORE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca16eaef3c62c0a8114fce61af51a06237"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">COMPARATOR</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10COMPARATORE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10COMPARATORE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape6HOPPERE">
+<span id="_CPPv3N10BlockShape6HOPPERE"></span><span id="_CPPv2N10BlockShape6HOPPERE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca6a0513732e84b509f348462fdf4ec34c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HOPPER</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape6HOPPERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape6HOPPERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape11SLIME_BLOCKE">
+<span id="_CPPv3N10BlockShape11SLIME_BLOCKE"></span><span id="_CPPv2N10BlockShape11SLIME_BLOCKE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca555a34acbfa035c2a00417600c79951e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SLIME_BLOCK</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape11SLIME_BLOCKE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape11SLIME_BLOCKE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape6PISTONE">
+<span id="_CPPv3N10BlockShape6PISTONE"></span><span id="_CPPv2N10BlockShape6PISTONE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caea6dfed5f1d50a3e04787e9c1155bea7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PISTON</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape6PISTONE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape6PISTONE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape6BEACONE">
+<span id="_CPPv3N10BlockShape6BEACONE"></span><span id="_CPPv2N10BlockShape6BEACONE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca4a3fd580504c35a69c1ea7fda0f01fce"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BEACON</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape6BEACONE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape6BEACONE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape12CHORUS_PLANTE">
+<span id="_CPPv3N10BlockShape12CHORUS_PLANTE"></span><span id="_CPPv2N10BlockShape12CHORUS_PLANTE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca90be85bcb787403e8bc5d6188ba6e582"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CHORUS_PLANT</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape12CHORUS_PLANTE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape12CHORUS_PLANTE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape13CHORUS_FLOWERE">
+<span id="_CPPv3N10BlockShape13CHORUS_FLOWERE"></span><span id="_CPPv2N10BlockShape13CHORUS_FLOWERE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca923d741a927bdace0fba993f3ac7be90"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CHORUS_FLOWER</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape13CHORUS_FLOWERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape13CHORUS_FLOWERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10END_PORTALE">
+<span id="_CPPv3N10BlockShape10END_PORTALE"></span><span id="_CPPv2N10BlockShape10END_PORTALE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cadc64075902ff7427f068db36fe5e9033"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">END_PORTAL</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10END_PORTALE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10END_PORTALE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape7END_RODE">
+<span id="_CPPv3N10BlockShape7END_RODE"></span><span id="_CPPv2N10BlockShape7END_RODE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cabb9d5f206ef4454632f7e00022ff9054"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">END_ROD</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape7END_RODE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape7END_RODE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape11END_GATEWAYE">
+<span id="_CPPv3N10BlockShape11END_GATEWAYE"></span><span id="_CPPv2N10BlockShape11END_GATEWAYE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cae7976647c7a55c04e8e023e6f71c0595"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">END_GATEWAY</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape11END_GATEWAYE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape11END_GATEWAYE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape5SKULLE">
+<span id="_CPPv3N10BlockShape5SKULLE"></span><span id="_CPPv2N10BlockShape5SKULLE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca2c1dabcf71000fd155fb757588ee33fb"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SKULL</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape5SKULLE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape5SKULLE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape12FACING_BLOCKE">
+<span id="_CPPv3N10BlockShape12FACING_BLOCKE"></span><span id="_CPPv2N10BlockShape12FACING_BLOCKE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca3de35ab5f91fe1d476f1215adc32ab5d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FACING_BLOCK</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape12FACING_BLOCKE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape12FACING_BLOCKE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape13COMMAND_BLOCKE">
+<span id="_CPPv3N10BlockShape13COMMAND_BLOCKE"></span><span id="_CPPv2N10BlockShape13COMMAND_BLOCKE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cad1fba1a422bebc51004409c6f15f353e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">COMMAND_BLOCK</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape13COMMAND_BLOCKE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape13COMMAND_BLOCKE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10TERRACOTTAE">
+<span id="_CPPv3N10BlockShape10TERRACOTTAE"></span><span id="_CPPv2N10BlockShape10TERRACOTTAE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca1301f65d41ad1690fafc003cfd8501ba"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TERRACOTTA</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10TERRACOTTAE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10TERRACOTTAE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape17DOUBLE_SIDE_FENCEE">
+<span id="_CPPv3N10BlockShape17DOUBLE_SIDE_FENCEE"></span><span id="_CPPv2N10BlockShape17DOUBLE_SIDE_FENCEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cac17aaab1190576f5cb9bdccd5679fd8b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLE_SIDE_FENCE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape17DOUBLE_SIDE_FENCEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape17DOUBLE_SIDE_FENCEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10ITEM_FRAMEE">
+<span id="_CPPv3N10BlockShape10ITEM_FRAMEE"></span><span id="_CPPv2N10BlockShape10ITEM_FRAMEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca90a3ea8d1201b70b517056a3ce81d646"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ITEM_FRAME</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10ITEM_FRAMEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10ITEM_FRAMEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape11SHULKER_BOXE">
+<span id="_CPPv3N10BlockShape11SHULKER_BOXE"></span><span id="_CPPv2N10BlockShape11SHULKER_BOXE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca2ad882b416d3bf1c5f910042c34c3e48"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SHULKER_BOX</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape11SHULKER_BOXE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape11SHULKER_BOXE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape25DOUBLESIDED_CROSS_TEXTUREE">
+<span id="_CPPv3N10BlockShape25DOUBLESIDED_CROSS_TEXTUREE"></span><span id="_CPPv2N10BlockShape25DOUBLESIDED_CROSS_TEXTUREE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caf91266ac6ac96fa6cbf4d8a2e2fc14cf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLESIDED_CROSS_TEXTURE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape25DOUBLESIDED_CROSS_TEXTUREE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape25DOUBLESIDED_CROSS_TEXTUREE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape24DOUBLESIDED_DOUBLE_PLANTE">
+<span id="_CPPv3N10BlockShape24DOUBLESIDED_DOUBLE_PLANTE"></span><span id="_CPPv2N10BlockShape24DOUBLESIDED_DOUBLE_PLANTE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cad71032deacf913167b15765c92414996"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLESIDED_DOUBLE_PLANT</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape24DOUBLESIDED_DOUBLE_PLANTE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape24DOUBLESIDED_DOUBLE_PLANTE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape16DOUBLESIDED_ROWSE">
+<span id="_CPPv3N10BlockShape16DOUBLESIDED_ROWSE"></span><span id="_CPPv2N10BlockShape16DOUBLESIDED_ROWSE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca8318f8f1b3036b3b555b0224231aab9f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DOUBLESIDED_ROWS</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape16DOUBLESIDED_ROWSE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape16DOUBLESIDED_ROWSE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape13ELEMENT_BLOCKE">
+<span id="_CPPv3N10BlockShape13ELEMENT_BLOCKE"></span><span id="_CPPv2N10BlockShape13ELEMENT_BLOCKE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca89e5784c0a00aa4e51a0fb998289add4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ELEMENT_BLOCK</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape13ELEMENT_BLOCKE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape13ELEMENT_BLOCKE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape15CHEMISTRY_TABLEE">
+<span id="_CPPv3N10BlockShape15CHEMISTRY_TABLEE"></span><span id="_CPPv2N10BlockShape15CHEMISTRY_TABLEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca2d39316006ace2c01f1cbaf966588046"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CHEMISTRY_TABLE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape15CHEMISTRY_TABLEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape15CHEMISTRY_TABLEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9UNUSED_95E">
+<span id="_CPPv3N10BlockShape9UNUSED_95E"></span><span id="_CPPv2N10BlockShape9UNUSED_95E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caa02d45a338341aed3b70acdf09136d6a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_95</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9UNUSED_95E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9UNUSED_95E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9CORAL_FANE">
+<span id="_CPPv3N10BlockShape9CORAL_FANE"></span><span id="_CPPv2N10BlockShape9CORAL_FANE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca2347020101ae684c5a195a02746588a8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CORAL_FAN</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9CORAL_FANE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9CORAL_FANE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape8SEAGRASSE">
+<span id="_CPPv3N10BlockShape8SEAGRASSE"></span><span id="_CPPv2N10BlockShape8SEAGRASSE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cae1f2b868c0995cb8ef8c233799307b1f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SEAGRASS</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape8SEAGRASSE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape8SEAGRASSE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape4KELPE">
+<span id="_CPPv3N10BlockShape4KELPE"></span><span id="_CPPv2N10BlockShape4KELPE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caaeb970c8dba8898494d407d8eb829d70"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">KELP</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape4KELPE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape4KELPE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape8TRAPDOORE">
+<span id="_CPPv3N10BlockShape8TRAPDOORE"></span><span id="_CPPv2N10BlockShape8TRAPDOORE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca04bf26dcc0077597333f8a2b5b80a032"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TRAPDOOR</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape8TRAPDOORE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape8TRAPDOORE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10SEA_PICKLEE">
+<span id="_CPPv3N10BlockShape10SEA_PICKLEE"></span><span id="_CPPv2N10BlockShape10SEA_PICKLEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caef179fd1648151058bade96db72f0ae5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SEA_PICKLE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10SEA_PICKLEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10SEA_PICKLEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape7CONDUITE">
+<span id="_CPPv3N10BlockShape7CONDUITE"></span><span id="_CPPv2N10BlockShape7CONDUITE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca01f9b6f69e43ed88d05bbed676723817"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CONDUIT</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape7CONDUITE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape7CONDUITE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10TURTLE_EGGE">
+<span id="_CPPv3N10BlockShape10TURTLE_EGGE"></span><span id="_CPPv2N10BlockShape10TURTLE_EGGE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca8d434ea1b70231cc9f29a7615820a62c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TURTLE_EGG</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10TURTLE_EGGE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10TURTLE_EGGE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10UNUSED_103E">
+<span id="_CPPv3N10BlockShape10UNUSED_103E"></span><span id="_CPPv2N10BlockShape10UNUSED_103E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caef01cb40cc154dc15ee67a2e32f7f649"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_103</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10UNUSED_103E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10UNUSED_103E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10UNUSED_104E">
+<span id="_CPPv3N10BlockShape10UNUSED_104E"></span><span id="_CPPv2N10BlockShape10UNUSED_104E"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caf671f4f4d86cc43168938a49ff9c2efc"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">UNUSED_104</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10UNUSED_104E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10UNUSED_104E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape13BUBBLE_COLUMNE">
+<span id="_CPPv3N10BlockShape13BUBBLE_COLUMNE"></span><span id="_CPPv2N10BlockShape13BUBBLE_COLUMNE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca62ffce7744c98e770760730bcc64df6a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BUBBLE_COLUMN</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape13BUBBLE_COLUMNE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape13BUBBLE_COLUMNE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape20CAMERA_FACING_SPRITEE">
+<span id="_CPPv3N10BlockShape20CAMERA_FACING_SPRITEE"></span><span id="_CPPv2N10BlockShape20CAMERA_FACING_SPRITEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cadc9677d434f25779c2f2959452217360"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAMERA_FACING_SPRITE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape20CAMERA_FACING_SPRITEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape20CAMERA_FACING_SPRITEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape4SIGNE">
+<span id="_CPPv3N10BlockShape4SIGNE"></span><span id="_CPPv2N10BlockShape4SIGNE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca65b164db371ec78984e24bc8f858c0d1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SIGN</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape4SIGNE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape4SIGNE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape6BAMBOOE">
+<span id="_CPPv3N10BlockShape6BAMBOOE"></span><span id="_CPPv2N10BlockShape6BAMBOOE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cab863c55fcf7a25111b72944311747ba1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BAMBOO</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape6BAMBOOE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape6BAMBOOE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape14BAMBOO_SAPLINGE">
+<span id="_CPPv3N10BlockShape14BAMBOO_SAPLINGE"></span><span id="_CPPv2N10BlockShape14BAMBOO_SAPLINGE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cafbe6956ab77a0a06e1d245d447b83800"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BAMBOO_SAPLING</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape14BAMBOO_SAPLINGE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape14BAMBOO_SAPLINGE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape11SCAFFOLDINGE">
+<span id="_CPPv3N10BlockShape11SCAFFOLDINGE"></span><span id="_CPPv2N10BlockShape11SCAFFOLDINGE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca5f1eaea4ef2abd0b086c1a273ad28bd7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SCAFFOLDING</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape11SCAFFOLDINGE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape11SCAFFOLDINGE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10GRINDSTONEE">
+<span id="_CPPv3N10BlockShape10GRINDSTONEE"></span><span id="_CPPv2N10BlockShape10GRINDSTONEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caa62e42085d06ebd15bae734890d723e0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GRINDSTONE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10GRINDSTONEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10GRINDSTONEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape4BELLE">
+<span id="_CPPv3N10BlockShape4BELLE"></span><span id="_CPPv2N10BlockShape4BELLE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cae25524800989ebde09d7f9a3633368e9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BELL</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape4BELLE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape4BELLE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape7LANTERNE">
+<span id="_CPPv3N10BlockShape7LANTERNE"></span><span id="_CPPv2N10BlockShape7LANTERNE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cab03361d0bb89b453bc661217b6eb284c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LANTERN</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape7LANTERNE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape7LANTERNE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape8CAMPFIREE">
+<span id="_CPPv3N10BlockShape8CAMPFIREE"></span><span id="_CPPv2N10BlockShape8CAMPFIREE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca50698572ef64a0df7e3b9b92eb6487b7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAMPFIRE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape8CAMPFIREE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape8CAMPFIREE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape7LECTERNE">
+<span id="_CPPv3N10BlockShape7LECTERNE"></span><span id="_CPPv2N10BlockShape7LECTERNE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca0064f38128b2c6d5450a2b9b4ad2460f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LECTERN</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape7LECTERNE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape7LECTERNE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape16SWEET_BERRY_BUSHE">
+<span id="_CPPv3N10BlockShape16SWEET_BERRY_BUSHE"></span><span id="_CPPv2N10BlockShape16SWEET_BERRY_BUSHE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca5316aa98b2c05cc332e8d0fe820fb11e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SWEET_BERRY_BUSH</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape16SWEET_BERRY_BUSHE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape16SWEET_BERRY_BUSHE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape17CARTOGRAPHY_TABLEE">
+<span id="_CPPv3N10BlockShape17CARTOGRAPHY_TABLEE"></span><span id="_CPPv2N10BlockShape17CARTOGRAPHY_TABLEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cad110c3a88a9c8caa14dd6005c76327b1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CARTOGRAPHY_TABLE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape17CARTOGRAPHY_TABLEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape17CARTOGRAPHY_TABLEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9COMPOSTERE">
+<span id="_CPPv3N10BlockShape9COMPOSTERE"></span><span id="_CPPv2N10BlockShape9COMPOSTERE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca3fa60fa1ea3ce22d68590656106ff0c1"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">COMPOSTER</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9COMPOSTERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9COMPOSTERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape12STONE_CUTTERE">
+<span id="_CPPv3N10BlockShape12STONE_CUTTERE"></span><span id="_CPPv2N10BlockShape12STONE_CUTTERE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca9d9200bf71d055b15e325a7a3bffbdea"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">STONE_CUTTER</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape12STONE_CUTTERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape12STONE_CUTTERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape11HONEY_BLOCKE">
+<span id="_CPPv3N10BlockShape11HONEY_BLOCKE"></span><span id="_CPPv2N10BlockShape11HONEY_BLOCKE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca630fda8f5a98ccdd88e41a9eea6a4df0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HONEY_BLOCK</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape11HONEY_BLOCKE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape11HONEY_BLOCKE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape12WEEPING_VINEE">
+<span id="_CPPv3N10BlockShape12WEEPING_VINEE"></span><span id="_CPPv2N10BlockShape12WEEPING_VINEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca57a96e6cee3978b5497646ec80da48a8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WEEPING_VINE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape12WEEPING_VINEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape12WEEPING_VINEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape13TWISTING_VINEE">
+<span id="_CPPv3N10BlockShape13TWISTING_VINEE"></span><span id="_CPPv2N10BlockShape13TWISTING_VINEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5caa9d47aebbd1772c8d7cb354eb8583391"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TWISTING_VINE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape13TWISTING_VINEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape13TWISTING_VINEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape5CHAINE">
+<span id="_CPPv3N10BlockShape5CHAINE"></span><span id="_CPPv2N10BlockShape5CHAINE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca014d2cf3cdc3af6f4f92c09190860e33"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CHAIN</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape5CHAINE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape5CHAINE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape16DRIED_KELP_BLOCKE">
+<span id="_CPPv3N10BlockShape16DRIED_KELP_BLOCKE"></span><span id="_CPPv2N10BlockShape16DRIED_KELP_BLOCKE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca791eb2ceea6177a65a26ea132dde1be4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DRIED_KELP_BLOCK</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape16DRIED_KELP_BLOCKE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape16DRIED_KELP_BLOCKE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape12SCULK_SENSORE">
+<span id="_CPPv3N10BlockShape12SCULK_SENSORE"></span><span id="_CPPv2N10BlockShape12SCULK_SENSORE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cafa48d0b6bc739ad337b711a77a96a7ca"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SCULK_SENSOR</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape12SCULK_SENSORE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape12SCULK_SENSORE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape17POINTED_DRIPSTONEE">
+<span id="_CPPv3N10BlockShape17POINTED_DRIPSTONEE"></span><span id="_CPPv2N10BlockShape17POINTED_DRIPSTONEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca33b71eead8b894911651ddc6697e3bcd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">POINTED_DRIPSTONE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape17POINTED_DRIPSTONEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape17POINTED_DRIPSTONEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape13LIGHTNING_RODE">
+<span id="_CPPv3N10BlockShape13LIGHTNING_RODE"></span><span id="_CPPv2N10BlockShape13LIGHTNING_RODE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cabaab2c871ed6ff0468f677d2dce81cb0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LIGHTNING_ROD</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape13LIGHTNING_RODE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape13LIGHTNING_RODE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape13SPORE_BLOSSOME">
+<span id="_CPPv3N10BlockShape13SPORE_BLOSSOME"></span><span id="_CPPv2N10BlockShape13SPORE_BLOSSOME"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca431e89d514af59a7ba454e71f2b7c2b3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SPORE_BLOSSOM</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape13SPORE_BLOSSOME" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape13SPORE_BLOSSOME'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape9CAVE_VINEE">
+<span id="_CPPv3N10BlockShape9CAVE_VINEE"></span><span id="_CPPv2N10BlockShape9CAVE_VINEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca61cb02bafecc0730c98f337544a5dc41"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAVE_VINE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape9CAVE_VINEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape9CAVE_VINEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape12BIG_DRIPLEAFE">
+<span id="_CPPv3N10BlockShape12BIG_DRIPLEAFE"></span><span id="_CPPv2N10BlockShape12BIG_DRIPLEAFE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca53b38e4601b25dc28ee970b5d6420e92"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BIG_DRIPLEAF</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape12BIG_DRIPLEAFE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape12BIG_DRIPLEAFE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape14SMALL_DRIPLEAFE">
+<span id="_CPPv3N10BlockShape14SMALL_DRIPLEAFE"></span><span id="_CPPv2N10BlockShape14SMALL_DRIPLEAFE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca9523a241803d97a5961abc82556cf4a6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SMALL_DRIPLEAF</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape14SMALL_DRIPLEAFE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape14SMALL_DRIPLEAFE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape6AZALEAE">
+<span id="_CPPv3N10BlockShape6AZALEAE"></span><span id="_CPPv2N10BlockShape6AZALEAE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca2fed631b9125c8ae2571c756eb613478"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AZALEA</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape6AZALEAE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape6AZALEAE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape15GLOW_ITEM_FRAMEE">
+<span id="_CPPv3N10BlockShape15GLOW_ITEM_FRAMEE"></span><span id="_CPPv2N10BlockShape15GLOW_ITEM_FRAMEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cab896868fdc02cd4a78953c46d8fcc0d0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GLOW_ITEM_FRAME</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape15GLOW_ITEM_FRAMEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape15GLOW_ITEM_FRAMEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape15MULTIFACE_BLOCKE">
+<span id="_CPPv3N10BlockShape15MULTIFACE_BLOCKE"></span><span id="_CPPv2N10BlockShape15MULTIFACE_BLOCKE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca5c02891a88c1d261aca5e047c8f1bf0f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MULTIFACE_BLOCK</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape15MULTIFACE_BLOCKE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape15MULTIFACE_BLOCKE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape16AMETHYST_CLUSTERE">
+<span id="_CPPv3N10BlockShape16AMETHYST_CLUSTERE"></span><span id="_CPPv2N10BlockShape16AMETHYST_CLUSTERE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca9659e5e4a5cd693827a98ddcbf725822"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">AMETHYST_CLUSTER</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape16AMETHYST_CLUSTERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape16AMETHYST_CLUSTERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape6CANDLEE">
+<span id="_CPPv3N10BlockShape6CANDLEE"></span><span id="_CPPv2N10BlockShape6CANDLEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca2602d9614de5e24c9025c9e82e34dc40"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CANDLE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape6CANDLEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape6CANDLEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape11CANDLE_CAKEE">
+<span id="_CPPv3N10BlockShape11CANDLE_CAKEE"></span><span id="_CPPv2N10BlockShape11CANDLE_CAKEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cadc24769fc0cbe2f215d533c7a767c252"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CANDLE_CAKE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape11CANDLE_CAKEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape11CANDLE_CAKEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape14SCULK_SHRIEKERE">
+<span id="_CPPv3N10BlockShape14SCULK_SHRIEKERE"></span><span id="_CPPv2N10BlockShape14SCULK_SHRIEKERE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca228c9e36a81b43856aec86ee2e28015a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SCULK_SHRIEKER</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape14SCULK_SHRIEKERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape14SCULK_SHRIEKERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape26CLIENT_REQUEST_PLACEHOLDERE">
+<span id="_CPPv3N10BlockShape26CLIENT_REQUEST_PLACEHOLDERE"></span><span id="_CPPv2N10BlockShape26CLIENT_REQUEST_PLACEHOLDERE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca031dff1c9c5d9b9cbae3419b5f9f5fb7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CLIENT_REQUEST_PLACEHOLDER</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape26CLIENT_REQUEST_PLACEHOLDERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape26CLIENT_REQUEST_PLACEHOLDERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape10FROG_SPAWNE">
+<span id="_CPPv3N10BlockShape10FROG_SPAWNE"></span><span id="_CPPv2N10BlockShape10FROG_SPAWNE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5cad98dfd8022bd49a6adc8d8aab8e7b936"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FROG_SPAWN</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape10FROG_SPAWNE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape10FROG_SPAWNE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape18MANGROVE_PROPAGULEE">
+<span id="_CPPv3N10BlockShape18MANGROVE_PROPAGULEE"></span><span id="_CPPv2N10BlockShape18MANGROVE_PROPAGULEE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca03f3130686647f18695eba921a059263"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MANGROVE_PROPAGULE</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape18MANGROVE_PROPAGULEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape18MANGROVE_PROPAGULEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape13MANGROVE_ROOTE">
+<span id="_CPPv3N10BlockShape13MANGROVE_ROOTE"></span><span id="_CPPv2N10BlockShape13MANGROVE_ROOTE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca1b47aa05c0f8d848f0562b482ce15669"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MANGROVE_ROOT</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape13MANGROVE_ROOTE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape13MANGROVE_ROOTE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10BlockShape5COUNTE">
+<span id="_CPPv3N10BlockShape5COUNTE"></span><span id="_CPPv2N10BlockShape5COUNTE"></span><span class="target" id="BlockShape_8hpp_1a5a2115e41f972cf12317221e33eb0f5ca4905ac9d6a22bdfc1ae096094ce6248d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">COUNT</span></span></span><a class="headerlink" href="#_CPPv4N10BlockShape5COUNTE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10BlockShape5COUNTE'">¶</a><br/></dt>
+<dd></dd></dl>
+</dd></dl>
+</div>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(var(100vh)-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#_CPPv410BlockShape'" class="reference internal" href="#_CPPv410BlockShape"><code class="docutils literal notranslate"><span class="pre">BlockShape</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9INVISIBLEE'" class="reference internal" href="#_CPPv4N10BlockShape9INVISIBLEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::INVISIBLE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape5BLOCKE'" class="reference internal" href="#_CPPv4N10BlockShape5BLOCKE"><code class="docutils literal notranslate"><span class="pre">BlockShape::BLOCK</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape13CROSS_TEXTUREE'" class="reference internal" href="#_CPPv4N10BlockShape13CROSS_TEXTUREE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CROSS_TEXTURE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape5TORCHE'" class="reference internal" href="#_CPPv4N10BlockShape5TORCHE"><code class="docutils literal notranslate"><span class="pre">BlockShape::TORCH</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape4FIREE'" class="reference internal" href="#_CPPv4N10BlockShape4FIREE"><code class="docutils literal notranslate"><span class="pre">BlockShape::FIRE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape5WATERE'" class="reference internal" href="#_CPPv4N10BlockShape5WATERE"><code class="docutils literal notranslate"><span class="pre">BlockShape::WATER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape8RED_DUSTE'" class="reference internal" href="#_CPPv4N10BlockShape8RED_DUSTE"><code class="docutils literal notranslate"><span class="pre">BlockShape::RED_DUST</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape4ROWSE'" class="reference internal" href="#_CPPv4N10BlockShape4ROWSE"><code class="docutils literal notranslate"><span class="pre">BlockShape::ROWS</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape4DOORE'" class="reference internal" href="#_CPPv4N10BlockShape4DOORE"><code class="docutils literal notranslate"><span class="pre">BlockShape::DOOR</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape6LADDERE'" class="reference internal" href="#_CPPv4N10BlockShape6LADDERE"><code class="docutils literal notranslate"><span class="pre">BlockShape::LADDER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape4RAILE'" class="reference internal" href="#_CPPv4N10BlockShape4RAILE"><code class="docutils literal notranslate"><span class="pre">BlockShape::RAIL</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape6STAIRSE'" class="reference internal" href="#_CPPv4N10BlockShape6STAIRSE"><code class="docutils literal notranslate"><span class="pre">BlockShape::STAIRS</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape5FENCEE'" class="reference internal" href="#_CPPv4N10BlockShape5FENCEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::FENCE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape5LEVERE'" class="reference internal" href="#_CPPv4N10BlockShape5LEVERE"><code class="docutils literal notranslate"><span class="pre">BlockShape::LEVER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape6CACTUSE'" class="reference internal" href="#_CPPv4N10BlockShape6CACTUSE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CACTUS</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape3BEDE'" class="reference internal" href="#_CPPv4N10BlockShape3BEDE"><code class="docutils literal notranslate"><span class="pre">BlockShape::BED</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape5DIODEE'" class="reference internal" href="#_CPPv4N10BlockShape5DIODEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::DIODE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_16E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_16E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_16</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_17E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_17E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_17</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10IRON_FENCEE'" class="reference internal" href="#_CPPv4N10BlockShape10IRON_FENCEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::IRON_FENCE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape4STEME'" class="reference internal" href="#_CPPv4N10BlockShape4STEME"><code class="docutils literal notranslate"><span class="pre">BlockShape::STEM</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape4VINEE'" class="reference internal" href="#_CPPv4N10BlockShape4VINEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::VINE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10FENCE_GATEE'" class="reference internal" href="#_CPPv4N10BlockShape10FENCE_GATEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::FENCE_GATE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape5CHESTE'" class="reference internal" href="#_CPPv4N10BlockShape5CHESTE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CHEST</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape7LILYPADE'" class="reference internal" href="#_CPPv4N10BlockShape7LILYPADE"><code class="docutils literal notranslate"><span class="pre">BlockShape::LILYPAD</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_24E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_24E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_24</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape13BREWING_STANDE'" class="reference internal" href="#_CPPv4N10BlockShape13BREWING_STANDE"><code class="docutils literal notranslate"><span class="pre">BlockShape::BREWING_STAND</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape12PORTAL_FRAMEE'" class="reference internal" href="#_CPPv4N10BlockShape12PORTAL_FRAMEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::PORTAL_FRAME</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_27E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_27E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_27</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape5COCOAE'" class="reference internal" href="#_CPPv4N10BlockShape5COCOAE"><code class="docutils literal notranslate"><span class="pre">BlockShape::COCOA</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_29E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_29E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_29</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_30E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_30E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_30</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape4TREEE'" class="reference internal" href="#_CPPv4N10BlockShape4TREEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::TREE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape4WALLE'" class="reference internal" href="#_CPPv4N10BlockShape4WALLE"><code class="docutils literal notranslate"><span class="pre">BlockShape::WALL</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_33E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_33E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_33</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_34E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_34E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_34</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_35E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_35E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_35</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_36E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_36E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_36</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_37E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_37E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_37</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_38E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_38E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_38</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_39E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_39E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_39</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape12DOUBLE_PLANTE'" class="reference internal" href="#_CPPv4N10BlockShape12DOUBLE_PLANTE"><code class="docutils literal notranslate"><span class="pre">BlockShape::DOUBLE_PLANT</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_41E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_41E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_41</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10FLOWER_POTE'" class="reference internal" href="#_CPPv4N10BlockShape10FLOWER_POTE"><code class="docutils literal notranslate"><span class="pre">BlockShape::FLOWER_POT</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape5ANVILE'" class="reference internal" href="#_CPPv4N10BlockShape5ANVILE"><code class="docutils literal notranslate"><span class="pre">BlockShape::ANVIL</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10DRAGON_EGGE'" class="reference internal" href="#_CPPv4N10BlockShape10DRAGON_EGGE"><code class="docutils literal notranslate"><span class="pre">BlockShape::DRAGON_EGG</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_45E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_45E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_45</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_46E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_46E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_46</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_47E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_47E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_47</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape14STRUCTURE_VOIDE'" class="reference internal" href="#_CPPv4N10BlockShape14STRUCTURE_VOIDE"><code class="docutils literal notranslate"><span class="pre">BlockShape::STRUCTURE_VOID</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_49E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_49E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_49</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_50E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_50E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_50</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_51E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_51E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_51</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_52E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_52E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_52</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_53E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_53E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_53</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_54E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_54E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_54</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_55E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_55E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_55</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_56E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_56E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_56</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_57E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_57E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_57</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_58E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_58E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_58</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_59E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_59E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_59</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_60E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_60E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_60</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_61E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_61E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_61</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_62E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_62E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_62</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_63E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_63E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_63</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_64E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_64E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_64</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_65E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_65E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_65</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_66E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_66E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_66</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10BLOCK_HALFE'" class="reference internal" href="#_CPPv4N10BlockShape10BLOCK_HALFE"><code class="docutils literal notranslate"><span class="pre">BlockShape::BLOCK_HALF</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape8TOP_SNOWE'" class="reference internal" href="#_CPPv4N10BlockShape8TOP_SNOWE"><code class="docutils literal notranslate"><span class="pre">BlockShape::TOP_SNOW</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape8TRIPWIREE'" class="reference internal" href="#_CPPv4N10BlockShape8TRIPWIREE"><code class="docutils literal notranslate"><span class="pre">BlockShape::TRIPWIRE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape13TRIPWIRE_HOOKE'" class="reference internal" href="#_CPPv4N10BlockShape13TRIPWIRE_HOOKE"><code class="docutils literal notranslate"><span class="pre">BlockShape::TRIPWIRE_HOOK</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape8CAULDRONE'" class="reference internal" href="#_CPPv4N10BlockShape8CAULDRONE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CAULDRON</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape8REPEATERE'" class="reference internal" href="#_CPPv4N10BlockShape8REPEATERE"><code class="docutils literal notranslate"><span class="pre">BlockShape::REPEATER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10COMPARATORE'" class="reference internal" href="#_CPPv4N10BlockShape10COMPARATORE"><code class="docutils literal notranslate"><span class="pre">BlockShape::COMPARATOR</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape6HOPPERE'" class="reference internal" href="#_CPPv4N10BlockShape6HOPPERE"><code class="docutils literal notranslate"><span class="pre">BlockShape::HOPPER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape11SLIME_BLOCKE'" class="reference internal" href="#_CPPv4N10BlockShape11SLIME_BLOCKE"><code class="docutils literal notranslate"><span class="pre">BlockShape::SLIME_BLOCK</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape6PISTONE'" class="reference internal" href="#_CPPv4N10BlockShape6PISTONE"><code class="docutils literal notranslate"><span class="pre">BlockShape::PISTON</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape6BEACONE'" class="reference internal" href="#_CPPv4N10BlockShape6BEACONE"><code class="docutils literal notranslate"><span class="pre">BlockShape::BEACON</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape12CHORUS_PLANTE'" class="reference internal" href="#_CPPv4N10BlockShape12CHORUS_PLANTE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CHORUS_PLANT</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape13CHORUS_FLOWERE'" class="reference internal" href="#_CPPv4N10BlockShape13CHORUS_FLOWERE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CHORUS_FLOWER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10END_PORTALE'" class="reference internal" href="#_CPPv4N10BlockShape10END_PORTALE"><code class="docutils literal notranslate"><span class="pre">BlockShape::END_PORTAL</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape7END_RODE'" class="reference internal" href="#_CPPv4N10BlockShape7END_RODE"><code class="docutils literal notranslate"><span class="pre">BlockShape::END_ROD</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape11END_GATEWAYE'" class="reference internal" href="#_CPPv4N10BlockShape11END_GATEWAYE"><code class="docutils literal notranslate"><span class="pre">BlockShape::END_GATEWAY</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape5SKULLE'" class="reference internal" href="#_CPPv4N10BlockShape5SKULLE"><code class="docutils literal notranslate"><span class="pre">BlockShape::SKULL</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape12FACING_BLOCKE'" class="reference internal" href="#_CPPv4N10BlockShape12FACING_BLOCKE"><code class="docutils literal notranslate"><span class="pre">BlockShape::FACING_BLOCK</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape13COMMAND_BLOCKE'" class="reference internal" href="#_CPPv4N10BlockShape13COMMAND_BLOCKE"><code class="docutils literal notranslate"><span class="pre">BlockShape::COMMAND_BLOCK</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10TERRACOTTAE'" class="reference internal" href="#_CPPv4N10BlockShape10TERRACOTTAE"><code class="docutils literal notranslate"><span class="pre">BlockShape::TERRACOTTA</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape17DOUBLE_SIDE_FENCEE'" class="reference internal" href="#_CPPv4N10BlockShape17DOUBLE_SIDE_FENCEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::DOUBLE_SIDE_FENCE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10ITEM_FRAMEE'" class="reference internal" href="#_CPPv4N10BlockShape10ITEM_FRAMEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::ITEM_FRAME</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape11SHULKER_BOXE'" class="reference internal" href="#_CPPv4N10BlockShape11SHULKER_BOXE"><code class="docutils literal notranslate"><span class="pre">BlockShape::SHULKER_BOX</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape25DOUBLESIDED_CROSS_TEXTUREE'" class="reference internal" href="#_CPPv4N10BlockShape25DOUBLESIDED_CROSS_TEXTUREE"><code class="docutils literal notranslate"><span class="pre">BlockShape::DOUBLESIDED_CROSS_TEXTURE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape24DOUBLESIDED_DOUBLE_PLANTE'" class="reference internal" href="#_CPPv4N10BlockShape24DOUBLESIDED_DOUBLE_PLANTE"><code class="docutils literal notranslate"><span class="pre">BlockShape::DOUBLESIDED_DOUBLE_PLANT</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape16DOUBLESIDED_ROWSE'" class="reference internal" href="#_CPPv4N10BlockShape16DOUBLESIDED_ROWSE"><code class="docutils literal notranslate"><span class="pre">BlockShape::DOUBLESIDED_ROWS</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape13ELEMENT_BLOCKE'" class="reference internal" href="#_CPPv4N10BlockShape13ELEMENT_BLOCKE"><code class="docutils literal notranslate"><span class="pre">BlockShape::ELEMENT_BLOCK</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape15CHEMISTRY_TABLEE'" class="reference internal" href="#_CPPv4N10BlockShape15CHEMISTRY_TABLEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CHEMISTRY_TABLE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9UNUSED_95E'" class="reference internal" href="#_CPPv4N10BlockShape9UNUSED_95E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_95</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9CORAL_FANE'" class="reference internal" href="#_CPPv4N10BlockShape9CORAL_FANE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CORAL_FAN</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape8SEAGRASSE'" class="reference internal" href="#_CPPv4N10BlockShape8SEAGRASSE"><code class="docutils literal notranslate"><span class="pre">BlockShape::SEAGRASS</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape4KELPE'" class="reference internal" href="#_CPPv4N10BlockShape4KELPE"><code class="docutils literal notranslate"><span class="pre">BlockShape::KELP</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape8TRAPDOORE'" class="reference internal" href="#_CPPv4N10BlockShape8TRAPDOORE"><code class="docutils literal notranslate"><span class="pre">BlockShape::TRAPDOOR</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10SEA_PICKLEE'" class="reference internal" href="#_CPPv4N10BlockShape10SEA_PICKLEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::SEA_PICKLE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape7CONDUITE'" class="reference internal" href="#_CPPv4N10BlockShape7CONDUITE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CONDUIT</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10TURTLE_EGGE'" class="reference internal" href="#_CPPv4N10BlockShape10TURTLE_EGGE"><code class="docutils literal notranslate"><span class="pre">BlockShape::TURTLE_EGG</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10UNUSED_103E'" class="reference internal" href="#_CPPv4N10BlockShape10UNUSED_103E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_103</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10UNUSED_104E'" class="reference internal" href="#_CPPv4N10BlockShape10UNUSED_104E"><code class="docutils literal notranslate"><span class="pre">BlockShape::UNUSED_104</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape13BUBBLE_COLUMNE'" class="reference internal" href="#_CPPv4N10BlockShape13BUBBLE_COLUMNE"><code class="docutils literal notranslate"><span class="pre">BlockShape::BUBBLE_COLUMN</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape20CAMERA_FACING_SPRITEE'" class="reference internal" href="#_CPPv4N10BlockShape20CAMERA_FACING_SPRITEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CAMERA_FACING_SPRITE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape4SIGNE'" class="reference internal" href="#_CPPv4N10BlockShape4SIGNE"><code class="docutils literal notranslate"><span class="pre">BlockShape::SIGN</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape6BAMBOOE'" class="reference internal" href="#_CPPv4N10BlockShape6BAMBOOE"><code class="docutils literal notranslate"><span class="pre">BlockShape::BAMBOO</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape14BAMBOO_SAPLINGE'" class="reference internal" href="#_CPPv4N10BlockShape14BAMBOO_SAPLINGE"><code class="docutils literal notranslate"><span class="pre">BlockShape::BAMBOO_SAPLING</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape11SCAFFOLDINGE'" class="reference internal" href="#_CPPv4N10BlockShape11SCAFFOLDINGE"><code class="docutils literal notranslate"><span class="pre">BlockShape::SCAFFOLDING</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10GRINDSTONEE'" class="reference internal" href="#_CPPv4N10BlockShape10GRINDSTONEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::GRINDSTONE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape4BELLE'" class="reference internal" href="#_CPPv4N10BlockShape4BELLE"><code class="docutils literal notranslate"><span class="pre">BlockShape::BELL</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape7LANTERNE'" class="reference internal" href="#_CPPv4N10BlockShape7LANTERNE"><code class="docutils literal notranslate"><span class="pre">BlockShape::LANTERN</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape8CAMPFIREE'" class="reference internal" href="#_CPPv4N10BlockShape8CAMPFIREE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CAMPFIRE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape7LECTERNE'" class="reference internal" href="#_CPPv4N10BlockShape7LECTERNE"><code class="docutils literal notranslate"><span class="pre">BlockShape::LECTERN</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape16SWEET_BERRY_BUSHE'" class="reference internal" href="#_CPPv4N10BlockShape16SWEET_BERRY_BUSHE"><code class="docutils literal notranslate"><span class="pre">BlockShape::SWEET_BERRY_BUSH</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape17CARTOGRAPHY_TABLEE'" class="reference internal" href="#_CPPv4N10BlockShape17CARTOGRAPHY_TABLEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CARTOGRAPHY_TABLE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9COMPOSTERE'" class="reference internal" href="#_CPPv4N10BlockShape9COMPOSTERE"><code class="docutils literal notranslate"><span class="pre">BlockShape::COMPOSTER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape12STONE_CUTTERE'" class="reference internal" href="#_CPPv4N10BlockShape12STONE_CUTTERE"><code class="docutils literal notranslate"><span class="pre">BlockShape::STONE_CUTTER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape11HONEY_BLOCKE'" class="reference internal" href="#_CPPv4N10BlockShape11HONEY_BLOCKE"><code class="docutils literal notranslate"><span class="pre">BlockShape::HONEY_BLOCK</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape12WEEPING_VINEE'" class="reference internal" href="#_CPPv4N10BlockShape12WEEPING_VINEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::WEEPING_VINE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape13TWISTING_VINEE'" class="reference internal" href="#_CPPv4N10BlockShape13TWISTING_VINEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::TWISTING_VINE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape5CHAINE'" class="reference internal" href="#_CPPv4N10BlockShape5CHAINE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CHAIN</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape16DRIED_KELP_BLOCKE'" class="reference internal" href="#_CPPv4N10BlockShape16DRIED_KELP_BLOCKE"><code class="docutils literal notranslate"><span class="pre">BlockShape::DRIED_KELP_BLOCK</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape12SCULK_SENSORE'" class="reference internal" href="#_CPPv4N10BlockShape12SCULK_SENSORE"><code class="docutils literal notranslate"><span class="pre">BlockShape::SCULK_SENSOR</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape17POINTED_DRIPSTONEE'" class="reference internal" href="#_CPPv4N10BlockShape17POINTED_DRIPSTONEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::POINTED_DRIPSTONE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape13LIGHTNING_RODE'" class="reference internal" href="#_CPPv4N10BlockShape13LIGHTNING_RODE"><code class="docutils literal notranslate"><span class="pre">BlockShape::LIGHTNING_ROD</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape13SPORE_BLOSSOME'" class="reference internal" href="#_CPPv4N10BlockShape13SPORE_BLOSSOME"><code class="docutils literal notranslate"><span class="pre">BlockShape::SPORE_BLOSSOM</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape9CAVE_VINEE'" class="reference internal" href="#_CPPv4N10BlockShape9CAVE_VINEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CAVE_VINE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape12BIG_DRIPLEAFE'" class="reference internal" href="#_CPPv4N10BlockShape12BIG_DRIPLEAFE"><code class="docutils literal notranslate"><span class="pre">BlockShape::BIG_DRIPLEAF</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape14SMALL_DRIPLEAFE'" class="reference internal" href="#_CPPv4N10BlockShape14SMALL_DRIPLEAFE"><code class="docutils literal notranslate"><span class="pre">BlockShape::SMALL_DRIPLEAF</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape6AZALEAE'" class="reference internal" href="#_CPPv4N10BlockShape6AZALEAE"><code class="docutils literal notranslate"><span class="pre">BlockShape::AZALEA</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape15GLOW_ITEM_FRAMEE'" class="reference internal" href="#_CPPv4N10BlockShape15GLOW_ITEM_FRAMEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::GLOW_ITEM_FRAME</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape15MULTIFACE_BLOCKE'" class="reference internal" href="#_CPPv4N10BlockShape15MULTIFACE_BLOCKE"><code class="docutils literal notranslate"><span class="pre">BlockShape::MULTIFACE_BLOCK</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape16AMETHYST_CLUSTERE'" class="reference internal" href="#_CPPv4N10BlockShape16AMETHYST_CLUSTERE"><code class="docutils literal notranslate"><span class="pre">BlockShape::AMETHYST_CLUSTER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape6CANDLEE'" class="reference internal" href="#_CPPv4N10BlockShape6CANDLEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CANDLE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape11CANDLE_CAKEE'" class="reference internal" href="#_CPPv4N10BlockShape11CANDLE_CAKEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CANDLE_CAKE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape14SCULK_SHRIEKERE'" class="reference internal" href="#_CPPv4N10BlockShape14SCULK_SHRIEKERE"><code class="docutils literal notranslate"><span class="pre">BlockShape::SCULK_SHRIEKER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape26CLIENT_REQUEST_PLACEHOLDERE'" class="reference internal" href="#_CPPv4N10BlockShape26CLIENT_REQUEST_PLACEHOLDERE"><code class="docutils literal notranslate"><span class="pre">BlockShape::CLIENT_REQUEST_PLACEHOLDER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape10FROG_SPAWNE'" class="reference internal" href="#_CPPv4N10BlockShape10FROG_SPAWNE"><code class="docutils literal notranslate"><span class="pre">BlockShape::FROG_SPAWN</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape18MANGROVE_PROPAGULEE'" class="reference internal" href="#_CPPv4N10BlockShape18MANGROVE_PROPAGULEE"><code class="docutils literal notranslate"><span class="pre">BlockShape::MANGROVE_PROPAGULE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape13MANGROVE_ROOTE'" class="reference internal" href="#_CPPv4N10BlockShape13MANGROVE_ROOTE"><code class="docutils literal notranslate"><span class="pre">BlockShape::MANGROVE_ROOT</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10BlockShape5COUNTE'" class="reference internal" href="#_CPPv4N10BlockShape5COUNTE"><code class="docutils literal notranslate"><span class="pre">BlockShape::COUNT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 7.2.6</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+<script src="../../_static/doctools.js?v=888ff710"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=40b7bc71"></script>
+<script src="../../_static/design-tabs.js?v=36754332"></script>
+</body>
+</html>

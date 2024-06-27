@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+<html :class="{'dark': darkMode === 'dark' || (darkMode === 'system' &amp;&amp; window.matchMedia('(prefers-color-scheme: dark)').matches)}" class="scroll-smooth" data-content_root="../../" lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') || localStorage.setItem('darkMode', 'system'), activeSection: '' }" x-init="$watch('darkMode', val =&gt; localStorage.setItem('darkMode', val))">
+<head>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="white" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="black" metia="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>File MinecraftUIRenderContext.hpp | Amethyst  documentation</title>
+<meta content="File MinecraftUIRenderContext.hpp | Amethyst  documentation" property="og:title"/>
+<meta content="File MinecraftUIRenderContext.hpp | Amethyst  documentation" name="twitter:title"/>
+<link href="../../_static/pygments.css?v=5432af51" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=5b4133db" rel="stylesheet" type="text/css"/>
+<link href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-sphinx-design.css?v=a54cf077" rel="stylesheet" type="text/css"/>
+<link href="../../_static/logo-512x.png" rel="icon"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="MinecraftVtables_8hpp.html" rel="next" title="File MinecraftVtables.hpp"/>
+<link href="MinecraftPackageInfo_8hpp.html" rel="prev" title="File MinecraftPackageInfo.hpp"/>
+<script>
+    <!-- Prevent Flash of wrong theme -->
+      const userPreference = localStorage.getItem('darkMode');
+      let mode;
+      if (userPreference === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        mode = 'dark';
+        document.documentElement.classList.add('dark');
+      } else {
+        mode = 'light';
+      }
+      if (!userPreference) {localStorage.setItem('darkMode', mode)}
+    </script>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-sm border-border supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a><nav class="flex items-center space-x-6 text-sm font-medium">
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../autodocs.html">AmethystAPI</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../examples/index.html">Examples</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../getting_started/index.html">Getting Started</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../reverse_engineering/index.html">Reverse Engineering</a>
+</nav></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center space-x-1">
+<button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full shrink-0 overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="!justify-start text-sm md:!hidden bg-background" href="../../index.html"><span class="font-bold text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0 h-[calc(100vh-8rem)] md:h-auto">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../autodocs.html">AmethystAPI<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../filelist.html">File list<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="AABB_8hpp.html">File AABB.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorBlock_8hpp.html">File ActorBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorHeadRotationComponent_8hpp.html">File ActorHeadRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorRotationComponent_8hpp.html">File ActorRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorShaderManager_8hpp.html">File ActorShaderManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorTerrainInterlockData_8hpp.html">File ActorTerrainInterlockData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actor_8hpp.html">File Actor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AmethystContext_8hpp.html">File AmethystContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AuxDataBlockItem_8hpp.html">File AuxDataBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderContext_8hpp.html">File BaseActorRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderer_8hpp.html">File BaseActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseGameVersion_8hpp.html">File BaseGameVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseOptions_8hpp.html">File BaseOptions.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BinaryStream_8hpp.html">File BinaryStream.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorDataPacket_8hpp.html">File BlockActorDataPacket.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html">File BlockActorRendererDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererId_8hpp.html">File BlockActorRendererId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRenderer_8hpp.html">File BlockActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActor_8hpp.html">File BlockActor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentBase_8hpp.html">File BlockComponentBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentStorage_8hpp.html">File BlockComponentStorage.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockDefinitionGroup_8hpp.html">File BlockDefinitionGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockGraphics_8hpp.html">File BlockGraphics.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockItem_8hpp.html">File BlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockLegacy_8hpp.html">File BlockLegacy.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockMapColorComponent_8hpp.html">File BlockMapColorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockPos_8hpp.html">File BlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockRenderLayer_8hpp.html">File BlockRenderLayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockShape_8hpp.html">File BlockShape.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSourceListener_8hpp.html">File BlockSourceListener.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSource_8hpp.html">File BlockSource.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockState_8hpp.html">File BlockState.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTessellator_8hpp.html">File BlockTessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTypeRegistry_8hpp.html">File BlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Block_8hpp.html">File Block.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteArrayTag_8hpp.html">File ByteArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteTag_8hpp.html">File ByteTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CallStack_8hpp.html">File CallStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Camera_8hpp.html">File Camera.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChestBlock_8hpp.html">File ChestBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkBlockPos_8hpp.html">File ChunkBlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkPos_8hpp.html">File ChunkPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputHandler_8hpp.html">File ClientInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputMappingFactory_8hpp.html">File ClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInstance_8hpp.html">File ClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientNetworkHandler_8hpp.html">File ClientNetworkHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Color_8hpp.html">File Color.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CommonTypes_8hpp.html">File CommonTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTagVariant_8hpp.html">File CompoundTagVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTag_8hpp.html">File CompoundTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Config_8hpp.html">File Config.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Container_8hpp.html">File Container.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLogTypes_8hpp.html">File ContentLogTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLog_8hpp.html">File ContentLog.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Dimension_8hpp.html">File Dimension.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Direction_8hpp.html">File Direction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DoubleTag_8hpp.html">File DoubleTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EndTag_8hpp.html">File EndTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityContext_8hpp.html">File EntityContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityIdTraits_8hpp.html">File EntityIdTraits.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityId_8hpp.html">File EntityId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ErrorInfo_8hpp.html">File ErrorInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EventManager_8hpp.html">File EventManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Event_8hpp.html">File Event.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FertilizerType_8hpp.html">File FertilizerType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FillingContainer_8hpp.html">File FillingContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FloatTag_8hpp.html">File FloatTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameEvent_8hpp.html">File GameEvent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameModuleClient_8hpp.html">File GameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRefsSharePtr_8hpp.html">File GameRefsSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRules_8hpp.html">File GameRules.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GetCollisionShapeInterface_8hpp.html">File GetCollisionShapeInterface.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GuiData_8hpp.html">File GuiData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HeightRange_8hpp.html">File HeightRange.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HitResult_8hpp.html">File HitResult.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HookManager_8hpp.html">File HookManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverRenderer_8hpp.html">File HoverRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverTextRenderer_8hpp.html">File HoverTextRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IClientInstance_8hpp.html">File IClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ILevel_8hpp.html">File ILevel.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IPacketHandlerDispatcher_8hpp.html">File IPacketHandlerDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IWorldRegistriesProvider_8hpp.html">File IWorldRegistriesProvider.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ImageInfo_8hpp.html">File ImageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InPackagePacks_8hpp.html">File InPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputAction_8hpp.html">File InputAction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputHandler_8hpp.html">File InputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputManager_8hpp.html">File InputManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMappingFactory_8hpp.html">File InputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMapping_8hpp.html">File InputMapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Int64Tag_8hpp.html">File Int64Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntArrayTag_8hpp.html">File IntArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntTag_8hpp.html">File IntTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Inventory_8hpp.html">File Inventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IsotropicFaceData_8hpp.html">File IsotropicFaceData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemCategory_8hpp.html">File ItemCategory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemGroup_8hpp.html">File ItemGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemIconManager_8hpp.html">File ItemIconManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemInstance_8hpp.html">File ItemInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryManager_8hpp.html">File ItemRegistryManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryRef_8hpp.html">File ItemRegistryRef.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistry_8hpp.html">File ItemRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRenderer_8hpp.html">File ItemRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackBase_8hpp.html">File ItemStackBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackNetIdVariant_8hpp.html">File ItemStackNetIdVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStack_8hpp.html">File ItemStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Item_8hpp.html">File Item.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Keymapping_8hpp.html">File Keymapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelChunk_8hpp.html">File LevelChunk.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRendererPlayer_8hpp.html">File LevelRendererPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRenderer_8hpp.html">File LevelRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Level_8hpp.html">File Level.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ListTag_8hpp.html">File ListTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LocalPlayer_8hpp.html">File LocalPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Log_8hpp.html">File Log.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LoopbackPacketSender_8hpp.html">File LoopbackPacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialPtr_8hpp.html">File MaterialPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialType_8hpp.html">File MaterialType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Material_8hpp.html">File Material.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Math_8hpp.html">File Math.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MatrixStack_8hpp.html">File MatrixStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Matrix_8hpp.html">File Matrix.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Memory_8hpp.html">File Memory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshContext_8hpp.html">File MeshContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshData_8hpp.html">File MeshData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshHelpers_8hpp.html">File MeshHelpers.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mesh_8hpp.html">File Mesh.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftGame_8hpp.html">File MinecraftGame.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftInputHandler_8hpp.html">File MinecraftInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftPackageInfo_8hpp.html">File MinecraftPackageInfo.hpp</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">File MinecraftUIRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftVtables_8hpp.html">File MinecraftVtables.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Minecraft_8hpp.html">File Minecraft.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mob_8hpp.html">File Mob.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mod_8hpp.html">File Mod.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetEventCallback_8hpp.html">File NetEventCallback.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkBlockPosition_8hpp.html">File NetworkBlockPosition.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkPeer_8hpp.html">File NetworkPeer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NewType_8hpp.html">File NewType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceHelper_8hpp.html">File NinesliceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceInfo_8hpp.html">File NinesliceInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NonOwnerPointer_8hpp.html">File NonOwnerPointer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Options_8hpp.html">File Options.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerPtr_8hpp.html">File OwnerPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerStorageSharePtr_8hpp.html">File OwnerStorageSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketHandlerDispatcherInstance_8hpp.html">File PacketHandlerDispatcherInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketPriority_8hpp.html">File PacketPriority.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketSender_8hpp.html">File PacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_8hpp.html">File Packet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PatchManager_8hpp.html">File PatchManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Path_8hpp.html">File Path.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerInventory_8hpp.html">File PlayerInventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerUIContainer_8hpp.html">File PlayerUIContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Player_8hpp.html">File Player.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RandomizableBlockActorContainerBase_8hpp.html">File RandomizableBlockActorContainerBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RemappingLayout_8hpp.html">File RemappingLayout.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderContext_8hpp.html">File RenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroupBase_8hpp.html">File RenderMaterialGroupBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroup_8hpp.html">File RenderMaterialGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResolvedItemIconInfo_8hpp.html">File ResolvedItemIconInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceHelper_8hpp.html">File ResourceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceUtil_8hpp.html">File ResourceUtil.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Result_8hpp.html">File Result.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenContext_8hpp.html">File ScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenView_8hpp.html">File ScreenView.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SemVersion_8hpp.html">File SemVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShapeType_8hpp.html">File ShapeType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SharedPtr_8hpp.html">File SharedPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShortTag_8hpp.html">File ShortTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShulkerBoxBlockItem_8hpp.html">File ShulkerBoxBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SimpleContainer_8hpp.html">File SimpleContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SliderComponent_8hpp.html">File SliderComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StateVectorComponent_8hpp.html">File StateVectorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringHash_8hpp.html">File StringHash.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringTag_8hpp.html">File StringTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringUtils_8hpp.html">File StringUtils.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tag_8hpp.html">File Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tessellator_8hpp.html">File Tessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextComponent_8hpp.html">File TextComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureAtlasItem_8hpp.html">File TextureAtlasItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TexturePtr_8hpp.html">File TexturePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureUVCoordinateSet_8hpp.html">File TextureUVCoordinateSet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tick_8hpp.html">File Tick.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ToggleComponent_8hpp.html">File ToggleComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIComponent_8hpp.html">File UIComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIControl_8hpp.html">File UIControl.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIScreenContext_8hpp.html">File UIScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UUID_8hpp.html">File UUID.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UseAnim_8hpp.html">File UseAnim.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Utility_8hpp.html">File Utility.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaBlockTypeRegistry_8hpp.html">File VanillaBlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaClientInputMappingFactory_8hpp.html">File VanillaClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaGameModuleClient_8hpp.html">File VanillaGameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaInPackagePacks_8hpp.html">File VanillaInPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaItems_8hpp.html">File VanillaItems.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec2_8hpp.html">File Vec2.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec3_8hpp.html">File Vec3.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VisualTree_8hpp.html">File VisualTree.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expected_8hpp.html">File expected.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsl__includes_8hpp.html">File gsl_includes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optional__ref_8hpp.html">File optional_ref.hpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/index.html">Examples<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/networking/index.html">Networking<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../../examples/networking/udp.html">UDP Networking Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../getting_started/index.html">Getting Started<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/end_user/installing_amethyst.html">Installing Amethyst</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/devs/compiling_amethyst.html">Compiling Amethyst</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reverse_engineering/index.html">Reverse Engineering</a></li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../how_to_doc/index.html">How to doc<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/setup.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/doxygen.html">Doxygen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/sphinx.html">Sphinx</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../../index.html">
+<span class="hidden md:inline">Amethyst  documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../../autodocs.html">AmethystAPI</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../filelist.html">File list</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">File MinecraftUIRenderContext.hpp</span>
+</nav>
+<div id="content" role="main">
+<section id="file-minecraftuirendercontext-hpp">
+<h1>File MinecraftUIRenderContext.hpp<a class="headerlink" href="#file-minecraftuirendercontext-hpp" title="Link to this heading">¶</a></h1>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv415IClientInstance">
+<span id="_CPPv315IClientInstance"></span><span id="_CPPv215IClientInstance"></span><span class="target" id="MinecraftUIRenderContext_8hpp_1aa01bf27262bc77d32094297d9326aca8"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">IClientInstance</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="ClientInstance_8hpp.html#_CPPv414ClientInstance" title="ClientInstance"><span class="n"><span class="pre">ClientInstance</span></span></a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv413TextAlignment">
+<span id="_CPPv313TextAlignment"></span><span id="_CPPv213TextAlignment"></span><span class="target" id="MinecraftUIRenderContext_8hpp_1a572d2984c5b8c200f813a58f9b28cbe5"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TextAlignment</span></span></span><a class="headerlink" href="#_CPPv413TextAlignment" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv413TextAlignment'">¶</a><br/></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13TextAlignment4LeftE">
+<span id="_CPPv3N13TextAlignment4LeftE"></span><span id="_CPPv2N13TextAlignment4LeftE"></span><span class="target" id="MinecraftUIRenderContext_8hpp_1a572d2984c5b8c200f813a58f9b28cbe5a42d596084f4ca8b5647ed9c2e2a62035"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Left</span></span></span><a class="headerlink" href="#_CPPv4N13TextAlignment4LeftE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13TextAlignment4LeftE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13TextAlignment5RightE">
+<span id="_CPPv3N13TextAlignment5RightE"></span><span id="_CPPv2N13TextAlignment5RightE"></span><span class="target" id="MinecraftUIRenderContext_8hpp_1a572d2984c5b8c200f813a58f9b28cbe5aff5148a5ea03347eb619d62745f2d31c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Right</span></span></span><a class="headerlink" href="#_CPPv4N13TextAlignment5RightE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13TextAlignment5RightE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13TextAlignment6CenterE">
+<span id="_CPPv3N13TextAlignment6CenterE"></span><span id="_CPPv2N13TextAlignment6CenterE"></span><span class="target" id="MinecraftUIRenderContext_8hpp_1a572d2984c5b8c200f813a58f9b28cbe5aa5ad8983489fdf993faffc52e6c753a9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Center</span></span></span><a class="headerlink" href="#_CPPv4N13TextAlignment6CenterE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13TextAlignment6CenterE'">¶</a><br/></dt>
+<dd></dd></dl>
+</dd></dl>
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv413RectangleArea">
+<span id="_CPPv313RectangleArea"></span><span id="_CPPv213RectangleArea"></span><span id="RectangleArea"></span><span class="target" id="structRectangleArea"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">RectangleArea</span></span></span><a class="headerlink" href="#_CPPv413RectangleArea" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv413RectangleArea'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13RectangleArea3_x0E">
+<span id="_CPPv3N13RectangleArea3_x0E"></span><span id="_CPPv2N13RectangleArea3_x0E"></span><span id="RectangleArea::_x0__float"></span><span class="target" id="structRectangleArea_1ad05fd88b01ba7c5193017a5b2cebb2bf"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_x0</span></span></span><a class="headerlink" href="#_CPPv4N13RectangleArea3_x0E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13RectangleArea3_x0E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13RectangleArea3_x1E">
+<span id="_CPPv3N13RectangleArea3_x1E"></span><span id="_CPPv2N13RectangleArea3_x1E"></span><span id="RectangleArea::_x1__float"></span><span class="target" id="structRectangleArea_1aa4bf54a2ba750f209cb27df150846c7c"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_x1</span></span></span><a class="headerlink" href="#_CPPv4N13RectangleArea3_x1E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13RectangleArea3_x1E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13RectangleArea3_y0E">
+<span id="_CPPv3N13RectangleArea3_y0E"></span><span id="_CPPv2N13RectangleArea3_y0E"></span><span id="RectangleArea::_y0__float"></span><span class="target" id="structRectangleArea_1a47cb96ee02ab952ece0b584843cb72b6"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_y0</span></span></span><a class="headerlink" href="#_CPPv4N13RectangleArea3_y0E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13RectangleArea3_y0E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13RectangleArea3_y1E">
+<span id="_CPPv3N13RectangleArea3_y1E"></span><span id="_CPPv2N13RectangleArea3_y1E"></span><span id="RectangleArea::_y1__float"></span><span class="target" id="structRectangleArea_1ad5116aa3cee4452b2c3bce3709114d9f"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_y1</span></span></span><a class="headerlink" href="#_CPPv4N13RectangleArea3_y1E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13RectangleArea3_y1E'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+</dd></dl>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv415TextMeasureData">
+<span id="_CPPv315TextMeasureData"></span><span id="_CPPv215TextMeasureData"></span><span id="TextMeasureData"></span><span class="target" id="structTextMeasureData"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TextMeasureData</span></span></span><a class="headerlink" href="#_CPPv415TextMeasureData" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv415TextMeasureData'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N15TextMeasureData8fontSizeE">
+<span id="_CPPv3N15TextMeasureData8fontSizeE"></span><span id="_CPPv2N15TextMeasureData8fontSizeE"></span><span id="TextMeasureData::fontSize__float"></span><span class="target" id="structTextMeasureData_1afcb87b6860a88fd0bb089090518549b9"></span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fontSize</span></span></span><a class="headerlink" href="#_CPPv4N15TextMeasureData8fontSizeE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N15TextMeasureData8fontSizeE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N15TextMeasureData11linePaddingE">
+<span id="_CPPv3N15TextMeasureData11linePaddingE"></span><span id="_CPPv2N15TextMeasureData11linePaddingE"></span><span id="TextMeasureData::linePadding__i"></span><span class="target" id="structTextMeasureData_1a01e9adf1c4d84ee16fc052550ffa958e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">linePadding</span></span></span><a class="headerlink" href="#_CPPv4N15TextMeasureData11linePaddingE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N15TextMeasureData11linePaddingE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N15TextMeasureData12renderShadowE">
+<span id="_CPPv3N15TextMeasureData12renderShadowE"></span><span id="_CPPv2N15TextMeasureData12renderShadowE"></span><span id="TextMeasureData::renderShadow__b"></span><span class="target" id="structTextMeasureData_1a89582ded36fdcf1d8effc0139b26fd88"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renderShadow</span></span></span><a class="headerlink" href="#_CPPv4N15TextMeasureData12renderShadowE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N15TextMeasureData12renderShadowE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N15TextMeasureData15showColorSymbolE">
+<span id="_CPPv3N15TextMeasureData15showColorSymbolE"></span><span id="_CPPv2N15TextMeasureData15showColorSymbolE"></span><span id="TextMeasureData::showColorSymbol__b"></span><span class="target" id="structTextMeasureData_1a3ecd42711f0f8128ea9415dac510cca0"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">showColorSymbol</span></span></span><a class="headerlink" href="#_CPPv4N15TextMeasureData15showColorSymbolE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N15TextMeasureData15showColorSymbolE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N15TextMeasureData10hideHyphenE">
+<span id="_CPPv3N15TextMeasureData10hideHyphenE"></span><span id="_CPPv2N15TextMeasureData10hideHyphenE"></span><span id="TextMeasureData::hideHyphen__b"></span><span class="target" id="structTextMeasureData_1a7425c799ef8cf825b8e98427030adaf9"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hideHyphen</span></span></span><a class="headerlink" href="#_CPPv4N15TextMeasureData10hideHyphenE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N15TextMeasureData10hideHyphenE'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+</dd></dl>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv416CaretMeasureData">
+<span id="_CPPv316CaretMeasureData"></span><span id="_CPPv216CaretMeasureData"></span><span id="CaretMeasureData"></span><span class="target" id="structCaretMeasureData"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CaretMeasureData</span></span></span><a class="headerlink" href="#_CPPv416CaretMeasureData" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv416CaretMeasureData'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16CaretMeasureData8positionE">
+<span id="_CPPv3N16CaretMeasureData8positionE"></span><span id="_CPPv2N16CaretMeasureData8positionE"></span><span id="CaretMeasureData::position__i"></span><span class="target" id="structCaretMeasureData_1a61a96995ff8558bd0cba36964946666c"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">position</span></span></span><a class="headerlink" href="#_CPPv4N16CaretMeasureData8positionE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N16CaretMeasureData8positionE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16CaretMeasureData12shouldRenderE">
+<span id="_CPPv3N16CaretMeasureData12shouldRenderE"></span><span id="_CPPv2N16CaretMeasureData12shouldRenderE"></span><span id="CaretMeasureData::shouldRender__b"></span><span class="target" id="structCaretMeasureData_1a1286b63ef6ab4b4f9150c830dd0060e1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shouldRender</span></span></span><a class="headerlink" href="#_CPPv4N16CaretMeasureData12shouldRenderE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N16CaretMeasureData12shouldRenderE'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+</dd></dl>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv424MinecraftUIRenderContext">
+<span id="_CPPv324MinecraftUIRenderContext"></span><span id="_CPPv224MinecraftUIRenderContext"></span><span id="MinecraftUIRenderContext"></span><span class="target" id="classMinecraftUIRenderContext"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MinecraftUIRenderContext</span></span></span><a class="headerlink" href="#_CPPv424MinecraftUIRenderContext" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv424MinecraftUIRenderContext'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext24MinecraftUIRenderContextER15IClientInstanceR13ScreenContextRK7UIScene">
+<span id="_CPPv3N24MinecraftUIRenderContext24MinecraftUIRenderContextER15IClientInstanceR13ScreenContextRK7UIScene"></span><span id="_CPPv2N24MinecraftUIRenderContext24MinecraftUIRenderContextER15IClientInstanceR13ScreenContextRK7UIScene"></span><span id="MinecraftUIRenderContext::MinecraftUIRenderContext__IClientInstanceR.ScreenContextR.UISceneCR"></span><span class="target" id="classMinecraftUIRenderContext_1a533a7420d68e3844982f6d970f13be9f"></span><span class="sig-name descname"><span class="n"><span class="pre">MinecraftUIRenderContext</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BaseActorRenderContext_8hpp.html#_CPPv415IClientInstance" title="IClientInstance"><span class="n"><span class="pre">IClientInstance</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">client</span></span>, <a class="reference internal" href="ScreenContext_8hpp.html#_CPPv413ScreenContext" title="ScreenContext"><span class="n"><span class="pre">ScreenContext</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">screenContext</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">UIScene</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">currentScene</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext24MinecraftUIRenderContextER15IClientInstanceR13ScreenContextRK7UIScene" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext24MinecraftUIRenderContextER15IClientInstanceR13ScreenContextRK7UIScene'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContextD0Ev">
+<span id="_CPPv3N24MinecraftUIRenderContextD0Ev"></span><span id="_CPPv2N24MinecraftUIRenderContextD0Ev"></span><span id="MinecraftUIRenderContext::~MinecraftUIRenderContext"></span><span class="target" id="classMinecraftUIRenderContext_1ae934489d182e91f3fd682eb0003b3a75"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~MinecraftUIRenderContext</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContextD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContextD0Ev'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext13getLineLengthER4FontRKNSt6stringEfb">
+<span id="_CPPv3N24MinecraftUIRenderContext13getLineLengthER4FontRKNSt6stringEfb"></span><span id="_CPPv2N24MinecraftUIRenderContext13getLineLengthER4FontRKNSt6stringEfb"></span><span id="MinecraftUIRenderContext::getLineLength__FontR.ssCR.float.b"></span><span class="target" id="classMinecraftUIRenderContext_1a5d5296ee830b6d0a7743826a0f564e79"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getLineLength</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Font</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">font</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">text</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">fontSize</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">showColorSymbol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext13getLineLengthER4FontRKNSt6stringEfb" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext13getLineLengthER4FontRKNSt6stringEfb'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext12getTextAlphaEv">
+<span id="_CPPv3N24MinecraftUIRenderContext12getTextAlphaEv"></span><span id="_CPPv2N24MinecraftUIRenderContext12getTextAlphaEv"></span><span id="MinecraftUIRenderContext::getTextAlpha"></span><span class="target" id="classMinecraftUIRenderContext_1a1437946877f705fc9c82498dfdb212e8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getTextAlpha</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext12getTextAlphaEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext12getTextAlphaEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext12setTextAlphaEf">
+<span id="_CPPv3N24MinecraftUIRenderContext12setTextAlphaEf"></span><span id="_CPPv2N24MinecraftUIRenderContext12setTextAlphaEf"></span><span id="MinecraftUIRenderContext::setTextAlpha__float"></span><span class="target" id="classMinecraftUIRenderContext_1ab39d0ab3d451c910f8baa1154b0fc014"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setTextAlpha</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext12setTextAlphaEf" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext12setTextAlphaEf'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext13drawDebugTextEPK13RectangleAreaPKNSt6stringEPKN3mce5ColorEfN2ui13TextAlignmentEPK15TextMeasureDataPK16CaretMeasureData">
+<span id="_CPPv3N24MinecraftUIRenderContext13drawDebugTextEPK13RectangleAreaPKNSt6stringEPKN3mce5ColorEfN2ui13TextAlignmentEPK15TextMeasureDataPK16CaretMeasureData"></span><span id="_CPPv2N24MinecraftUIRenderContext13drawDebugTextEPK13RectangleAreaPKNSt6stringEPKN3mce5ColorEfN2ui13TextAlignmentEPK15TextMeasureDataPK16CaretMeasureData"></span><span id="MinecraftUIRenderContext::drawDebugText__RectangleAreaCP.ssCP.mce::ColorCP.float.ui::TextAlignment.TextMeasureDataCP.CaretMeasureDataCP"></span><span class="target" id="classMinecraftUIRenderContext_1af0eeeda17d2be4a25bdce8674a596af5"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drawDebugText</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413RectangleArea" title="RectangleArea"><span class="n"><span class="pre">RectangleArea</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">rect</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">text</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Color_8hpp.html#_CPPv4N3mce5ColorE" title="mce::Color"><span class="n"><span class="pre">Color</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">color</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span>, <a class="reference internal" href="#_CPPv42ui" title="ui"><span class="n"><span class="pre">ui</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N2ui13TextAlignmentE" title="ui::TextAlignment"><span class="n"><span class="pre">TextAlignment</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">alignment</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv415TextMeasureData" title="TextMeasureData"><span class="n"><span class="pre">TextMeasureData</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">textData</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv416CaretMeasureData" title="CaretMeasureData"><span class="n"><span class="pre">CaretMeasureData</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">caretData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext13drawDebugTextEPK13RectangleAreaPKNSt6stringEPKN3mce5ColorEfN2ui13TextAlignmentEPK15TextMeasureDataPK16CaretMeasureData" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext13drawDebugTextEPK13RectangleAreaPKNSt6stringEPKN3mce5ColorEfN2ui13TextAlignmentEPK15TextMeasureDataPK16CaretMeasureData'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext8drawTextER4FontRK13RectangleAreaRKNSt6stringERKN3mce5ColorEfN2ui13TextAlignmentERK15TextMeasureDataRK16CaretMeasureData">
+<span id="_CPPv3N24MinecraftUIRenderContext8drawTextER4FontRK13RectangleAreaRKNSt6stringERKN3mce5ColorEfN2ui13TextAlignmentERK15TextMeasureDataRK16CaretMeasureData"></span><span id="_CPPv2N24MinecraftUIRenderContext8drawTextER4FontRK13RectangleAreaRKNSt6stringERKN3mce5ColorEfN2ui13TextAlignmentERK15TextMeasureDataRK16CaretMeasureData"></span><span id="MinecraftUIRenderContext::drawText__FontR.RectangleAreaCR.ssCR.mce::ColorCR.float.ui::TextAlignment.TextMeasureDataCR.CaretMeasureDataCR"></span><span class="target" id="classMinecraftUIRenderContext_1a43bfb91ac7b70bdc524dc0bd2a4a630c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drawText</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">Font</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">font</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413RectangleArea" title="RectangleArea"><span class="n"><span class="pre">RectangleArea</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rect</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">text</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Color_8hpp.html#_CPPv4N3mce5ColorE" title="mce::Color"><span class="n"><span class="pre">Color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">color</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span>, <a class="reference internal" href="#_CPPv42ui" title="ui"><span class="n"><span class="pre">ui</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N2ui13TextAlignmentE" title="ui::TextAlignment"><span class="n"><span class="pre">TextAlignment</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">alignment</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv415TextMeasureData" title="TextMeasureData"><span class="n"><span class="pre">TextMeasureData</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">textData</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv416CaretMeasureData" title="CaretMeasureData"><span class="n"><span class="pre">CaretMeasureData</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">caretData</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext8drawTextER4FontRK13RectangleAreaRKNSt6stringERKN3mce5ColorEfN2ui13TextAlignmentERK15TextMeasureDataRK16CaretMeasureData" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext8drawTextER4FontRK13RectangleAreaRKNSt6stringERKN3mce5ColorEfN2ui13TextAlignmentERK15TextMeasureDataRK16CaretMeasureData'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext9flushTextEf">
+<span id="_CPPv3N24MinecraftUIRenderContext9flushTextEf"></span><span id="_CPPv2N24MinecraftUIRenderContext9flushTextEf"></span><span id="MinecraftUIRenderContext::flushText__float"></span><span class="target" id="classMinecraftUIRenderContext_1ade552197a045e87b3a4b7a51f2e6fc13"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flushText</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">deltaTime</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext9flushTextEf" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext9flushTextEf'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext9drawImageERKN3mce10TexturePtrEPKN3glm5tvec2IfEEPKN3glm5tvec2IfEEPN3glm5tvec2IfEEPN3glm5tvec2IfEEi">
+<span id="_CPPv3N24MinecraftUIRenderContext9drawImageERKN3mce10TexturePtrEPKN3glm5tvec2IfEEPKN3glm5tvec2IfEEPN3glm5tvec2IfEEPN3glm5tvec2IfEEi"></span><span id="_CPPv2N24MinecraftUIRenderContext9drawImageERKN3mce10TexturePtrEPKN3glm5tvec2IfEEPKN3glm5tvec2IfEEPN3glm5tvec2IfEEPN3glm5tvec2IfEEi"></span><span id="MinecraftUIRenderContext::drawImage__mce::TexturePtrCR.glm::tvec2:float:CP.glm::tvec2:float:CP.glm::tvec2:float:P.glm::tvec2:float:P.i"></span><span class="target" id="classMinecraftUIRenderContext_1af9d76ad8ca0ed113d216b92efc1b12ce"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drawImage</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="TexturePtr_8hpp.html#_CPPv4N3mce10TexturePtrE" title="mce::TexturePtr"><span class="n"><span class="pre">TexturePtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">texture</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tvec2</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">position</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tvec2</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">size</span></span>, <span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tvec2</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">uv</span></span>, <span class="n"><span class="pre">glm</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">tvec2</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">float</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">uvSize</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">degree</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext9drawImageERKN3mce10TexturePtrEPKN3glm5tvec2IfEEPKN3glm5tvec2IfEEPN3glm5tvec2IfEEPN3glm5tvec2IfEEi" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext9drawImageERKN3mce10TexturePtrEPKN3glm5tvec2IfEEPKN3glm5tvec2IfEEPN3glm5tvec2IfEEPN3glm5tvec2IfEEi'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext13drawNinesliceEPKN3mce10TexturePtrEPK13NinesliceInfo">
+<span id="_CPPv3N24MinecraftUIRenderContext13drawNinesliceEPKN3mce10TexturePtrEPK13NinesliceInfo"></span><span id="_CPPv2N24MinecraftUIRenderContext13drawNinesliceEPKN3mce10TexturePtrEPK13NinesliceInfo"></span><span id="MinecraftUIRenderContext::drawNineslice__mce::TexturePtrCP.NinesliceInfoCP"></span><span class="target" id="classMinecraftUIRenderContext_1a4a14e1271b9b1680073546e0621f96ac"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drawNineslice</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="TexturePtr_8hpp.html#_CPPv4N3mce10TexturePtrE" title="mce::TexturePtr"><span class="n"><span class="pre">TexturePtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">texture</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="NinesliceInfo_8hpp.html#_CPPv413NinesliceInfo" title="NinesliceInfo"><span class="n"><span class="pre">NinesliceInfo</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">nineslice</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext13drawNinesliceEPKN3mce10TexturePtrEPK13NinesliceInfo" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext13drawNinesliceEPKN3mce10TexturePtrEPK13NinesliceInfo'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext11flushImagesERKN3mce5ColorEfRK12HashedString">
+<span id="_CPPv3N24MinecraftUIRenderContext11flushImagesERKN3mce5ColorEfRK12HashedString"></span><span id="_CPPv2N24MinecraftUIRenderContext11flushImagesERKN3mce5ColorEfRK12HashedString"></span><span id="MinecraftUIRenderContext::flushImages__mce::ColorCR.float.HashedStringCR"></span><span class="target" id="classMinecraftUIRenderContext_1ae9059a1c7d2c891e3cf66c7f7305229d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">flushImages</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Color_8hpp.html#_CPPv4N3mce5ColorE" title="mce::Color"><span class="n"><span class="pre">Color</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">color</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="StringHash_8hpp.html#_CPPv412HashedString" title="HashedString"><span class="n"><span class="pre">HashedString</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">materialNameHash</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext11flushImagesERKN3mce5ColorEfRK12HashedString" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext11flushImagesERKN3mce5ColorEfRK12HashedString'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext20beginSharedMeshBatchER20ComponentRenderBatch">
+<span id="_CPPv3N24MinecraftUIRenderContext20beginSharedMeshBatchER20ComponentRenderBatch"></span><span id="_CPPv2N24MinecraftUIRenderContext20beginSharedMeshBatchER20ComponentRenderBatch"></span><span id="MinecraftUIRenderContext::beginSharedMeshBatch__ComponentRenderBatchR"></span><span class="target" id="classMinecraftUIRenderContext_1a01de1eeeda8a3373317479d48797bf97"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">beginSharedMeshBatch</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ComponentRenderBatch</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">renderBatch</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext20beginSharedMeshBatchER20ComponentRenderBatch" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext20beginSharedMeshBatchER20ComponentRenderBatch'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext18endSharedMeshBatchER20ComponentRenderBatch">
+<span id="_CPPv3N24MinecraftUIRenderContext18endSharedMeshBatchER20ComponentRenderBatch"></span><span id="_CPPv2N24MinecraftUIRenderContext18endSharedMeshBatchER20ComponentRenderBatch"></span><span id="MinecraftUIRenderContext::endSharedMeshBatch__ComponentRenderBatchR"></span><span class="target" id="classMinecraftUIRenderContext_1a61016b7d1d8dcc1aa4e68321ad3f105e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">endSharedMeshBatch</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ComponentRenderBatch</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">renderBatch</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext18endSharedMeshBatchER20ComponentRenderBatch" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext18endSharedMeshBatchER20ComponentRenderBatch'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext13drawRectangleEPK13RectangleAreaPKN3mce5ColorEfi">
+<span id="_CPPv3N24MinecraftUIRenderContext13drawRectangleEPK13RectangleAreaPKN3mce5ColorEfi"></span><span id="_CPPv2N24MinecraftUIRenderContext13drawRectangleEPK13RectangleAreaPKN3mce5ColorEfi"></span><span id="MinecraftUIRenderContext::drawRectangle__RectangleAreaCP.mce::ColorCP.float.i"></span><span class="target" id="classMinecraftUIRenderContext_1a1bd8f2d6c1e328074050ef0f0c071917"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">drawRectangle</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413RectangleArea" title="RectangleArea"><span class="n"><span class="pre">RectangleArea</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">rect</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Color_8hpp.html#_CPPv4N3mce5ColorE" title="mce::Color"><span class="n"><span class="pre">Color</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">color</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">thickness</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext13drawRectangleEPK13RectangleAreaPKN3mce5ColorEfi" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext13drawRectangleEPK13RectangleAreaPKN3mce5ColorEfi'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext13fillRectangleEPK13RectangleAreaPKN3mce5ColorEf">
+<span id="_CPPv3N24MinecraftUIRenderContext13fillRectangleEPK13RectangleAreaPKN3mce5ColorEf"></span><span id="_CPPv2N24MinecraftUIRenderContext13fillRectangleEPK13RectangleAreaPKN3mce5ColorEf"></span><span id="MinecraftUIRenderContext::fillRectangle__RectangleAreaCP.mce::ColorCP.float"></span><span class="target" id="classMinecraftUIRenderContext_1a6fe5610dc461b449563896a93e6dfb28"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fillRectangle</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413RectangleArea" title="RectangleArea"><span class="n"><span class="pre">RectangleArea</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">rect</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Color_8hpp.html#_CPPv4N3mce5ColorE" title="mce::Color"><span class="n"><span class="pre">Color</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">color</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">alpha</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext13fillRectangleEPK13RectangleAreaPKN3mce5ColorEf" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext13fillRectangleEPK13RectangleAreaPKN3mce5ColorEf'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext18increaseStencilRefEv">
+<span id="_CPPv3N24MinecraftUIRenderContext18increaseStencilRefEv"></span><span id="_CPPv2N24MinecraftUIRenderContext18increaseStencilRefEv"></span><span id="MinecraftUIRenderContext::increaseStencilRef"></span><span class="target" id="classMinecraftUIRenderContext_1a032fe498f243f1eb1f9b89c91a526612"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">increaseStencilRef</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext18increaseStencilRefEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext18increaseStencilRefEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext18decreaseStencilRefEv">
+<span id="_CPPv3N24MinecraftUIRenderContext18decreaseStencilRefEv"></span><span id="_CPPv2N24MinecraftUIRenderContext18decreaseStencilRefEv"></span><span id="MinecraftUIRenderContext::decreaseStencilRef"></span><span class="target" id="classMinecraftUIRenderContext_1af3e0f3053edf3f4a1b6d11fddd72f0dc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">decreaseStencilRef</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext18decreaseStencilRefEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext18decreaseStencilRefEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext15resetStencilRefEv">
+<span id="_CPPv3N24MinecraftUIRenderContext15resetStencilRefEv"></span><span id="_CPPv2N24MinecraftUIRenderContext15resetStencilRefEv"></span><span id="MinecraftUIRenderContext::resetStencilRef"></span><span class="target" id="classMinecraftUIRenderContext_1abf988521304a1fbbdb9fb7ab4975e6a6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">resetStencilRef</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext15resetStencilRefEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext15resetStencilRefEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext20fillRectangleStencilERK13RectangleArea">
+<span id="_CPPv3N24MinecraftUIRenderContext20fillRectangleStencilERK13RectangleArea"></span><span id="_CPPv2N24MinecraftUIRenderContext20fillRectangleStencilERK13RectangleArea"></span><span id="MinecraftUIRenderContext::fillRectangleStencil__RectangleAreaCR"></span><span class="target" id="classMinecraftUIRenderContext_1a3f98a9d5c5ebb5741ace4be64779fcd6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">fillRectangleStencil</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413RectangleArea" title="RectangleArea"><span class="n"><span class="pre">RectangleArea</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rect</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext20fillRectangleStencilERK13RectangleArea" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext20fillRectangleStencilERK13RectangleArea'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext17enableScissorTestERK13RectangleArea">
+<span id="_CPPv3N24MinecraftUIRenderContext17enableScissorTestERK13RectangleArea"></span><span id="_CPPv2N24MinecraftUIRenderContext17enableScissorTestERK13RectangleArea"></span><span id="MinecraftUIRenderContext::enableScissorTest__RectangleAreaCR"></span><span class="target" id="classMinecraftUIRenderContext_1ab99a59ae5d315f4c7ea55efee7f30b18"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">enableScissorTest</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413RectangleArea" title="RectangleArea"><span class="n"><span class="pre">RectangleArea</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rect</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext17enableScissorTestERK13RectangleArea" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext17enableScissorTestERK13RectangleArea'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext18disableScissorTestEv">
+<span id="_CPPv3N24MinecraftUIRenderContext18disableScissorTestEv"></span><span id="_CPPv2N24MinecraftUIRenderContext18disableScissorTestEv"></span><span id="MinecraftUIRenderContext::disableScissorTest"></span><span class="target" id="classMinecraftUIRenderContext_1a984346ccc7b3298de9adba0146d58589"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">disableScissorTest</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext18disableScissorTestEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext18disableScissorTestEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext20setClippingRectangleERK13RectangleArea">
+<span id="_CPPv3N24MinecraftUIRenderContext20setClippingRectangleERK13RectangleArea"></span><span id="_CPPv2N24MinecraftUIRenderContext20setClippingRectangleERK13RectangleArea"></span><span id="MinecraftUIRenderContext::setClippingRectangle__RectangleAreaCR"></span><span class="target" id="classMinecraftUIRenderContext_1a7e4e2e5b5d97272f494d7c3f8db45c99"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setClippingRectangle</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413RectangleArea" title="RectangleArea"><span class="n"><span class="pre">RectangleArea</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">rect</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext20setClippingRectangleERK13RectangleArea" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext20setClippingRectangleERK13RectangleArea'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext24setFullClippingRectangleEv">
+<span id="_CPPv3N24MinecraftUIRenderContext24setFullClippingRectangleEv"></span><span id="_CPPv2N24MinecraftUIRenderContext24setFullClippingRectangleEv"></span><span id="MinecraftUIRenderContext::setFullClippingRectangle"></span><span class="target" id="classMinecraftUIRenderContext_1a173a5e59130740b3377e90b0844115e2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setFullClippingRectangle</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext24setFullClippingRectangleEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext24setFullClippingRectangleEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext28saveCurrentClippingRectangleEv">
+<span id="_CPPv3N24MinecraftUIRenderContext28saveCurrentClippingRectangleEv"></span><span id="_CPPv2N24MinecraftUIRenderContext28saveCurrentClippingRectangleEv"></span><span id="MinecraftUIRenderContext::saveCurrentClippingRectangle"></span><span class="target" id="classMinecraftUIRenderContext_1af887f7d7503afc9131d37c4084cfd7ae"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">saveCurrentClippingRectangle</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext28saveCurrentClippingRectangleEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext28saveCurrentClippingRectangleEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext29restoreSavedClippingRectangleEv">
+<span id="_CPPv3N24MinecraftUIRenderContext29restoreSavedClippingRectangleEv"></span><span id="_CPPv2N24MinecraftUIRenderContext29restoreSavedClippingRectangleEv"></span><span id="MinecraftUIRenderContext::restoreSavedClippingRectangle"></span><span class="target" id="classMinecraftUIRenderContext_1a0d8e23fa45fd9af87dea11e5811c9171"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">restoreSavedClippingRectangle</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext29restoreSavedClippingRectangleEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext29restoreSavedClippingRectangleEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext24getFullClippingRectangleEv">
+<span id="_CPPv3N24MinecraftUIRenderContext24getFullClippingRectangleEv"></span><span id="_CPPv2N24MinecraftUIRenderContext24getFullClippingRectangleEv"></span><span id="MinecraftUIRenderContext::getFullClippingRectangle"></span><span class="target" id="classMinecraftUIRenderContext_1aadaf9288a81ea981a9e8d86fb7de77d3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv413RectangleArea" title="RectangleArea"><span class="n"><span class="pre">RectangleArea</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getFullClippingRectangle</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext24getFullClippingRectangleEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext24getFullClippingRectangleEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext12updateCustomEN3gsl8not_nullIP21CustomRenderComponentEE">
+<span id="_CPPv3N24MinecraftUIRenderContext12updateCustomEN3gsl8not_nullIP21CustomRenderComponentEE"></span><span id="_CPPv2N24MinecraftUIRenderContext12updateCustomEN3gsl8not_nullIP21CustomRenderComponentEE"></span><span id="MinecraftUIRenderContext::updateCustom__gsl::not_null:CustomRenderComponentP:"></span><span class="target" id="classMinecraftUIRenderContext_1a2dd82281480f33f8ace12fce55dff3df"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">updateCustom</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">not_null</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">CustomRenderComponent</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">customRenderer</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext12updateCustomEN3gsl8not_nullIP21CustomRenderComponentEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext12updateCustomEN3gsl8not_nullIP21CustomRenderComponentEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext12renderCustomEN3gsl8not_nullIP21CustomRenderComponentEEiR13RectangleArea">
+<span id="_CPPv3N24MinecraftUIRenderContext12renderCustomEN3gsl8not_nullIP21CustomRenderComponentEEiR13RectangleArea"></span><span id="_CPPv2N24MinecraftUIRenderContext12renderCustomEN3gsl8not_nullIP21CustomRenderComponentEEiR13RectangleArea"></span><span id="MinecraftUIRenderContext::renderCustom__gsl::not_null:CustomRenderComponentP:.i.RectangleAreaR"></span><span class="target" id="classMinecraftUIRenderContext_1ac3a0881f032a80278d2d361ef3f81fd3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">renderCustom</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">gsl</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">not_null</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">CustomRenderComponent</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">customRenderer</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">pass</span></span>, <a class="reference internal" href="#_CPPv413RectangleArea" title="RectangleArea"><span class="n"><span class="pre">RectangleArea</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">renderAABB</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext12renderCustomEN3gsl8not_nullIP21CustomRenderComponentEEiR13RectangleArea" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext12renderCustomEN3gsl8not_nullIP21CustomRenderComponentEEiR13RectangleArea'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext7cleanupEv">
+<span id="_CPPv3N24MinecraftUIRenderContext7cleanupEv"></span><span id="_CPPv2N24MinecraftUIRenderContext7cleanupEv"></span><span id="MinecraftUIRenderContext::cleanup"></span><span class="target" id="classMinecraftUIRenderContext_1a79dd332249078612da959016f1a583cc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">cleanup</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext7cleanupEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext7cleanupEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext22removePersistentMeshesEv">
+<span id="_CPPv3N24MinecraftUIRenderContext22removePersistentMeshesEv"></span><span id="_CPPv2N24MinecraftUIRenderContext22removePersistentMeshesEv"></span><span id="MinecraftUIRenderContext::removePersistentMeshes"></span><span class="target" id="classMinecraftUIRenderContext_1af14a644dc2246f6d66f064560a020c58"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">removePersistentMeshes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext22removePersistentMeshesEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext22removePersistentMeshesEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext10getTextureEPK16ResourceLocationb">
+<span id="_CPPv3N24MinecraftUIRenderContext10getTextureEPK16ResourceLocationb"></span><span id="_CPPv2N24MinecraftUIRenderContext10getTextureEPK16ResourceLocationb"></span><span id="MinecraftUIRenderContext::getTexture__ResourceLocationCP.b"></span><span class="target" id="classMinecraftUIRenderContext_1ae6ffde6226544c6d2c32025d258b1030"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="TexturePtr_8hpp.html#_CPPv4N3mce10TexturePtrE" title="mce::TexturePtr"><span class="n"><span class="pre">TexturePtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getTexture</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ResourceHelper_8hpp.html#_CPPv416ResourceLocation" title="ResourceLocation"><span class="n"><span class="pre">ResourceLocation</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">resourceLocation</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">forceReload</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext10getTextureEPK16ResourceLocationb" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext10getTextureEPK16ResourceLocationb'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext16getZippedTextureERKN4Core4PathERK16ResourceLocationb">
+<span id="_CPPv3N24MinecraftUIRenderContext16getZippedTextureERKN4Core4PathERK16ResourceLocationb"></span><span id="_CPPv2N24MinecraftUIRenderContext16getZippedTextureERKN4Core4PathERK16ResourceLocationb"></span><span id="MinecraftUIRenderContext::getZippedTexture__Core::PathCR.ResourceLocationCR.b"></span><span class="target" id="classMinecraftUIRenderContext_1af764a17916d0c0f18dc650f227af3c39"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="TexturePtr_8hpp.html#_CPPv4N3mce10TexturePtrE" title="mce::TexturePtr"><span class="n"><span class="pre">TexturePtr</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getZippedTexture</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv44Core" title="Core"><span class="n"><span class="pre">Core</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Path_8hpp.html#_CPPv4N4Core4PathE" title="Core::Path"><span class="n"><span class="pre">Path</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">zippedFolderPath</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ResourceHelper_8hpp.html#_CPPv416ResourceLocation" title="ResourceLocation"><span class="n"><span class="pre">ResourceLocation</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">resourceLocation</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">forceReload</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext16getZippedTextureERKN4Core4PathERK16ResourceLocationb" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext16getZippedTextureERKN4Core4PathERK16ResourceLocationb'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext13unloadTextureERK16ResourceLocation">
+<span id="_CPPv3N24MinecraftUIRenderContext13unloadTextureERK16ResourceLocation"></span><span id="_CPPv2N24MinecraftUIRenderContext13unloadTextureERK16ResourceLocation"></span><span id="MinecraftUIRenderContext::unloadTexture__ResourceLocationCR"></span><span class="target" id="classMinecraftUIRenderContext_1a982088b9f1ff416732ea0264ccdd18fb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">unloadTexture</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="ResourceHelper_8hpp.html#_CPPv416ResourceLocation" title="ResourceLocation"><span class="n"><span class="pre">ResourceLocation</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext13unloadTextureERK16ResourceLocation" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext13unloadTextureERK16ResourceLocation'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext7mClientE">
+<span id="_CPPv3N24MinecraftUIRenderContext7mClientE"></span><span id="_CPPv2N24MinecraftUIRenderContext7mClientE"></span><span id="MinecraftUIRenderContext::mClient__IClientInstanceP"></span><span class="target" id="classMinecraftUIRenderContext_1a0d6cac98a9749d026c04a12113eaa9be"></span><a class="reference internal" href="BaseActorRenderContext_8hpp.html#_CPPv415IClientInstance" title="IClientInstance"><span class="n"><span class="pre">IClientInstance</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">mClient</span></span></span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext7mClientE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext7mClientE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext14mScreenContextE">
+<span id="_CPPv3N24MinecraftUIRenderContext14mScreenContextE"></span><span id="_CPPv2N24MinecraftUIRenderContext14mScreenContextE"></span><span id="MinecraftUIRenderContext::mScreenContext__ScreenContextP"></span><span class="target" id="classMinecraftUIRenderContext_1a0a82c9febcf1f62f09dcbf3c2c3f1eb6"></span><a class="reference internal" href="ScreenContext_8hpp.html#_CPPv413ScreenContext" title="ScreenContext"><span class="n"><span class="pre">ScreenContext</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">mScreenContext</span></span></span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext14mScreenContextE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext14mScreenContextE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext9padding24E">
+<span id="_CPPv3N24MinecraftUIRenderContext9padding24E"></span><span id="_CPPv2N24MinecraftUIRenderContext9padding24E"></span><span id="MinecraftUIRenderContext::padding24__std::byteA"></span><span class="target" id="classMinecraftUIRenderContext_1a876afc4fa3b0ee07fc5560c3587ba6f2"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">padding24</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">224</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext9padding24E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext9padding24E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N24MinecraftUIRenderContext13mCurrentSceneE">
+<span id="_CPPv3N24MinecraftUIRenderContext13mCurrentSceneE"></span><span id="_CPPv2N24MinecraftUIRenderContext13mCurrentSceneE"></span><span id="MinecraftUIRenderContext::mCurrentScene__UISceneCP"></span><span class="target" id="classMinecraftUIRenderContext_1a9a076ded2f8ab1bc3a6056027446ec2b"></span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">UIScene</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">mCurrentScene</span></span></span><a class="headerlink" href="#_CPPv4N24MinecraftUIRenderContext13mCurrentSceneE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N24MinecraftUIRenderContext13mCurrentSceneE'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+</dd></dl>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv42ui">
+<span id="_CPPv32ui"></span><span id="_CPPv22ui"></span><span id="ui"></span><span class="target" id="namespaceui"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ui</span></span></span><a class="headerlink" href="#_CPPv42ui" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv42ui'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv4N2ui13TextAlignmentE">
+<span id="_CPPv3N2ui13TextAlignmentE"></span><span id="_CPPv2N2ui13TextAlignmentE"></span><span class="target" id="MinecraftUIRenderContext_8hpp_1a572d2984c5b8c200f813a58f9b28cbe5"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TextAlignment</span></span></span><a class="headerlink" href="#_CPPv4N2ui13TextAlignmentE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N2ui13TextAlignmentE'">¶</a><br/></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N2ui13TextAlignment4LeftE">
+<span id="_CPPv3N2ui13TextAlignment4LeftE"></span><span id="_CPPv2N2ui13TextAlignment4LeftE"></span><span class="target" id="MinecraftUIRenderContext_8hpp_1a572d2984c5b8c200f813a58f9b28cbe5a42d596084f4ca8b5647ed9c2e2a62035"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Left</span></span></span><a class="headerlink" href="#_CPPv4N2ui13TextAlignment4LeftE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N2ui13TextAlignment4LeftE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N2ui13TextAlignment5RightE">
+<span id="_CPPv3N2ui13TextAlignment5RightE"></span><span id="_CPPv2N2ui13TextAlignment5RightE"></span><span class="target" id="MinecraftUIRenderContext_8hpp_1a572d2984c5b8c200f813a58f9b28cbe5aff5148a5ea03347eb619d62745f2d31c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Right</span></span></span><a class="headerlink" href="#_CPPv4N2ui13TextAlignment5RightE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N2ui13TextAlignment5RightE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N2ui13TextAlignment6CenterE">
+<span id="_CPPv3N2ui13TextAlignment6CenterE"></span><span id="_CPPv2N2ui13TextAlignment6CenterE"></span><span class="target" id="MinecraftUIRenderContext_8hpp_1a572d2984c5b8c200f813a58f9b28cbe5aa5ad8983489fdf993faffc52e6c753a9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Center</span></span></span><a class="headerlink" href="#_CPPv4N2ui13TextAlignment6CenterE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N2ui13TextAlignment6CenterE'">¶</a><br/></dt>
+<dd></dd></dl>
+</dd></dl>
+</div>
+</dd></dl>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv43mce">
+<span id="_CPPv33mce"></span><span id="_CPPv23mce"></span><span id="mce"></span><span class="target" id="namespacemce"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mce</span></span></span><br/></dt>
+<dd></dd></dl>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv44Core">
+<span id="_CPPv34Core"></span><span id="_CPPv24Core"></span><span id="Core"></span><span class="target" id="namespaceCore"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Core</span></span></span><a class="headerlink" href="#_CPPv44Core" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv44Core'">¶</a><br/></dt>
+<dd></dd></dl>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(var(100vh)-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#_CPPv415IClientInstance'" class="reference internal" href="#_CPPv415IClientInstance"><code class="docutils literal notranslate"><span class="pre">IClientInstance</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv413TextAlignment'" class="reference internal" href="#_CPPv413TextAlignment"><code class="docutils literal notranslate"><span class="pre">TextAlignment</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N13TextAlignment4LeftE'" class="reference internal" href="#_CPPv4N13TextAlignment4LeftE"><code class="docutils literal notranslate"><span class="pre">TextAlignment::Left</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13TextAlignment5RightE'" class="reference internal" href="#_CPPv4N13TextAlignment5RightE"><code class="docutils literal notranslate"><span class="pre">TextAlignment::Right</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13TextAlignment6CenterE'" class="reference internal" href="#_CPPv4N13TextAlignment6CenterE"><code class="docutils literal notranslate"><span class="pre">TextAlignment::Center</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv413RectangleArea'" class="reference internal" href="#_CPPv413RectangleArea"><code class="docutils literal notranslate"><span class="pre">RectangleArea</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N13RectangleArea3_x0E'" class="reference internal" href="#_CPPv4N13RectangleArea3_x0E"><code class="docutils literal notranslate"><span class="pre">RectangleArea::_x0</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13RectangleArea3_x1E'" class="reference internal" href="#_CPPv4N13RectangleArea3_x1E"><code class="docutils literal notranslate"><span class="pre">RectangleArea::_x1</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13RectangleArea3_y0E'" class="reference internal" href="#_CPPv4N13RectangleArea3_y0E"><code class="docutils literal notranslate"><span class="pre">RectangleArea::_y0</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13RectangleArea3_y1E'" class="reference internal" href="#_CPPv4N13RectangleArea3_y1E"><code class="docutils literal notranslate"><span class="pre">RectangleArea::_y1</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv415TextMeasureData'" class="reference internal" href="#_CPPv415TextMeasureData"><code class="docutils literal notranslate"><span class="pre">TextMeasureData</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N15TextMeasureData8fontSizeE'" class="reference internal" href="#_CPPv4N15TextMeasureData8fontSizeE"><code class="docutils literal notranslate"><span class="pre">TextMeasureData::fontSize</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N15TextMeasureData11linePaddingE'" class="reference internal" href="#_CPPv4N15TextMeasureData11linePaddingE"><code class="docutils literal notranslate"><span class="pre">TextMeasureData::linePadding</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N15TextMeasureData12renderShadowE'" class="reference internal" href="#_CPPv4N15TextMeasureData12renderShadowE"><code class="docutils literal notranslate"><span class="pre">TextMeasureData::renderShadow</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N15TextMeasureData15showColorSymbolE'" class="reference internal" href="#_CPPv4N15TextMeasureData15showColorSymbolE"><code class="docutils literal notranslate"><span class="pre">TextMeasureData::showColorSymbol</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N15TextMeasureData10hideHyphenE'" class="reference internal" href="#_CPPv4N15TextMeasureData10hideHyphenE"><code class="docutils literal notranslate"><span class="pre">TextMeasureData::hideHyphen</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv416CaretMeasureData'" class="reference internal" href="#_CPPv416CaretMeasureData"><code class="docutils literal notranslate"><span class="pre">CaretMeasureData</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N16CaretMeasureData8positionE'" class="reference internal" href="#_CPPv4N16CaretMeasureData8positionE"><code class="docutils literal notranslate"><span class="pre">CaretMeasureData::position</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N16CaretMeasureData12shouldRenderE'" class="reference internal" href="#_CPPv4N16CaretMeasureData12shouldRenderE"><code class="docutils literal notranslate"><span class="pre">CaretMeasureData::shouldRender</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv424MinecraftUIRenderContext'" class="reference internal" href="#_CPPv424MinecraftUIRenderContext"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext24MinecraftUIRenderContextER15IClientInstanceR13ScreenContextRK7UIScene'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext24MinecraftUIRenderContextER15IClientInstanceR13ScreenContextRK7UIScene"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::MinecraftUIRenderContext()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContextD0Ev'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContextD0Ev"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::~MinecraftUIRenderContext()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext13getLineLengthER4FontRKNSt6stringEfb'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext13getLineLengthER4FontRKNSt6stringEfb"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::getLineLength()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext12getTextAlphaEv'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext12getTextAlphaEv"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::getTextAlpha()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext12setTextAlphaEf'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext12setTextAlphaEf"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::setTextAlpha()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext13drawDebugTextEPK13RectangleAreaPKNSt6stringEPKN3mce5ColorEfN2ui13TextAlignmentEPK15TextMeasureDataPK16CaretMeasureData'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext13drawDebugTextEPK13RectangleAreaPKNSt6stringEPKN3mce5ColorEfN2ui13TextAlignmentEPK15TextMeasureDataPK16CaretMeasureData"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::drawDebugText()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext8drawTextER4FontRK13RectangleAreaRKNSt6stringERKN3mce5ColorEfN2ui13TextAlignmentERK15TextMeasureDataRK16CaretMeasureData'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext8drawTextER4FontRK13RectangleAreaRKNSt6stringERKN3mce5ColorEfN2ui13TextAlignmentERK15TextMeasureDataRK16CaretMeasureData"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::drawText()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext9flushTextEf'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext9flushTextEf"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::flushText()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext9drawImageERKN3mce10TexturePtrEPKN3glm5tvec2IfEEPKN3glm5tvec2IfEEPN3glm5tvec2IfEEPN3glm5tvec2IfEEi'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext9drawImageERKN3mce10TexturePtrEPKN3glm5tvec2IfEEPKN3glm5tvec2IfEEPN3glm5tvec2IfEEPN3glm5tvec2IfEEi"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::drawImage()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext13drawNinesliceEPKN3mce10TexturePtrEPK13NinesliceInfo'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext13drawNinesliceEPKN3mce10TexturePtrEPK13NinesliceInfo"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::drawNineslice()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext11flushImagesERKN3mce5ColorEfRK12HashedString'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext11flushImagesERKN3mce5ColorEfRK12HashedString"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::flushImages()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext20beginSharedMeshBatchER20ComponentRenderBatch'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext20beginSharedMeshBatchER20ComponentRenderBatch"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::beginSharedMeshBatch()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext18endSharedMeshBatchER20ComponentRenderBatch'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext18endSharedMeshBatchER20ComponentRenderBatch"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::endSharedMeshBatch()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext13drawRectangleEPK13RectangleAreaPKN3mce5ColorEfi'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext13drawRectangleEPK13RectangleAreaPKN3mce5ColorEfi"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::drawRectangle()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext13fillRectangleEPK13RectangleAreaPKN3mce5ColorEf'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext13fillRectangleEPK13RectangleAreaPKN3mce5ColorEf"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::fillRectangle()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext18increaseStencilRefEv'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext18increaseStencilRefEv"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::increaseStencilRef()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext18decreaseStencilRefEv'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext18decreaseStencilRefEv"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::decreaseStencilRef()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext15resetStencilRefEv'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext15resetStencilRefEv"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::resetStencilRef()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext20fillRectangleStencilERK13RectangleArea'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext20fillRectangleStencilERK13RectangleArea"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::fillRectangleStencil()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext17enableScissorTestERK13RectangleArea'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext17enableScissorTestERK13RectangleArea"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::enableScissorTest()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext18disableScissorTestEv'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext18disableScissorTestEv"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::disableScissorTest()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext20setClippingRectangleERK13RectangleArea'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext20setClippingRectangleERK13RectangleArea"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::setClippingRectangle()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext24setFullClippingRectangleEv'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext24setFullClippingRectangleEv"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::setFullClippingRectangle()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext28saveCurrentClippingRectangleEv'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext28saveCurrentClippingRectangleEv"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::saveCurrentClippingRectangle()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext29restoreSavedClippingRectangleEv'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext29restoreSavedClippingRectangleEv"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::restoreSavedClippingRectangle()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext24getFullClippingRectangleEv'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext24getFullClippingRectangleEv"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::getFullClippingRectangle()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext12updateCustomEN3gsl8not_nullIP21CustomRenderComponentEE'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext12updateCustomEN3gsl8not_nullIP21CustomRenderComponentEE"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::updateCustom()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext12renderCustomEN3gsl8not_nullIP21CustomRenderComponentEEiR13RectangleArea'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext12renderCustomEN3gsl8not_nullIP21CustomRenderComponentEEiR13RectangleArea"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::renderCustom()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext7cleanupEv'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext7cleanupEv"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::cleanup()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext22removePersistentMeshesEv'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext22removePersistentMeshesEv"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::removePersistentMeshes()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext10getTextureEPK16ResourceLocationb'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext10getTextureEPK16ResourceLocationb"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::getTexture()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext16getZippedTextureERKN4Core4PathERK16ResourceLocationb'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext16getZippedTextureERKN4Core4PathERK16ResourceLocationb"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::getZippedTexture()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext13unloadTextureERK16ResourceLocation'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext13unloadTextureERK16ResourceLocation"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::unloadTexture()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext7mClientE'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext7mClientE"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::mClient</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext14mScreenContextE'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext14mScreenContextE"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::mScreenContext</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext9padding24E'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext9padding24E"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::padding24</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N24MinecraftUIRenderContext13mCurrentSceneE'" class="reference internal" href="#_CPPv4N24MinecraftUIRenderContext13mCurrentSceneE"><code class="docutils literal notranslate"><span class="pre">MinecraftUIRenderContext::mCurrentScene</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv42ui'" class="reference internal" href="#_CPPv42ui"><code class="docutils literal notranslate"><span class="pre">ui</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N2ui13TextAlignmentE'" class="reference internal" href="#_CPPv4N2ui13TextAlignmentE"><code class="docutils literal notranslate"><span class="pre">ui::TextAlignment</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N2ui13TextAlignment4LeftE'" class="reference internal" href="#_CPPv4N2ui13TextAlignment4LeftE"><code class="docutils literal notranslate"><span class="pre">ui::TextAlignment::Left</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N2ui13TextAlignment5RightE'" class="reference internal" href="#_CPPv4N2ui13TextAlignment5RightE"><code class="docutils literal notranslate"><span class="pre">ui::TextAlignment::Right</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N2ui13TextAlignment6CenterE'" class="reference internal" href="#_CPPv4N2ui13TextAlignment6CenterE"><code class="docutils literal notranslate"><span class="pre">ui::TextAlignment::Center</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv43mce'" class="reference internal" href="#_CPPv43mce"><code class="docutils literal notranslate"><span class="pre">mce</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv44Core'" class="reference internal" href="#_CPPv44Core"><code class="docutils literal notranslate"><span class="pre">Core</span></code></a></li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 7.2.6</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+<script src="../../_static/doctools.js?v=888ff710"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=40b7bc71"></script>
+<script src="../../_static/design-tabs.js?v=36754332"></script>
+</body>
+</html>

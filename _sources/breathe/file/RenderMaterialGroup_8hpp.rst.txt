@@ -1,0 +1,5 @@
+File RenderMaterialGroup.hpp
+============================
+
+.. doxygenfile:: RenderMaterialGroup.hpp
+   :project: AmethystApi

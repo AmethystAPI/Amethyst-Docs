@@ -1,0 +1,5 @@
+File PlayerInventory.hpp
+========================
+
+.. doxygenfile:: PlayerInventory.hpp
+   :project: AmethystApi

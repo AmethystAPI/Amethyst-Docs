@@ -1,0 +1,5 @@
+File ShulkerBoxBlockItem.hpp
+============================
+
+.. doxygenfile:: ShulkerBoxBlockItem.hpp
+   :project: AmethystApi

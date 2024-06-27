@@ -1,0 +1,5 @@
+File ItemStackNetIdVariant.hpp
+==============================
+
+.. doxygenfile:: ItemStackNetIdVariant.hpp
+   :project: AmethystApi

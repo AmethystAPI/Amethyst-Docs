@@ -1,0 +1,5 @@
+File ClientInstance.hpp
+=======================
+
+.. doxygenfile:: ClientInstance.hpp
+   :project: AmethystApi

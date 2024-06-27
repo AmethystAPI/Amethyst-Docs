@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+
+<html :class="{'dark': darkMode === 'dark' || (darkMode === 'system' &amp;&amp; window.matchMedia('(prefers-color-scheme: dark)').matches)}" class="scroll-smooth" data-content_root="../../" lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') || localStorage.setItem('darkMode', 'system'), activeSection: '' }" x-init="$watch('darkMode', val =&gt; localStorage.setItem('darkMode', val))">
+<head>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="white" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="black" metia="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>File Container.hpp | Amethyst  documentation</title>
+<meta content="File Container.hpp | Amethyst  documentation" property="og:title"/>
+<meta content="File Container.hpp | Amethyst  documentation" name="twitter:title"/>
+<link href="../../_static/pygments.css?v=5432af51" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=5b4133db" rel="stylesheet" type="text/css"/>
+<link href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-sphinx-design.css?v=a54cf077" rel="stylesheet" type="text/css"/>
+<link href="../../_static/logo-512x.png" rel="icon"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="ContentLogTypes_8hpp.html" rel="next" title="File ContentLogTypes.hpp"/>
+<link href="Config_8hpp.html" rel="prev" title="File Config.hpp"/>
+<script>
+    <!-- Prevent Flash of wrong theme -->
+      const userPreference = localStorage.getItem('darkMode');
+      let mode;
+      if (userPreference === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        mode = 'dark';
+        document.documentElement.classList.add('dark');
+      } else {
+        mode = 'light';
+      }
+      if (!userPreference) {localStorage.setItem('darkMode', mode)}
+    </script>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-sm border-border supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a><nav class="flex items-center space-x-6 text-sm font-medium">
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../autodocs.html">AmethystAPI</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../examples/index.html">Examples</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../getting_started/index.html">Getting Started</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../reverse_engineering/index.html">Reverse Engineering</a>
+</nav></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center space-x-1">
+<button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full shrink-0 overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="!justify-start text-sm md:!hidden bg-background" href="../../index.html"><span class="font-bold text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0 h-[calc(100vh-8rem)] md:h-auto">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../autodocs.html">AmethystAPI<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../filelist.html">File list<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="AABB_8hpp.html">File AABB.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorBlock_8hpp.html">File ActorBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorHeadRotationComponent_8hpp.html">File ActorHeadRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorRotationComponent_8hpp.html">File ActorRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorShaderManager_8hpp.html">File ActorShaderManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorTerrainInterlockData_8hpp.html">File ActorTerrainInterlockData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actor_8hpp.html">File Actor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AmethystContext_8hpp.html">File AmethystContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AuxDataBlockItem_8hpp.html">File AuxDataBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderContext_8hpp.html">File BaseActorRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderer_8hpp.html">File BaseActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseGameVersion_8hpp.html">File BaseGameVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseOptions_8hpp.html">File BaseOptions.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BinaryStream_8hpp.html">File BinaryStream.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorDataPacket_8hpp.html">File BlockActorDataPacket.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html">File BlockActorRendererDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererId_8hpp.html">File BlockActorRendererId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRenderer_8hpp.html">File BlockActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActor_8hpp.html">File BlockActor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentBase_8hpp.html">File BlockComponentBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentStorage_8hpp.html">File BlockComponentStorage.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockDefinitionGroup_8hpp.html">File BlockDefinitionGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockGraphics_8hpp.html">File BlockGraphics.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockItem_8hpp.html">File BlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockLegacy_8hpp.html">File BlockLegacy.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockMapColorComponent_8hpp.html">File BlockMapColorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockPos_8hpp.html">File BlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockRenderLayer_8hpp.html">File BlockRenderLayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockShape_8hpp.html">File BlockShape.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSourceListener_8hpp.html">File BlockSourceListener.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSource_8hpp.html">File BlockSource.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockState_8hpp.html">File BlockState.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTessellator_8hpp.html">File BlockTessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTypeRegistry_8hpp.html">File BlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Block_8hpp.html">File Block.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteArrayTag_8hpp.html">File ByteArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteTag_8hpp.html">File ByteTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CallStack_8hpp.html">File CallStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Camera_8hpp.html">File Camera.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChestBlock_8hpp.html">File ChestBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkBlockPos_8hpp.html">File ChunkBlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkPos_8hpp.html">File ChunkPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputHandler_8hpp.html">File ClientInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputMappingFactory_8hpp.html">File ClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInstance_8hpp.html">File ClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientNetworkHandler_8hpp.html">File ClientNetworkHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Color_8hpp.html">File Color.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CommonTypes_8hpp.html">File CommonTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTagVariant_8hpp.html">File CompoundTagVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTag_8hpp.html">File CompoundTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Config_8hpp.html">File Config.hpp</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">File Container.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLogTypes_8hpp.html">File ContentLogTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLog_8hpp.html">File ContentLog.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Dimension_8hpp.html">File Dimension.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Direction_8hpp.html">File Direction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DoubleTag_8hpp.html">File DoubleTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EndTag_8hpp.html">File EndTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityContext_8hpp.html">File EntityContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityIdTraits_8hpp.html">File EntityIdTraits.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityId_8hpp.html">File EntityId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ErrorInfo_8hpp.html">File ErrorInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EventManager_8hpp.html">File EventManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Event_8hpp.html">File Event.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FertilizerType_8hpp.html">File FertilizerType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FillingContainer_8hpp.html">File FillingContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FloatTag_8hpp.html">File FloatTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameEvent_8hpp.html">File GameEvent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameModuleClient_8hpp.html">File GameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRefsSharePtr_8hpp.html">File GameRefsSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRules_8hpp.html">File GameRules.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GetCollisionShapeInterface_8hpp.html">File GetCollisionShapeInterface.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GuiData_8hpp.html">File GuiData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HeightRange_8hpp.html">File HeightRange.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HitResult_8hpp.html">File HitResult.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HookManager_8hpp.html">File HookManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverRenderer_8hpp.html">File HoverRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverTextRenderer_8hpp.html">File HoverTextRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IClientInstance_8hpp.html">File IClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ILevel_8hpp.html">File ILevel.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IPacketHandlerDispatcher_8hpp.html">File IPacketHandlerDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IWorldRegistriesProvider_8hpp.html">File IWorldRegistriesProvider.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ImageInfo_8hpp.html">File ImageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InPackagePacks_8hpp.html">File InPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputAction_8hpp.html">File InputAction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputHandler_8hpp.html">File InputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputManager_8hpp.html">File InputManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMappingFactory_8hpp.html">File InputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMapping_8hpp.html">File InputMapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Int64Tag_8hpp.html">File Int64Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntArrayTag_8hpp.html">File IntArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntTag_8hpp.html">File IntTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Inventory_8hpp.html">File Inventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IsotropicFaceData_8hpp.html">File IsotropicFaceData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemCategory_8hpp.html">File ItemCategory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemGroup_8hpp.html">File ItemGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemIconManager_8hpp.html">File ItemIconManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemInstance_8hpp.html">File ItemInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryManager_8hpp.html">File ItemRegistryManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryRef_8hpp.html">File ItemRegistryRef.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistry_8hpp.html">File ItemRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRenderer_8hpp.html">File ItemRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackBase_8hpp.html">File ItemStackBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackNetIdVariant_8hpp.html">File ItemStackNetIdVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStack_8hpp.html">File ItemStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Item_8hpp.html">File Item.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Keymapping_8hpp.html">File Keymapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelChunk_8hpp.html">File LevelChunk.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRendererPlayer_8hpp.html">File LevelRendererPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRenderer_8hpp.html">File LevelRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Level_8hpp.html">File Level.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ListTag_8hpp.html">File ListTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LocalPlayer_8hpp.html">File LocalPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Log_8hpp.html">File Log.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LoopbackPacketSender_8hpp.html">File LoopbackPacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialPtr_8hpp.html">File MaterialPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialType_8hpp.html">File MaterialType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Material_8hpp.html">File Material.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Math_8hpp.html">File Math.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MatrixStack_8hpp.html">File MatrixStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Matrix_8hpp.html">File Matrix.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Memory_8hpp.html">File Memory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshContext_8hpp.html">File MeshContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshData_8hpp.html">File MeshData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshHelpers_8hpp.html">File MeshHelpers.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mesh_8hpp.html">File Mesh.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftGame_8hpp.html">File MinecraftGame.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftInputHandler_8hpp.html">File MinecraftInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftPackageInfo_8hpp.html">File MinecraftPackageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftUIRenderContext_8hpp.html">File MinecraftUIRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftVtables_8hpp.html">File MinecraftVtables.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Minecraft_8hpp.html">File Minecraft.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mob_8hpp.html">File Mob.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mod_8hpp.html">File Mod.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetEventCallback_8hpp.html">File NetEventCallback.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkBlockPosition_8hpp.html">File NetworkBlockPosition.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkPeer_8hpp.html">File NetworkPeer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NewType_8hpp.html">File NewType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceHelper_8hpp.html">File NinesliceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceInfo_8hpp.html">File NinesliceInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NonOwnerPointer_8hpp.html">File NonOwnerPointer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Options_8hpp.html">File Options.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerPtr_8hpp.html">File OwnerPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerStorageSharePtr_8hpp.html">File OwnerStorageSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketHandlerDispatcherInstance_8hpp.html">File PacketHandlerDispatcherInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketPriority_8hpp.html">File PacketPriority.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketSender_8hpp.html">File PacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_8hpp.html">File Packet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PatchManager_8hpp.html">File PatchManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Path_8hpp.html">File Path.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerInventory_8hpp.html">File PlayerInventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerUIContainer_8hpp.html">File PlayerUIContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Player_8hpp.html">File Player.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RandomizableBlockActorContainerBase_8hpp.html">File RandomizableBlockActorContainerBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RemappingLayout_8hpp.html">File RemappingLayout.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderContext_8hpp.html">File RenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroupBase_8hpp.html">File RenderMaterialGroupBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroup_8hpp.html">File RenderMaterialGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResolvedItemIconInfo_8hpp.html">File ResolvedItemIconInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceHelper_8hpp.html">File ResourceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceUtil_8hpp.html">File ResourceUtil.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Result_8hpp.html">File Result.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenContext_8hpp.html">File ScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenView_8hpp.html">File ScreenView.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SemVersion_8hpp.html">File SemVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShapeType_8hpp.html">File ShapeType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SharedPtr_8hpp.html">File SharedPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShortTag_8hpp.html">File ShortTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShulkerBoxBlockItem_8hpp.html">File ShulkerBoxBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SimpleContainer_8hpp.html">File SimpleContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SliderComponent_8hpp.html">File SliderComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StateVectorComponent_8hpp.html">File StateVectorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringHash_8hpp.html">File StringHash.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringTag_8hpp.html">File StringTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringUtils_8hpp.html">File StringUtils.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tag_8hpp.html">File Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tessellator_8hpp.html">File Tessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextComponent_8hpp.html">File TextComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureAtlasItem_8hpp.html">File TextureAtlasItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TexturePtr_8hpp.html">File TexturePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureUVCoordinateSet_8hpp.html">File TextureUVCoordinateSet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tick_8hpp.html">File Tick.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ToggleComponent_8hpp.html">File ToggleComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIComponent_8hpp.html">File UIComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIControl_8hpp.html">File UIControl.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIScreenContext_8hpp.html">File UIScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UUID_8hpp.html">File UUID.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UseAnim_8hpp.html">File UseAnim.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Utility_8hpp.html">File Utility.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaBlockTypeRegistry_8hpp.html">File VanillaBlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaClientInputMappingFactory_8hpp.html">File VanillaClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaGameModuleClient_8hpp.html">File VanillaGameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaInPackagePacks_8hpp.html">File VanillaInPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaItems_8hpp.html">File VanillaItems.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec2_8hpp.html">File Vec2.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec3_8hpp.html">File Vec3.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VisualTree_8hpp.html">File VisualTree.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expected_8hpp.html">File expected.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsl__includes_8hpp.html">File gsl_includes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optional__ref_8hpp.html">File optional_ref.hpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/index.html">Examples<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/networking/index.html">Networking<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../../examples/networking/udp.html">UDP Networking Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../getting_started/index.html">Getting Started<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/end_user/installing_amethyst.html">Installing Amethyst</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/devs/compiling_amethyst.html">Compiling Amethyst</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reverse_engineering/index.html">Reverse Engineering</a></li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../how_to_doc/index.html">How to doc<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/setup.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/doxygen.html">Doxygen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/sphinx.html">Sphinx</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../../index.html">
+<span class="hidden md:inline">Amethyst  documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../../autodocs.html">AmethystAPI</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../filelist.html">File list</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">File Container.hpp</span>
+</nav>
+<div id="content" role="main">
+<section id="file-container-hpp">
+<h1>File Container.hpp<a class="headerlink" href="#file-container-hpp" title="Link to this heading">¶</a></h1>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-typedefs">Typedefs</p>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv418ContainerRuntimeId">
+<span id="_CPPv318ContainerRuntimeId"></span><span id="_CPPv218ContainerRuntimeId"></span><span class="target" id="Container_8hpp_1a34b60d8842778f127c0b88dbc370e0f6"></span><span class="k"><span class="pre">using</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ContainerRuntimeId</span></span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><a class="headerlink" href="#_CPPv418ContainerRuntimeId" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv418ContainerRuntimeId'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv413ContainerType">
+<span id="_CPPv313ContainerType"></span><span id="_CPPv213ContainerType"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fd"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ContainerType</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="kt"><span class="pre">signed</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><a class="headerlink" href="#_CPPv413ContainerType" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv413ContainerType'">¶</a><br/></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType4NONEE">
+<span id="_CPPv3N13ContainerType4NONEE"></span><span id="_CPPv2N13ContainerType4NONEE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdab50339a10e1de285ac99d4c3990b8693"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NONE</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType4NONEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType4NONEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType9INVENTORYE">
+<span id="_CPPv3N13ContainerType9INVENTORYE"></span><span id="_CPPv2N13ContainerType9INVENTORYE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda23c6d3d8dee11d726d3c9e52099b7d02"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">INVENTORY</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType9INVENTORYE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType9INVENTORYE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType9CONTAINERE">
+<span id="_CPPv3N13ContainerType9CONTAINERE"></span><span id="_CPPv2N13ContainerType9CONTAINERE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda9bbab5f947b9e3fbb8a399ecc257459b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CONTAINER</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType9CONTAINERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType9CONTAINERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType9WORKBENCHE">
+<span id="_CPPv3N13ContainerType9WORKBENCHE"></span><span id="_CPPv2N13ContainerType9WORKBENCHE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda0181a95d847d6c52ae4d95c0dde755ee"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WORKBENCH</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType9WORKBENCHE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType9WORKBENCHE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType7FURNACEE">
+<span id="_CPPv3N13ContainerType7FURNACEE"></span><span id="_CPPv2N13ContainerType7FURNACEE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda66971390fecfb97a020a18b5d94701d2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FURNACE</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType7FURNACEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType7FURNACEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType11ENCHANTMENTE">
+<span id="_CPPv3N13ContainerType11ENCHANTMENTE"></span><span id="_CPPv2N13ContainerType11ENCHANTMENTE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdafb0a3600784262b618eb2774876a10ed"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ENCHANTMENT</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType11ENCHANTMENTE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType11ENCHANTMENTE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType13BREWING_STANDE">
+<span id="_CPPv3N13ContainerType13BREWING_STANDE"></span><span id="_CPPv2N13ContainerType13BREWING_STANDE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda722b0d756b0f1a74ddd91179ae158c42"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BREWING_STAND</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType13BREWING_STANDE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType13BREWING_STANDE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType5ANVILE">
+<span id="_CPPv3N13ContainerType5ANVILE"></span><span id="_CPPv2N13ContainerType5ANVILE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda8371d5261a01ddae3e9b308a9c735791"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ANVIL</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType5ANVILE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType5ANVILE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType9DISPENSERE">
+<span id="_CPPv3N13ContainerType9DISPENSERE"></span><span id="_CPPv2N13ContainerType9DISPENSERE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdaf77ef16d0842acb71906113551010269"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DISPENSER</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType9DISPENSERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType9DISPENSERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType7DROPPERE">
+<span id="_CPPv3N13ContainerType7DROPPERE"></span><span id="_CPPv2N13ContainerType7DROPPERE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdabc81e70e3239f486c11535585779eb34"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">DROPPER</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType7DROPPERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType7DROPPERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType6HOPPERE">
+<span id="_CPPv3N13ContainerType6HOPPERE"></span><span id="_CPPv2N13ContainerType6HOPPERE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda6a0513732e84b509f348462fdf4ec34c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HOPPER</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType6HOPPERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType6HOPPERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType8CAULDRONE">
+<span id="_CPPv3N13ContainerType8CAULDRONE"></span><span id="_CPPv2N13ContainerType8CAULDRONE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda0f204b0b8eb1f2d8528b269c0bb0daae"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CAULDRON</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType8CAULDRONE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType8CAULDRONE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType14MINECART_CHESTE">
+<span id="_CPPv3N13ContainerType14MINECART_CHESTE"></span><span id="_CPPv2N13ContainerType14MINECART_CHESTE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda316ea860decb5584440761de7de77976"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MINECART_CHEST</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType14MINECART_CHESTE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType14MINECART_CHESTE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType15MINECART_HOPPERE">
+<span id="_CPPv3N13ContainerType15MINECART_HOPPERE"></span><span id="_CPPv2N13ContainerType15MINECART_HOPPERE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda14650bfaefc89151c2c0e8222e530318"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MINECART_HOPPER</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType15MINECART_HOPPERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType15MINECART_HOPPERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType5HORSEE">
+<span id="_CPPv3N13ContainerType5HORSEE"></span><span id="_CPPv2N13ContainerType5HORSEE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda5580b2daa12c1eee42bfb8e513684f98"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HORSE</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType5HORSEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType5HORSEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType6BEACONE">
+<span id="_CPPv3N13ContainerType6BEACONE"></span><span id="_CPPv2N13ContainerType6BEACONE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda4a3fd580504c35a69c1ea7fda0f01fce"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BEACON</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType6BEACONE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType6BEACONE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType16STRUCTURE_EDITORE">
+<span id="_CPPv3N13ContainerType16STRUCTURE_EDITORE"></span><span id="_CPPv2N13ContainerType16STRUCTURE_EDITORE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda11d48f48166cc637a4b0bab6d8b78b9c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">STRUCTURE_EDITOR</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType16STRUCTURE_EDITORE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType16STRUCTURE_EDITORE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType5TRADEE">
+<span id="_CPPv3N13ContainerType5TRADEE"></span><span id="_CPPv2N13ContainerType5TRADEE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda3a5373f7c1598b9e251273833f5bca21"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TRADE</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType5TRADEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType5TRADEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType13COMMAND_BLOCKE">
+<span id="_CPPv3N13ContainerType13COMMAND_BLOCKE"></span><span id="_CPPv2N13ContainerType13COMMAND_BLOCKE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdad1fba1a422bebc51004409c6f15f353e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">COMMAND_BLOCK</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType13COMMAND_BLOCKE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType13COMMAND_BLOCKE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType7JUKEBOXE">
+<span id="_CPPv3N13ContainerType7JUKEBOXE"></span><span id="_CPPv2N13ContainerType7JUKEBOXE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdafe41c76db47b88c0b70f762424e6bc46"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">JUKEBOX</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType7JUKEBOXE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType7JUKEBOXE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType5ARMORE">
+<span id="_CPPv3N13ContainerType5ARMORE"></span><span id="_CPPv2N13ContainerType5ARMORE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda0e4e2cd731d2f8d4f1e5ae8f499630f7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ARMOR</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType5ARMORE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType5ARMORE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType4HANDE">
+<span id="_CPPv3N13ContainerType4HANDE"></span><span id="_CPPv2N13ContainerType4HANDE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda41b00f79ae19301abe87bd8bc19120d9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HAND</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType4HANDE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType4HANDE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType16COMPOUND_CREATORE">
+<span id="_CPPv3N13ContainerType16COMPOUND_CREATORE"></span><span id="_CPPv2N13ContainerType16COMPOUND_CREATORE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdacce872bdca36d138f9a366290dfce517"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">COMPOUND_CREATOR</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType16COMPOUND_CREATORE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType16COMPOUND_CREATORE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType19ELEMENT_CONSTRUCTORE">
+<span id="_CPPv3N13ContainerType19ELEMENT_CONSTRUCTORE"></span><span id="_CPPv2N13ContainerType19ELEMENT_CONSTRUCTORE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdad109adbd930d5dbe18abbac6e5bb1561"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ELEMENT_CONSTRUCTOR</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType19ELEMENT_CONSTRUCTORE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType19ELEMENT_CONSTRUCTORE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType16MATERIAL_REDUCERE">
+<span id="_CPPv3N13ContainerType16MATERIAL_REDUCERE"></span><span id="_CPPv2N13ContainerType16MATERIAL_REDUCERE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdae164bbaea500bd8f0f4a69d36b0145ae"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MATERIAL_REDUCER</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType16MATERIAL_REDUCERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType16MATERIAL_REDUCERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType9LAB_TABLEE">
+<span id="_CPPv3N13ContainerType9LAB_TABLEE"></span><span id="_CPPv2N13ContainerType9LAB_TABLEE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda8ce834430ae4685c4fe8f44ed82c3782"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LAB_TABLE</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType9LAB_TABLEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType9LAB_TABLEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType4LOOME">
+<span id="_CPPv3N13ContainerType4LOOME"></span><span id="_CPPv2N13ContainerType4LOOME"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdac1e451823e84cd100110d024c7f53fca"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LOOM</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType4LOOME" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType4LOOME'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType7LECTERNE">
+<span id="_CPPv3N13ContainerType7LECTERNE"></span><span id="_CPPv2N13ContainerType7LECTERNE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda0064f38128b2c6d5450a2b9b4ad2460f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LECTERN</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType7LECTERNE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType7LECTERNE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType10GRINDSTONEE">
+<span id="_CPPv3N13ContainerType10GRINDSTONEE"></span><span id="_CPPv2N13ContainerType10GRINDSTONEE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdaa62e42085d06ebd15bae734890d723e0"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">GRINDSTONE</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType10GRINDSTONEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType10GRINDSTONEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType13BLAST_FURNACEE">
+<span id="_CPPv3N13ContainerType13BLAST_FURNACEE"></span><span id="_CPPv2N13ContainerType13BLAST_FURNACEE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda94e77445700f83be9632ada068edd1f4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BLAST_FURNACE</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType13BLAST_FURNACEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType13BLAST_FURNACEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType6SMOKERE">
+<span id="_CPPv3N13ContainerType6SMOKERE"></span><span id="_CPPv2N13ContainerType6SMOKERE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdaa9ce1a36d8342a2a73022c1dd46a3002"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SMOKER</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType6SMOKERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType6SMOKERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType11STONECUTTERE">
+<span id="_CPPv3N13ContainerType11STONECUTTERE"></span><span id="_CPPv2N13ContainerType11STONECUTTERE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda3beb36ff86a585889a764f9c3090a5b2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">STONECUTTER</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType11STONECUTTERE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType11STONECUTTERE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType11CARTOGRAPHYE">
+<span id="_CPPv3N13ContainerType11CARTOGRAPHYE"></span><span id="_CPPv2N13ContainerType11CARTOGRAPHYE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda08ed38bbe5f6f66db086b2d690081b03"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CARTOGRAPHY</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType11CARTOGRAPHYE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType11CARTOGRAPHYE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType3HUDE">
+<span id="_CPPv3N13ContainerType3HUDE"></span><span id="_CPPv2N13ContainerType3HUDE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdad2d84c1fc4f2d5d5f1c43bdb29dc236f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">HUD</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType3HUDE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType3HUDE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType13JIGSAW_EDITORE">
+<span id="_CPPv3N13ContainerType13JIGSAW_EDITORE"></span><span id="_CPPv2N13ContainerType13JIGSAW_EDITORE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda48b28ea4b1b3d884cda0c91e972b97f5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">JIGSAW_EDITOR</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType13JIGSAW_EDITORE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType13JIGSAW_EDITORE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType14SMITHING_TABLEE">
+<span id="_CPPv3N13ContainerType14SMITHING_TABLEE"></span><span id="_CPPv2N13ContainerType14SMITHING_TABLEE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fda70c282543cc83ee4436e43b7856ad3e9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SMITHING_TABLE</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType14SMITHING_TABLEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType14SMITHING_TABLEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13ContainerType10CHEST_BOATE">
+<span id="_CPPv3N13ContainerType10CHEST_BOATE"></span><span id="_CPPv2N13ContainerType10CHEST_BOATE"></span><span class="target" id="Container_8hpp_1aa701056783e945841cd170a2fb2a55fdab2e94db6d420c0cd0fd4bce58d859287"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CHEST_BOAT</span></span></span><a class="headerlink" href="#_CPPv4N13ContainerType10CHEST_BOATE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13ContainerType10CHEST_BOATE'">¶</a><br/></dt>
+<dd></dd></dl>
+</dd></dl>
+</div>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv49Container">
+<span id="_CPPv39Container"></span><span id="_CPPv29Container"></span><span id="Container"></span><span class="target" id="classContainer"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Container</span></span></span><a class="headerlink" href="#_CPPv49Container" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv49Container'">¶</a><br/></dt>
+<dd><p>Subclassed by <a class="reference internal" href="FillingContainer_8hpp.html#classFillingContainer"><span class="std std-ref">FillingContainer</span></a>, <a class="reference internal" href="SimpleContainer_8hpp.html#classSimpleContainer"><span class="std std-ref">SimpleContainer</span></a></p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container9ContainerE13ContainerType">
+<span id="_CPPv3N9Container9ContainerE13ContainerType"></span><span id="_CPPv2N9Container9ContainerE13ContainerType"></span><span id="Container::Container__ContainerType"></span><span class="target" id="classContainer_1abeecf4f2ca4cca3ed457112fc5507593"></span><span class="sig-name descname"><span class="n"><span class="pre">Container</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv413ContainerType" title="ContainerType"><span class="n"><span class="pre">ContainerType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container9ContainerE13ContainerType" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container9ContainerE13ContainerType'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container9ContainerE13ContainerTypeRKNSt6stringEb">
+<span id="_CPPv3N9Container9ContainerE13ContainerTypeRKNSt6stringEb"></span><span id="_CPPv2N9Container9ContainerE13ContainerTypeRKNSt6stringEb"></span><span id="Container::Container__ContainerType.ssCR.b"></span><span class="target" id="classContainer_1a7bbc79dba69836658efbf59ed58677c3"></span><span class="sig-name descname"><span class="n"><span class="pre">Container</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv413ContainerType" title="ContainerType"><span class="n"><span class="pre">ContainerType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">containerName</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">hasCustomName</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container9ContainerE13ContainerTypeRKNSt6stringEb" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container9ContainerE13ContainerTypeRKNSt6stringEb'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9ContainerD0Ev">
+<span id="_CPPv3N9ContainerD0Ev"></span><span id="_CPPv2N9ContainerD0Ev"></span><span id="Container::~Container"></span><span class="target" id="classContainer_1a0aaa9a886e8b4fb81fc3ecb0444c1b18"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~Container</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9ContainerD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9ContainerD0Ev'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container4initEv">
+<span id="_CPPv3N9Container4initEv"></span><span id="_CPPv2N9Container4initEv"></span><span id="Container::init"></span><span class="target" id="classContainer_1a0904a33dd3f1d9fcb8cbbbac61716d88"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">init</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container4initEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container4initEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container22serverInitItemStackIdsEiiNSt8functionIFviRK9ItemStackEEE">
+<span id="_CPPv3N9Container22serverInitItemStackIdsEiiNSt8functionIFviRK9ItemStackEEE"></span><span id="_CPPv2N9Container22serverInitItemStackIdsEiiNSt8functionIFviRK9ItemStackEEE"></span><span class="target" id="classContainer_1a6c1bcc802b869fb3df1fbc73762cdf46"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">serverInitItemStackIds</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span>, <span class="kt"><span class="pre">int</span></span>, <a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9Container22serverInitItemStackIdsEiiNSt8functionIFviRK9ItemStackEEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container22serverInitItemStackIdsEiiNSt8functionIFviRK9ItemStackEEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container24addContentChangeListenerEP30ContainerContentChangeListener">
+<span id="_CPPv3N9Container24addContentChangeListenerEP30ContainerContentChangeListener"></span><span id="_CPPv2N9Container24addContentChangeListenerEP30ContainerContentChangeListener"></span><span id="Container::addContentChangeListener__ContainerContentChangeListenerP"></span><span class="target" id="classContainer_1a1159bdd8225cf51ec5e34a727b8c6ff4"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addContentChangeListener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ContainerContentChangeListener</span></span><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container24addContentChangeListenerEP30ContainerContentChangeListener" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container24addContentChangeListenerEP30ContainerContentChangeListener'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container27removeContentChangeListenerEP30ContainerContentChangeListener">
+<span id="_CPPv3N9Container27removeContentChangeListenerEP30ContainerContentChangeListener"></span><span id="_CPPv2N9Container27removeContentChangeListenerEP30ContainerContentChangeListener"></span><span id="Container::removeContentChangeListener__ContainerContentChangeListenerP"></span><span class="target" id="classContainer_1a383dac94e34563e4a6e1a6cb05b35b5a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">removeContentChangeListener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ContainerContentChangeListener</span></span><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container27removeContentChangeListenerEP30ContainerContentChangeListener" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container27removeContentChangeListenerEP30ContainerContentChangeListener'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container18addRemovedListenerEP24ContainerRemovedListener">
+<span id="_CPPv3N9Container18addRemovedListenerEP24ContainerRemovedListener"></span><span id="_CPPv2N9Container18addRemovedListenerEP24ContainerRemovedListener"></span><span id="Container::addRemovedListener__ContainerRemovedListenerP"></span><span class="target" id="classContainer_1a3afac3c9919b3f4d10449a4edf45dedf"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addRemovedListener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ContainerRemovedListener</span></span><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container18addRemovedListenerEP24ContainerRemovedListener" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container18addRemovedListenerEP24ContainerRemovedListener'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container21removeRemovedListenerEP24ContainerRemovedListener">
+<span id="_CPPv3N9Container21removeRemovedListenerEP24ContainerRemovedListener"></span><span id="_CPPv2N9Container21removeRemovedListenerEP24ContainerRemovedListener"></span><span id="Container::removeRemovedListener__ContainerRemovedListenerP"></span><span class="target" id="classContainer_1a5dab4c3d55c70ee7813db05e978a9a1d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">removeRemovedListener</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">ContainerRemovedListener</span></span><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container21removeRemovedListenerEP24ContainerRemovedListener" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container21removeRemovedListenerEP24ContainerRemovedListener'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9Container7getItemEi">
+<span id="_CPPv3NK9Container7getItemEi"></span><span id="_CPPv2NK9Container7getItemEi"></span><span id="Container::getItem__iC"></span><span class="target" id="classContainer_1a56b45160c7b57c119c7594e1b53adbfb"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">getItem</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK9Container7getItemEi" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9Container7getItemEi'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container14hasRoomForItemERK9ItemStack">
+<span id="_CPPv3N9Container14hasRoomForItemERK9ItemStack"></span><span id="_CPPv2N9Container14hasRoomForItemERK9ItemStack"></span><span id="Container::hasRoomForItem__ItemStackCR"></span><span class="target" id="classContainer_1ae43ce4a61fa0dd7443164b54897e5de6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hasRoomForItem</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container14hasRoomForItemERK9ItemStack" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container14hasRoomForItemERK9ItemStack'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container7addItemER9ItemStack">
+<span id="_CPPv3N9Container7addItemER9ItemStack"></span><span id="_CPPv2N9Container7addItemER9ItemStack"></span><span id="Container::addItem__ItemStackR"></span><span class="target" id="classContainer_1a4e51006590ccaf4c648d190978059c36"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addItem</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container7addItemER9ItemStack" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container7addItemER9ItemStack'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container23addItemWithForceBalanceER9ItemStack">
+<span id="_CPPv3N9Container23addItemWithForceBalanceER9ItemStack"></span><span id="_CPPv2N9Container23addItemWithForceBalanceER9ItemStack"></span><span id="Container::addItemWithForceBalance__ItemStackR"></span><span class="target" id="classContainer_1a08aedda50038647e8f91cdc8095add1c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addItemWithForceBalance</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container23addItemWithForceBalanceER9ItemStack" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container23addItemWithForceBalanceER9ItemStack'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container23addItemToFirstEmptySlotERK9ItemStack">
+<span id="_CPPv3N9Container23addItemToFirstEmptySlotERK9ItemStack"></span><span id="_CPPv2N9Container23addItemToFirstEmptySlotERK9ItemStack"></span><span id="Container::addItemToFirstEmptySlot__ItemStackCR"></span><span class="target" id="classContainer_1a5620b4d274e6654ba34a6cddb1b0eb1f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addItemToFirstEmptySlot</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container23addItemToFirstEmptySlotERK9ItemStack" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container23addItemToFirstEmptySlotERK9ItemStack'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container7setItemEiRK9ItemStack">
+<span id="_CPPv3N9Container7setItemEiRK9ItemStack"></span><span id="_CPPv2N9Container7setItemEiRK9ItemStack"></span><span id="Container::setItem__i.ItemStackCR"></span><span class="target" id="classContainer_1af3ddae157309d98f1a71578097e79b87"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setItem</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9Container7setItemEiRK9ItemStack" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container7setItemEiRK9ItemStack'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container23setItemWithForceBalanceEiRK9ItemStackb">
+<span id="_CPPv3N9Container23setItemWithForceBalanceEiRK9ItemStackb"></span><span id="_CPPv2N9Container23setItemWithForceBalanceEiRK9ItemStackb"></span><span id="Container::setItemWithForceBalance__i.ItemStackCR.b"></span><span class="target" id="classContainer_1ab7f60da7ff2c74ceff110b6a9015f44a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setItemWithForceBalance</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container23setItemWithForceBalanceEiRK9ItemStackb" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container23setItemWithForceBalanceEiRK9ItemStackb'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container10removeItemEii">
+<span id="_CPPv3N9Container10removeItemEii"></span><span id="_CPPv2N9Container10removeItemEii"></span><span id="Container::removeItem__i.i"></span><span class="target" id="classContainer_1adad8ff0b8e3eb6827f373ebda5eb5231"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">removeItem</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span>, <span class="kt"><span class="pre">int</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container10removeItemEii" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container10removeItemEii'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container14removeAllItemsEv">
+<span id="_CPPv3N9Container14removeAllItemsEv"></span><span id="_CPPv2N9Container14removeAllItemsEv"></span><span id="Container::removeAllItems"></span><span class="target" id="classContainer_1a527b166b6645e12369eada5ba6d75ddc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">removeAllItems</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container14removeAllItemsEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container14removeAllItemsEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container30removeAllItemsWithForceBalanceEv">
+<span id="_CPPv3N9Container30removeAllItemsWithForceBalanceEv"></span><span id="_CPPv2N9Container30removeAllItemsWithForceBalanceEv"></span><span id="Container::removeAllItemsWithForceBalance"></span><span class="target" id="classContainer_1aeb300470a3ef9f885f37909631765c80"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">removeAllItemsWithForceBalance</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container30removeAllItemsWithForceBalanceEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container30removeAllItemsWithForceBalanceEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container16containerRemovedEv">
+<span id="_CPPv3N9Container16containerRemovedEv"></span><span id="_CPPv2N9Container16containerRemovedEv"></span><span id="Container::containerRemoved"></span><span class="target" id="classContainer_1a0ecfe4d5a613ae279f17d69ce641fcd0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">containerRemoved</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container16containerRemovedEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container16containerRemovedEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container15dropSlotContentER11BlockSourceRK4Vec3bi">
+<span id="_CPPv3N9Container15dropSlotContentER11BlockSourceRK4Vec3bi"></span><span id="_CPPv2N9Container15dropSlotContentER11BlockSourceRK4Vec3bi"></span><span id="Container::dropSlotContent__BlockSourceR.Vec3CR.b.i"></span><span class="target" id="classContainer_1a61729e7c6db25b3678bb8b1cc807a18d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dropSlotContent</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockSource_8hpp.html#_CPPv411BlockSource" title="BlockSource"><span class="n"><span class="pre">BlockSource</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Vec3_8hpp.html#_CPPv44Vec3" title="Vec3"><span class="n"><span class="pre">Vec3</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <span class="kt"><span class="pre">bool</span></span>, <span class="kt"><span class="pre">int</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container15dropSlotContentER11BlockSourceRK4Vec3bi" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container15dropSlotContentER11BlockSourceRK4Vec3bi'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container12dropContentsER11BlockSourceRK4Vec3b">
+<span id="_CPPv3N9Container12dropContentsER11BlockSourceRK4Vec3b"></span><span id="_CPPv2N9Container12dropContentsER11BlockSourceRK4Vec3b"></span><span id="Container::dropContents__BlockSourceR.Vec3CR.b"></span><span class="target" id="classContainer_1a7f2fec25e059936468708e30f3cf2f44"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dropContents</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockSource_8hpp.html#_CPPv411BlockSource" title="BlockSource"><span class="n"><span class="pre">BlockSource</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Vec3_8hpp.html#_CPPv44Vec3" title="Vec3"><span class="n"><span class="pre">Vec3</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <span class="kt"><span class="pre">bool</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container12dropContentsER11BlockSourceRK4Vec3b" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container12dropContentsER11BlockSourceRK4Vec3b'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9Container16getContainerSizeEv">
+<span id="_CPPv3NK9Container16getContainerSizeEv"></span><span id="_CPPv2NK9Container16getContainerSizeEv"></span><span id="Container::getContainerSizeC"></span><span class="target" id="classContainer_1a090be5d110123b62bec9b87f24877a3d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getContainerSize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK9Container16getContainerSizeEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9Container16getContainerSizeEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9Container15getMaxStackSizeEv">
+<span id="_CPPv3NK9Container15getMaxStackSizeEv"></span><span id="_CPPv2NK9Container15getMaxStackSizeEv"></span><span id="Container::getMaxStackSizeC"></span><span class="target" id="classContainer_1a6b9dc8a23c62285bdee062e7fe948de2"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getMaxStackSize</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4NK9Container15getMaxStackSizeEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9Container15getMaxStackSizeEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container9startOpenER6Player">
+<span id="_CPPv3N9Container9startOpenER6Player"></span><span id="_CPPv2N9Container9startOpenER6Player"></span><span id="Container::startOpen__PlayerR"></span><span class="target" id="classContainer_1ad69e31bf35e24a2d3a4f62b0d394a05a"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">startOpen</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Player_8hpp.html#_CPPv46Player" title="Player"><span class="n"><span class="pre">Player</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="m"><span class="pre">0</span></span><a class="headerlink" href="#_CPPv4N9Container9startOpenER6Player" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container9startOpenER6Player'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container8stopOpenER6Player">
+<span id="_CPPv3N9Container8stopOpenER6Player"></span><span id="_CPPv2N9Container8stopOpenER6Player"></span><span id="Container::stopOpen__PlayerR"></span><span class="target" id="classContainer_1a7e9c20927e4286fdecc2f9a503569899"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">stopOpen</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Player_8hpp.html#_CPPv46Player" title="Player"><span class="n"><span class="pre">Player</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container8stopOpenER6Player" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container8stopOpenER6Player'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9Container13getSlotCopiesEv">
+<span id="_CPPv3NK9Container13getSlotCopiesEv"></span><span id="_CPPv2NK9Container13getSlotCopiesEv"></span><span id="Container::getSlotCopiesC"></span><span class="target" id="classContainer_1ab2e152f910d8f196b03746102323e855"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">allocator</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getSlotCopies</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9Container13getSlotCopiesEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9Container13getSlotCopiesEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9Container8getSlotsEv">
+<span id="_CPPv3NK9Container8getSlotsEv"></span><span id="_CPPv2NK9Container8getSlotsEv"></span><span id="Container::getSlotsC"></span><span class="target" id="classContainer_1ada9637823fec5220fac98d3b3ceab07d"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">allocator</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getSlots</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9Container8getSlotsEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9Container8getSlotsEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9Container18getEmptySlotsCountEv">
+<span id="_CPPv3NK9Container18getEmptySlotsCountEv"></span><span id="_CPPv2NK9Container18getEmptySlotsCountEv"></span><span id="Container::getEmptySlotsCountC"></span><span class="target" id="classContainer_1a883dbcc2d2aedcfbf0584b4635244aa3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getEmptySlotsCount</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9Container18getEmptySlotsCountEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9Container18getEmptySlotsCountEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container12getItemCountERK9ItemStack">
+<span id="_CPPv3N9Container12getItemCountERK9ItemStack"></span><span id="_CPPv2N9Container12getItemCountERK9ItemStack"></span><span id="Container::getItemCount__ItemStackCR"></span><span class="target" id="classContainer_1a22eff758a4351c21bc924d104e0aef28"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getItemCount</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container12getItemCountERK9ItemStack" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container12getItemCountERK9ItemStack'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9Container20findFirstSlotForItemERK9ItemStack">
+<span id="_CPPv3NK9Container20findFirstSlotForItemERK9ItemStack"></span><span id="_CPPv2NK9Container20findFirstSlotForItemERK9ItemStack"></span><span id="Container::findFirstSlotForItem__ItemStackCRC"></span><span class="target" id="classContainer_1a5c40120fd5a6c4e60e37892c65f5ca6f"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">findFirstSlotForItem</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9Container20findFirstSlotForItemERK9ItemStack" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9Container20findFirstSlotForItemERK9ItemStack'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9Container13canPushInItemEiiRK9ItemStack">
+<span id="_CPPv3NK9Container13canPushInItemEiiRK9ItemStack"></span><span id="_CPPv2NK9Container13canPushInItemEiiRK9ItemStack"></span><span id="Container::canPushInItem__i.i.ItemStackCRC"></span><span class="target" id="classContainer_1af8d856470eb46b424992a5fb0683b1a7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">canPushInItem</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span>, <span class="kt"><span class="pre">int</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9Container13canPushInItemEiiRK9ItemStack" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9Container13canPushInItemEiiRK9ItemStack'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9Container14canPullOutItemEiiRK9ItemStack">
+<span id="_CPPv3NK9Container14canPullOutItemEiiRK9ItemStack"></span><span id="_CPPv2NK9Container14canPullOutItemEiiRK9ItemStack"></span><span id="Container::canPullOutItem__i.i.ItemStackCRC"></span><span class="target" id="classContainer_1ab3e9ab03230fbdf8face28bf6d798b28"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">canPullOutItem</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span>, <span class="kt"><span class="pre">int</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9Container14canPullOutItemEiiRK9ItemStack" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9Container14canPullOutItemEiiRK9ItemStack'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container19setContainerChangedEi">
+<span id="_CPPv3N9Container19setContainerChangedEi"></span><span id="_CPPv2N9Container19setContainerChangedEi"></span><span id="Container::setContainerChanged__i"></span><span class="target" id="classContainer_1a2d1d70941596dc900c859c829b9904c8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setContainerChanged</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container19setContainerChangedEi" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container19setContainerChangedEi'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container17setContainerMovedEv">
+<span id="_CPPv3N9Container17setContainerMovedEv"></span><span id="_CPPv2N9Container17setContainerMovedEv"></span><span id="Container::setContainerMoved"></span><span class="target" id="classContainer_1a2c8aac1cfa1f1190c9b53f4e97df356c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setContainerMoved</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container17setContainerMovedEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container17setContainerMovedEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container13setCustomNameERKNSt6stringE">
+<span id="_CPPv3N9Container13setCustomNameERKNSt6stringE"></span><span id="_CPPv2N9Container13setCustomNameERKNSt6stringE"></span><span id="Container::setCustomName__ssCR"></span><span class="target" id="classContainer_1a97548371493b4f575a0943ee6442bbc0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setCustomName</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">name</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container13setCustomNameERKNSt6stringE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container13setCustomNameERKNSt6stringE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9Container13hasCustomNameEv">
+<span id="_CPPv3NK9Container13hasCustomNameEv"></span><span id="_CPPv2NK9Container13hasCustomNameEv"></span><span id="Container::hasCustomNameC"></span><span class="target" id="classContainer_1a58cd698f14c94b18e9ccad9fd77e5ea6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hasCustomName</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9Container13hasCustomNameEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9Container13hasCustomNameEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container22readAdditionalSaveDataERK11CompoundTag">
+<span id="_CPPv3N9Container22readAdditionalSaveDataERK11CompoundTag"></span><span id="_CPPv2N9Container22readAdditionalSaveDataERK11CompoundTag"></span><span id="Container::readAdditionalSaveData__CompoundTagCR"></span><span class="target" id="classContainer_1a89964b1fccd09af23d4ac54cfc6ae84b"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">readAdditionalSaveData</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="CompoundTag_8hpp.html#_CPPv411CompoundTag" title="CompoundTag"><span class="n"><span class="pre">CompoundTag</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container22readAdditionalSaveDataERK11CompoundTag" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container22readAdditionalSaveDataERK11CompoundTag'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container21addAdditionalSaveDataER11CompoundTag">
+<span id="_CPPv3N9Container21addAdditionalSaveDataER11CompoundTag"></span><span id="_CPPv2N9Container21addAdditionalSaveDataER11CompoundTag"></span><span id="Container::addAdditionalSaveData__CompoundTagR"></span><span class="target" id="classContainer_1a6a3dff23e824479789ba6b4e13437103"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addAdditionalSaveData</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="CompoundTag_8hpp.html#_CPPv411CompoundTag" title="CompoundTag"><span class="n"><span class="pre">CompoundTag</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container21addAdditionalSaveDataER11CompoundTag" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container21addAdditionalSaveDataER11CompoundTag'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container24createTransactionContextENSt8functionIFvR9ContaineriRK9ItemStackRK9ItemStackEEENSt8functionIFvvEEE">
+<span id="_CPPv3N9Container24createTransactionContextENSt8functionIFvR9ContaineriRK9ItemStackRK9ItemStackEEENSt8functionIFvvEEE"></span><span id="_CPPv2N9Container24createTransactionContextENSt8functionIFvR9ContaineriRK9ItemStackRK9ItemStackEEENSt8functionIFvvEEE"></span><span class="target" id="classContainer_1afc13510f2ad0da83d088a0cc19d8eda0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">createTransactionContext</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv49Container" title="Container"><span class="n"><span class="pre">Container</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span>, <a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container24createTransactionContextENSt8functionIFvR9ContaineriRK9ItemStackRK9ItemStackEEENSt8functionIFvvEEE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container24createTransactionContextENSt8functionIFvR9ContaineriRK9ItemStackRK9ItemStackEEENSt8functionIFvvEEE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container27initializeContainerContentsER11BlockSource">
+<span id="_CPPv3N9Container27initializeContainerContentsER11BlockSource"></span><span id="_CPPv2N9Container27initializeContainerContentsER11BlockSource"></span><span id="Container::initializeContainerContents__BlockSourceR"></span><span class="target" id="classContainer_1a57c208a868e4072b8fb4e6d040ebd6f8"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">initializeContainerContents</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockSource_8hpp.html#_CPPv411BlockSource" title="BlockSource"><span class="n"><span class="pre">BlockSource</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container27initializeContainerContentsER11BlockSource" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container27initializeContainerContentsER11BlockSource'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9Container7isEmptyEv">
+<span id="_CPPv3NK9Container7isEmptyEv"></span><span id="_CPPv2NK9Container7isEmptyEv"></span><span id="Container::isEmptyC"></span><span class="target" id="classContainer_1ac1a30dc5e350c7cd73aca7692ea674bf"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isEmpty</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9Container7isEmptyEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9Container7isEmptyEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container14isSlotDisabledEi">
+<span id="_CPPv3N9Container14isSlotDisabledEi"></span><span id="_CPPv2N9Container14isSlotDisabledEi"></span><span id="Container::isSlotDisabled__i"></span><span class="target" id="classContainer_1aba91d263b631796f5d5cf4feef138cbe"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isSlotDisabled</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">slot</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container14isSlotDisabledEi" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container14isSlotDisabledEi'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container26hasGetStrictParsingVersionEv">
+<span id="_CPPv3N9Container26hasGetStrictParsingVersionEv"></span><span id="_CPPv2N9Container26hasGetStrictParsingVersionEv"></span><span id="Container::hasGetStrictParsingVersion"></span><span class="target" id="classContainer_1a59cef5923feeb844997db5a0530ea3a7"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hasGetStrictParsingVersion</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9Container26hasGetStrictParsingVersionEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container26hasGetStrictParsingVersionEv'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container14mContainerTypeE">
+<span id="_CPPv3N9Container14mContainerTypeE"></span><span id="_CPPv2N9Container14mContainerTypeE"></span><span id="Container::mContainerType__ContainerType"></span><span class="target" id="classContainer_1a947f551c341dd1eb45c70fb6a2682680"></span><a class="reference internal" href="#_CPPv413ContainerType" title="ContainerType"><span class="n"><span class="pre">ContainerType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mContainerType</span></span></span><a class="headerlink" href="#_CPPv4N9Container14mContainerTypeE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container14mContainerTypeE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container22mGameplayContainerTypeE">
+<span id="_CPPv3N9Container22mGameplayContainerTypeE"></span><span id="_CPPv2N9Container22mGameplayContainerTypeE"></span><span id="Container::mGameplayContainerType__ContainerType"></span><span class="target" id="classContainer_1aaae1c50112fadb39158fc40dda46b2ec"></span><a class="reference internal" href="#_CPPv413ContainerType" title="ContainerType"><span class="n"><span class="pre">ContainerType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mGameplayContainerType</span></span></span><a class="headerlink" href="#_CPPv4N9Container22mGameplayContainerTypeE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container22mGameplayContainerTypeE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container23mContentChangeListenersE">
+<span id="_CPPv3N9Container23mContentChangeListenersE"></span><span id="_CPPv2N9Container23mContentChangeListenersE"></span><span id="Container::mContentChangeListeners__std::unordered_set:ContainerContentChangeListenerP:"></span><span class="target" id="classContainer_1a68d5b4ee5a3425b4dcbf4deb5220672b"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_set</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">ContainerContentChangeListener</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mContentChangeListeners</span></span></span><a class="headerlink" href="#_CPPv4N9Container23mContentChangeListenersE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container23mContentChangeListenersE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container20mSizeChangeListenersE">
+<span id="_CPPv3N9Container20mSizeChangeListenersE"></span><span id="_CPPv2N9Container20mSizeChangeListenersE"></span><span id="Container::mSizeChangeListeners__std::unordered_set:ContainerSizeChangeListenerP:"></span><span class="target" id="classContainer_1afb84aa9497724a5a92453876f5859a3a"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_set</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">ContainerSizeChangeListener</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mSizeChangeListeners</span></span></span><a class="headerlink" href="#_CPPv4N9Container20mSizeChangeListenersE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container20mSizeChangeListenersE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container15mCloseListenersE">
+<span id="_CPPv3N9Container15mCloseListenersE"></span><span id="_CPPv2N9Container15mCloseListenersE"></span><span id="Container::mCloseListeners__std::unordered_set:ContainerCloseListenerP:"></span><span class="target" id="classContainer_1abeef322fd7703225730ac73a04c386a8"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_set</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">ContainerCloseListener</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mCloseListeners</span></span></span><a class="headerlink" href="#_CPPv4N9Container15mCloseListenersE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container15mCloseListenersE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container17mRemovedListenersE">
+<span id="_CPPv3N9Container17mRemovedListenersE"></span><span id="_CPPv2N9Container17mRemovedListenersE"></span><span id="Container::mRemovedListeners__std::unordered_set:ContainerRemovedListenerP:"></span><span class="target" id="classContainer_1a21d0836bc58825a21beb3767db8d6d3f"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">unordered_set</span></span><span class="p"><span class="pre">&lt;</span></span><span class="n"><span class="pre">ContainerRemovedListener</span></span><span class="p"><span class="pre">*</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mRemovedListeners</span></span></span><a class="headerlink" href="#_CPPv4N9Container17mRemovedListenersE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container17mRemovedListenersE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container24mTransactionContextStackE">
+<span id="_CPPv3N9Container24mTransactionContextStackE"></span><span id="_CPPv2N9Container24mTransactionContextStackE"></span><span class="target" id="classContainer_1a4ab4bc64dfcbc7a17c57f079851e85bc"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">deque</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">function</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">void</span></span><span class="p"><span class="pre">(</span></span><a class="reference internal" href="#_CPPv49Container" title="Container"><span class="n"><span class="pre">Container</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="ItemStack_8hpp.html#_CPPv49ItemStack" title="ItemStack"><span class="n"><span class="pre">ItemStack</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">)</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mTransactionContextStack</span></span></span><a class="headerlink" href="#_CPPv4N9Container24mTransactionContextStackE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container24mTransactionContextStackE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container5mNameE">
+<span id="_CPPv3N9Container5mNameE"></span><span id="_CPPv2N9Container5mNameE"></span><span id="Container::mName__ss"></span><span class="target" id="classContainer_1a0274dc6221f8386e979e37f3f08fb495"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mName</span></span></span><a class="headerlink" href="#_CPPv4N9Container5mNameE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container5mNameE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container11mCustomNameE">
+<span id="_CPPv3N9Container11mCustomNameE"></span><span id="_CPPv2N9Container11mCustomNameE"></span><span id="Container::mCustomName__b"></span><span class="target" id="classContainer_1aaca46d6cd504716952abb835461711d1"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mCustomName</span></span></span><a class="headerlink" href="#_CPPv4N9Container11mCustomNameE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container11mCustomNameE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9Container19mContainerRuntimeIdE">
+<span id="_CPPv3N9Container19mContainerRuntimeIdE"></span><span id="_CPPv2N9Container19mContainerRuntimeIdE"></span><span id="Container::mContainerRuntimeId__ContainerRuntimeId"></span><span class="target" id="classContainer_1adb9d8d2e8fbb41f5ee2792f6097f2ed0"></span><a class="reference internal" href="#_CPPv418ContainerRuntimeId" title="ContainerRuntimeId"><span class="n"><span class="pre">ContainerRuntimeId</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mContainerRuntimeId</span></span></span><a class="headerlink" href="#_CPPv4N9Container19mContainerRuntimeIdE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Container19mContainerRuntimeIdE'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+</dd></dl>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(var(100vh)-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#_CPPv418ContainerRuntimeId'" class="reference internal" href="#_CPPv418ContainerRuntimeId"><code class="docutils literal notranslate"><span class="pre">ContainerRuntimeId</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv413ContainerType'" class="reference internal" href="#_CPPv413ContainerType"><code class="docutils literal notranslate"><span class="pre">ContainerType</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType4NONEE'" class="reference internal" href="#_CPPv4N13ContainerType4NONEE"><code class="docutils literal notranslate"><span class="pre">ContainerType::NONE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType9INVENTORYE'" class="reference internal" href="#_CPPv4N13ContainerType9INVENTORYE"><code class="docutils literal notranslate"><span class="pre">ContainerType::INVENTORY</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType9CONTAINERE'" class="reference internal" href="#_CPPv4N13ContainerType9CONTAINERE"><code class="docutils literal notranslate"><span class="pre">ContainerType::CONTAINER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType9WORKBENCHE'" class="reference internal" href="#_CPPv4N13ContainerType9WORKBENCHE"><code class="docutils literal notranslate"><span class="pre">ContainerType::WORKBENCH</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType7FURNACEE'" class="reference internal" href="#_CPPv4N13ContainerType7FURNACEE"><code class="docutils literal notranslate"><span class="pre">ContainerType::FURNACE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType11ENCHANTMENTE'" class="reference internal" href="#_CPPv4N13ContainerType11ENCHANTMENTE"><code class="docutils literal notranslate"><span class="pre">ContainerType::ENCHANTMENT</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType13BREWING_STANDE'" class="reference internal" href="#_CPPv4N13ContainerType13BREWING_STANDE"><code class="docutils literal notranslate"><span class="pre">ContainerType::BREWING_STAND</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType5ANVILE'" class="reference internal" href="#_CPPv4N13ContainerType5ANVILE"><code class="docutils literal notranslate"><span class="pre">ContainerType::ANVIL</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType9DISPENSERE'" class="reference internal" href="#_CPPv4N13ContainerType9DISPENSERE"><code class="docutils literal notranslate"><span class="pre">ContainerType::DISPENSER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType7DROPPERE'" class="reference internal" href="#_CPPv4N13ContainerType7DROPPERE"><code class="docutils literal notranslate"><span class="pre">ContainerType::DROPPER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType6HOPPERE'" class="reference internal" href="#_CPPv4N13ContainerType6HOPPERE"><code class="docutils literal notranslate"><span class="pre">ContainerType::HOPPER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType8CAULDRONE'" class="reference internal" href="#_CPPv4N13ContainerType8CAULDRONE"><code class="docutils literal notranslate"><span class="pre">ContainerType::CAULDRON</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType14MINECART_CHESTE'" class="reference internal" href="#_CPPv4N13ContainerType14MINECART_CHESTE"><code class="docutils literal notranslate"><span class="pre">ContainerType::MINECART_CHEST</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType15MINECART_HOPPERE'" class="reference internal" href="#_CPPv4N13ContainerType15MINECART_HOPPERE"><code class="docutils literal notranslate"><span class="pre">ContainerType::MINECART_HOPPER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType5HORSEE'" class="reference internal" href="#_CPPv4N13ContainerType5HORSEE"><code class="docutils literal notranslate"><span class="pre">ContainerType::HORSE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType6BEACONE'" class="reference internal" href="#_CPPv4N13ContainerType6BEACONE"><code class="docutils literal notranslate"><span class="pre">ContainerType::BEACON</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType16STRUCTURE_EDITORE'" class="reference internal" href="#_CPPv4N13ContainerType16STRUCTURE_EDITORE"><code class="docutils literal notranslate"><span class="pre">ContainerType::STRUCTURE_EDITOR</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType5TRADEE'" class="reference internal" href="#_CPPv4N13ContainerType5TRADEE"><code class="docutils literal notranslate"><span class="pre">ContainerType::TRADE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType13COMMAND_BLOCKE'" class="reference internal" href="#_CPPv4N13ContainerType13COMMAND_BLOCKE"><code class="docutils literal notranslate"><span class="pre">ContainerType::COMMAND_BLOCK</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType7JUKEBOXE'" class="reference internal" href="#_CPPv4N13ContainerType7JUKEBOXE"><code class="docutils literal notranslate"><span class="pre">ContainerType::JUKEBOX</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType5ARMORE'" class="reference internal" href="#_CPPv4N13ContainerType5ARMORE"><code class="docutils literal notranslate"><span class="pre">ContainerType::ARMOR</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType4HANDE'" class="reference internal" href="#_CPPv4N13ContainerType4HANDE"><code class="docutils literal notranslate"><span class="pre">ContainerType::HAND</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType16COMPOUND_CREATORE'" class="reference internal" href="#_CPPv4N13ContainerType16COMPOUND_CREATORE"><code class="docutils literal notranslate"><span class="pre">ContainerType::COMPOUND_CREATOR</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType19ELEMENT_CONSTRUCTORE'" class="reference internal" href="#_CPPv4N13ContainerType19ELEMENT_CONSTRUCTORE"><code class="docutils literal notranslate"><span class="pre">ContainerType::ELEMENT_CONSTRUCTOR</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType16MATERIAL_REDUCERE'" class="reference internal" href="#_CPPv4N13ContainerType16MATERIAL_REDUCERE"><code class="docutils literal notranslate"><span class="pre">ContainerType::MATERIAL_REDUCER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType9LAB_TABLEE'" class="reference internal" href="#_CPPv4N13ContainerType9LAB_TABLEE"><code class="docutils literal notranslate"><span class="pre">ContainerType::LAB_TABLE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType4LOOME'" class="reference internal" href="#_CPPv4N13ContainerType4LOOME"><code class="docutils literal notranslate"><span class="pre">ContainerType::LOOM</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType7LECTERNE'" class="reference internal" href="#_CPPv4N13ContainerType7LECTERNE"><code class="docutils literal notranslate"><span class="pre">ContainerType::LECTERN</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType10GRINDSTONEE'" class="reference internal" href="#_CPPv4N13ContainerType10GRINDSTONEE"><code class="docutils literal notranslate"><span class="pre">ContainerType::GRINDSTONE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType13BLAST_FURNACEE'" class="reference internal" href="#_CPPv4N13ContainerType13BLAST_FURNACEE"><code class="docutils literal notranslate"><span class="pre">ContainerType::BLAST_FURNACE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType6SMOKERE'" class="reference internal" href="#_CPPv4N13ContainerType6SMOKERE"><code class="docutils literal notranslate"><span class="pre">ContainerType::SMOKER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType11STONECUTTERE'" class="reference internal" href="#_CPPv4N13ContainerType11STONECUTTERE"><code class="docutils literal notranslate"><span class="pre">ContainerType::STONECUTTER</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType11CARTOGRAPHYE'" class="reference internal" href="#_CPPv4N13ContainerType11CARTOGRAPHYE"><code class="docutils literal notranslate"><span class="pre">ContainerType::CARTOGRAPHY</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType3HUDE'" class="reference internal" href="#_CPPv4N13ContainerType3HUDE"><code class="docutils literal notranslate"><span class="pre">ContainerType::HUD</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType13JIGSAW_EDITORE'" class="reference internal" href="#_CPPv4N13ContainerType13JIGSAW_EDITORE"><code class="docutils literal notranslate"><span class="pre">ContainerType::JIGSAW_EDITOR</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType14SMITHING_TABLEE'" class="reference internal" href="#_CPPv4N13ContainerType14SMITHING_TABLEE"><code class="docutils literal notranslate"><span class="pre">ContainerType::SMITHING_TABLE</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13ContainerType10CHEST_BOATE'" class="reference internal" href="#_CPPv4N13ContainerType10CHEST_BOATE"><code class="docutils literal notranslate"><span class="pre">ContainerType::CHEST_BOAT</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv49Container'" class="reference internal" href="#_CPPv49Container"><code class="docutils literal notranslate"><span class="pre">Container</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N9Container9ContainerE13ContainerType'" class="reference internal" href="#_CPPv4N9Container9ContainerE13ContainerType"><code class="docutils literal notranslate"><span class="pre">Container::Container()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container9ContainerE13ContainerTypeRKNSt6stringEb'" class="reference internal" href="#_CPPv4N9Container9ContainerE13ContainerTypeRKNSt6stringEb"><code class="docutils literal notranslate"><span class="pre">Container::Container()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9ContainerD0Ev'" class="reference internal" href="#_CPPv4N9ContainerD0Ev"><code class="docutils literal notranslate"><span class="pre">Container::~Container()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container4initEv'" class="reference internal" href="#_CPPv4N9Container4initEv"><code class="docutils literal notranslate"><span class="pre">Container::init()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container22serverInitItemStackIdsEiiNSt8functionIFviRK9ItemStackEEE'" class="reference internal" href="#_CPPv4N9Container22serverInitItemStackIdsEiiNSt8functionIFviRK9ItemStackEEE"><code class="docutils literal notranslate"><span class="pre">Container::serverInitItemStackIds()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container24addContentChangeListenerEP30ContainerContentChangeListener'" class="reference internal" href="#_CPPv4N9Container24addContentChangeListenerEP30ContainerContentChangeListener"><code class="docutils literal notranslate"><span class="pre">Container::addContentChangeListener()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container27removeContentChangeListenerEP30ContainerContentChangeListener'" class="reference internal" href="#_CPPv4N9Container27removeContentChangeListenerEP30ContainerContentChangeListener"><code class="docutils literal notranslate"><span class="pre">Container::removeContentChangeListener()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container18addRemovedListenerEP24ContainerRemovedListener'" class="reference internal" href="#_CPPv4N9Container18addRemovedListenerEP24ContainerRemovedListener"><code class="docutils literal notranslate"><span class="pre">Container::addRemovedListener()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container21removeRemovedListenerEP24ContainerRemovedListener'" class="reference internal" href="#_CPPv4N9Container21removeRemovedListenerEP24ContainerRemovedListener"><code class="docutils literal notranslate"><span class="pre">Container::removeRemovedListener()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9Container7getItemEi'" class="reference internal" href="#_CPPv4NK9Container7getItemEi"><code class="docutils literal notranslate"><span class="pre">Container::getItem()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container14hasRoomForItemERK9ItemStack'" class="reference internal" href="#_CPPv4N9Container14hasRoomForItemERK9ItemStack"><code class="docutils literal notranslate"><span class="pre">Container::hasRoomForItem()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container7addItemER9ItemStack'" class="reference internal" href="#_CPPv4N9Container7addItemER9ItemStack"><code class="docutils literal notranslate"><span class="pre">Container::addItem()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container23addItemWithForceBalanceER9ItemStack'" class="reference internal" href="#_CPPv4N9Container23addItemWithForceBalanceER9ItemStack"><code class="docutils literal notranslate"><span class="pre">Container::addItemWithForceBalance()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container23addItemToFirstEmptySlotERK9ItemStack'" class="reference internal" href="#_CPPv4N9Container23addItemToFirstEmptySlotERK9ItemStack"><code class="docutils literal notranslate"><span class="pre">Container::addItemToFirstEmptySlot()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container7setItemEiRK9ItemStack'" class="reference internal" href="#_CPPv4N9Container7setItemEiRK9ItemStack"><code class="docutils literal notranslate"><span class="pre">Container::setItem()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container23setItemWithForceBalanceEiRK9ItemStackb'" class="reference internal" href="#_CPPv4N9Container23setItemWithForceBalanceEiRK9ItemStackb"><code class="docutils literal notranslate"><span class="pre">Container::setItemWithForceBalance()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container10removeItemEii'" class="reference internal" href="#_CPPv4N9Container10removeItemEii"><code class="docutils literal notranslate"><span class="pre">Container::removeItem()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container14removeAllItemsEv'" class="reference internal" href="#_CPPv4N9Container14removeAllItemsEv"><code class="docutils literal notranslate"><span class="pre">Container::removeAllItems()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container30removeAllItemsWithForceBalanceEv'" class="reference internal" href="#_CPPv4N9Container30removeAllItemsWithForceBalanceEv"><code class="docutils literal notranslate"><span class="pre">Container::removeAllItemsWithForceBalance()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container16containerRemovedEv'" class="reference internal" href="#_CPPv4N9Container16containerRemovedEv"><code class="docutils literal notranslate"><span class="pre">Container::containerRemoved()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container15dropSlotContentER11BlockSourceRK4Vec3bi'" class="reference internal" href="#_CPPv4N9Container15dropSlotContentER11BlockSourceRK4Vec3bi"><code class="docutils literal notranslate"><span class="pre">Container::dropSlotContent()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container12dropContentsER11BlockSourceRK4Vec3b'" class="reference internal" href="#_CPPv4N9Container12dropContentsER11BlockSourceRK4Vec3b"><code class="docutils literal notranslate"><span class="pre">Container::dropContents()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9Container16getContainerSizeEv'" class="reference internal" href="#_CPPv4NK9Container16getContainerSizeEv"><code class="docutils literal notranslate"><span class="pre">Container::getContainerSize()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9Container15getMaxStackSizeEv'" class="reference internal" href="#_CPPv4NK9Container15getMaxStackSizeEv"><code class="docutils literal notranslate"><span class="pre">Container::getMaxStackSize()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container9startOpenER6Player'" class="reference internal" href="#_CPPv4N9Container9startOpenER6Player"><code class="docutils literal notranslate"><span class="pre">Container::startOpen()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container8stopOpenER6Player'" class="reference internal" href="#_CPPv4N9Container8stopOpenER6Player"><code class="docutils literal notranslate"><span class="pre">Container::stopOpen()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9Container13getSlotCopiesEv'" class="reference internal" href="#_CPPv4NK9Container13getSlotCopiesEv"><code class="docutils literal notranslate"><span class="pre">Container::getSlotCopies()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9Container8getSlotsEv'" class="reference internal" href="#_CPPv4NK9Container8getSlotsEv"><code class="docutils literal notranslate"><span class="pre">Container::getSlots()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9Container18getEmptySlotsCountEv'" class="reference internal" href="#_CPPv4NK9Container18getEmptySlotsCountEv"><code class="docutils literal notranslate"><span class="pre">Container::getEmptySlotsCount()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container12getItemCountERK9ItemStack'" class="reference internal" href="#_CPPv4N9Container12getItemCountERK9ItemStack"><code class="docutils literal notranslate"><span class="pre">Container::getItemCount()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9Container20findFirstSlotForItemERK9ItemStack'" class="reference internal" href="#_CPPv4NK9Container20findFirstSlotForItemERK9ItemStack"><code class="docutils literal notranslate"><span class="pre">Container::findFirstSlotForItem()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9Container13canPushInItemEiiRK9ItemStack'" class="reference internal" href="#_CPPv4NK9Container13canPushInItemEiiRK9ItemStack"><code class="docutils literal notranslate"><span class="pre">Container::canPushInItem()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9Container14canPullOutItemEiiRK9ItemStack'" class="reference internal" href="#_CPPv4NK9Container14canPullOutItemEiiRK9ItemStack"><code class="docutils literal notranslate"><span class="pre">Container::canPullOutItem()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container19setContainerChangedEi'" class="reference internal" href="#_CPPv4N9Container19setContainerChangedEi"><code class="docutils literal notranslate"><span class="pre">Container::setContainerChanged()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container17setContainerMovedEv'" class="reference internal" href="#_CPPv4N9Container17setContainerMovedEv"><code class="docutils literal notranslate"><span class="pre">Container::setContainerMoved()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container13setCustomNameERKNSt6stringE'" class="reference internal" href="#_CPPv4N9Container13setCustomNameERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">Container::setCustomName()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9Container13hasCustomNameEv'" class="reference internal" href="#_CPPv4NK9Container13hasCustomNameEv"><code class="docutils literal notranslate"><span class="pre">Container::hasCustomName()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container22readAdditionalSaveDataERK11CompoundTag'" class="reference internal" href="#_CPPv4N9Container22readAdditionalSaveDataERK11CompoundTag"><code class="docutils literal notranslate"><span class="pre">Container::readAdditionalSaveData()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container21addAdditionalSaveDataER11CompoundTag'" class="reference internal" href="#_CPPv4N9Container21addAdditionalSaveDataER11CompoundTag"><code class="docutils literal notranslate"><span class="pre">Container::addAdditionalSaveData()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container24createTransactionContextENSt8functionIFvR9ContaineriRK9ItemStackRK9ItemStackEEENSt8functionIFvvEEE'" class="reference internal" href="#_CPPv4N9Container24createTransactionContextENSt8functionIFvR9ContaineriRK9ItemStackRK9ItemStackEEENSt8functionIFvvEEE"><code class="docutils literal notranslate"><span class="pre">Container::createTransactionContext()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container27initializeContainerContentsER11BlockSource'" class="reference internal" href="#_CPPv4N9Container27initializeContainerContentsER11BlockSource"><code class="docutils literal notranslate"><span class="pre">Container::initializeContainerContents()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9Container7isEmptyEv'" class="reference internal" href="#_CPPv4NK9Container7isEmptyEv"><code class="docutils literal notranslate"><span class="pre">Container::isEmpty()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container14isSlotDisabledEi'" class="reference internal" href="#_CPPv4N9Container14isSlotDisabledEi"><code class="docutils literal notranslate"><span class="pre">Container::isSlotDisabled()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container26hasGetStrictParsingVersionEv'" class="reference internal" href="#_CPPv4N9Container26hasGetStrictParsingVersionEv"><code class="docutils literal notranslate"><span class="pre">Container::hasGetStrictParsingVersion()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container14mContainerTypeE'" class="reference internal" href="#_CPPv4N9Container14mContainerTypeE"><code class="docutils literal notranslate"><span class="pre">Container::mContainerType</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container22mGameplayContainerTypeE'" class="reference internal" href="#_CPPv4N9Container22mGameplayContainerTypeE"><code class="docutils literal notranslate"><span class="pre">Container::mGameplayContainerType</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container23mContentChangeListenersE'" class="reference internal" href="#_CPPv4N9Container23mContentChangeListenersE"><code class="docutils literal notranslate"><span class="pre">Container::mContentChangeListeners</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container20mSizeChangeListenersE'" class="reference internal" href="#_CPPv4N9Container20mSizeChangeListenersE"><code class="docutils literal notranslate"><span class="pre">Container::mSizeChangeListeners</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container15mCloseListenersE'" class="reference internal" href="#_CPPv4N9Container15mCloseListenersE"><code class="docutils literal notranslate"><span class="pre">Container::mCloseListeners</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container17mRemovedListenersE'" class="reference internal" href="#_CPPv4N9Container17mRemovedListenersE"><code class="docutils literal notranslate"><span class="pre">Container::mRemovedListeners</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container24mTransactionContextStackE'" class="reference internal" href="#_CPPv4N9Container24mTransactionContextStackE"><code class="docutils literal notranslate"><span class="pre">Container::mTransactionContextStack</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container5mNameE'" class="reference internal" href="#_CPPv4N9Container5mNameE"><code class="docutils literal notranslate"><span class="pre">Container::mName</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container11mCustomNameE'" class="reference internal" href="#_CPPv4N9Container11mCustomNameE"><code class="docutils literal notranslate"><span class="pre">Container::mCustomName</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Container19mContainerRuntimeIdE'" class="reference internal" href="#_CPPv4N9Container19mContainerRuntimeIdE"><code class="docutils literal notranslate"><span class="pre">Container::mContainerRuntimeId</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 7.2.6</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+<script src="../../_static/doctools.js?v=888ff710"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=40b7bc71"></script>
+<script src="../../_static/design-tabs.js?v=36754332"></script>
+</body>
+</html>

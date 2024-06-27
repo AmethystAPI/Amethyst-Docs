@@ -1,0 +1,5 @@
+File SharedPtr.hpp
+==================
+
+.. doxygenfile:: SharedPtr.hpp
+   :project: AmethystApi

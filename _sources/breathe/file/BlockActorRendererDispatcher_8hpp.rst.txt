@@ -1,0 +1,5 @@
+File BlockActorRendererDispatcher.hpp
+=====================================
+
+.. doxygenfile:: BlockActorRendererDispatcher.hpp
+   :project: AmethystApi

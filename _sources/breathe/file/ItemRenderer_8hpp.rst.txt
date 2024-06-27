@@ -1,0 +1,5 @@
+File ItemRenderer.hpp
+=====================
+
+.. doxygenfile:: ItemRenderer.hpp
+   :project: AmethystApi

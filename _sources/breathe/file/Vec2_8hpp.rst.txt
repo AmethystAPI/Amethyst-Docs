@@ -1,0 +1,5 @@
+File Vec2.hpp
+=============
+
+.. doxygenfile:: Vec2.hpp
+   :project: AmethystApi

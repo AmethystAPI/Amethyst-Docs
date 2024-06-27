@@ -1,0 +1,5 @@
+File Dimension.hpp
+==================
+
+.. doxygenfile:: Dimension.hpp
+   :project: AmethystApi

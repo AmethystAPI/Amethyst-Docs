@@ -1,0 +1,5 @@
+File MinecraftInputHandler.hpp
+==============================
+
+.. doxygenfile:: MinecraftInputHandler.hpp
+   :project: AmethystApi

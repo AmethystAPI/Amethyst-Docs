@@ -1,0 +1,5 @@
+File TextureAtlasItem.hpp
+=========================
+
+.. doxygenfile:: TextureAtlasItem.hpp
+   :project: AmethystApi

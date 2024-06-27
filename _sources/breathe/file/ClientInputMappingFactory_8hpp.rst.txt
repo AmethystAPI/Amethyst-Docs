@@ -1,0 +1,5 @@
+File ClientInputMappingFactory.hpp
+==================================
+
+.. doxygenfile:: ClientInputMappingFactory.hpp
+   :project: AmethystApi

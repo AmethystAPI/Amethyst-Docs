@@ -1,0 +1,5 @@
+File UUID.hpp
+=============
+
+.. doxygenfile:: UUID.hpp
+   :project: AmethystApi

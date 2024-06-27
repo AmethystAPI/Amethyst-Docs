@@ -1,0 +1,5 @@
+File ActorHeadRotationComponent.hpp
+===================================
+
+.. doxygenfile:: ActorHeadRotationComponent.hpp
+   :project: AmethystApi

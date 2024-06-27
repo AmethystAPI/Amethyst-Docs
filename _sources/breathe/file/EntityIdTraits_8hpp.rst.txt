@@ -1,0 +1,5 @@
+File EntityIdTraits.hpp
+=======================
+
+.. doxygenfile:: EntityIdTraits.hpp
+   :project: AmethystApi

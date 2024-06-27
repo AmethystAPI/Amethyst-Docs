@@ -1,0 +1,5 @@
+File Mod.hpp
+============
+
+.. doxygenfile:: Mod.hpp
+   :project: AmethystApi

@@ -1,0 +1,5 @@
+File gsl_includes.hpp
+=====================
+
+.. doxygenfile:: gsl_includes.hpp
+   :project: AmethystApi

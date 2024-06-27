@@ -1,0 +1,5 @@
+File HookManager.hpp
+====================
+
+.. doxygenfile:: HookManager.hpp
+   :project: AmethystApi

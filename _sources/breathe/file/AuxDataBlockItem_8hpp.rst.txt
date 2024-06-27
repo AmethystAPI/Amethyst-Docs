@@ -1,0 +1,5 @@
+File AuxDataBlockItem.hpp
+=========================
+
+.. doxygenfile:: AuxDataBlockItem.hpp
+   :project: AmethystApi

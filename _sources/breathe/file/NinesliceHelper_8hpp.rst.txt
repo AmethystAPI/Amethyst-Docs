@@ -1,0 +1,5 @@
+File NinesliceHelper.hpp
+========================
+
+.. doxygenfile:: NinesliceHelper.hpp
+   :project: AmethystApi

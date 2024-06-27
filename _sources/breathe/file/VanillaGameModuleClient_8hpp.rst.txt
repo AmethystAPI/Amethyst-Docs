@@ -1,0 +1,5 @@
+File VanillaGameModuleClient.hpp
+================================
+
+.. doxygenfile:: VanillaGameModuleClient.hpp
+   :project: AmethystApi

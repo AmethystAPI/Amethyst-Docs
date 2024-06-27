@@ -1,0 +1,5 @@
+File Config.hpp
+===============
+
+.. doxygenfile:: Config.hpp
+   :project: AmethystApi

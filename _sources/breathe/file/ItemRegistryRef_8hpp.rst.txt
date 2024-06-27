@@ -1,0 +1,5 @@
+File ItemRegistryRef.hpp
+========================
+
+.. doxygenfile:: ItemRegistryRef.hpp
+   :project: AmethystApi

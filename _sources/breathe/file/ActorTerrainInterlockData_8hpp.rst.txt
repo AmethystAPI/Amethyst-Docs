@@ -1,0 +1,5 @@
+File ActorTerrainInterlockData.hpp
+==================================
+
+.. doxygenfile:: ActorTerrainInterlockData.hpp
+   :project: AmethystApi

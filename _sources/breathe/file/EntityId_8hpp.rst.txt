@@ -1,0 +1,5 @@
+File EntityId.hpp
+=================
+
+.. doxygenfile:: EntityId.hpp
+   :project: AmethystApi

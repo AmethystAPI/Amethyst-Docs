@@ -1,0 +1,5 @@
+File NonOwnerPointer.hpp
+========================
+
+.. doxygenfile:: NonOwnerPointer.hpp
+   :project: AmethystApi

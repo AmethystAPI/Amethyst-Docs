@@ -1,0 +1,5 @@
+File PacketSender.hpp
+=====================
+
+.. doxygenfile:: PacketSender.hpp
+   :project: AmethystApi

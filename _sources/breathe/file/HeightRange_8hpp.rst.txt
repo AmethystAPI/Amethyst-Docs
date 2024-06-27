@@ -1,0 +1,5 @@
+File HeightRange.hpp
+====================
+
+.. doxygenfile:: HeightRange.hpp
+   :project: AmethystApi

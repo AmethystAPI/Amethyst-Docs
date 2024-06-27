@@ -1,0 +1,5 @@
+File UseAnim.hpp
+================
+
+.. doxygenfile:: UseAnim.hpp
+   :project: AmethystApi

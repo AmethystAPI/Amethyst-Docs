@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+
+<html :class="{'dark': darkMode === 'dark' || (darkMode === 'system' &amp;&amp; window.matchMedia('(prefers-color-scheme: dark)').matches)}" class="scroll-smooth" data-content_root="../../" lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') || localStorage.setItem('darkMode', 'system'), activeSection: '' }" x-init="$watch('darkMode', val =&gt; localStorage.setItem('darkMode', val))">
+<head>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="white" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="black" metia="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>File ResourceHelper.hpp | Amethyst  documentation</title>
+<meta content="File ResourceHelper.hpp | Amethyst  documentation" property="og:title"/>
+<meta content="File ResourceHelper.hpp | Amethyst  documentation" name="twitter:title"/>
+<link href="../../_static/pygments.css?v=5432af51" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=5b4133db" rel="stylesheet" type="text/css"/>
+<link href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-sphinx-design.css?v=a54cf077" rel="stylesheet" type="text/css"/>
+<link href="../../_static/logo-512x.png" rel="icon"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="ResourceUtil_8hpp.html" rel="next" title="File ResourceUtil.hpp"/>
+<link href="ResolvedItemIconInfo_8hpp.html" rel="prev" title="File ResolvedItemIconInfo.hpp"/>
+<script>
+    <!-- Prevent Flash of wrong theme -->
+      const userPreference = localStorage.getItem('darkMode');
+      let mode;
+      if (userPreference === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        mode = 'dark';
+        document.documentElement.classList.add('dark');
+      } else {
+        mode = 'light';
+      }
+      if (!userPreference) {localStorage.setItem('darkMode', mode)}
+    </script>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-sm border-border supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a><nav class="flex items-center space-x-6 text-sm font-medium">
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../autodocs.html">AmethystAPI</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../examples/index.html">Examples</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../getting_started/index.html">Getting Started</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../reverse_engineering/index.html">Reverse Engineering</a>
+</nav></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center space-x-1">
+<button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full shrink-0 overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="!justify-start text-sm md:!hidden bg-background" href="../../index.html"><span class="font-bold text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0 h-[calc(100vh-8rem)] md:h-auto">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../autodocs.html">AmethystAPI<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../filelist.html">File list<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="AABB_8hpp.html">File AABB.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorBlock_8hpp.html">File ActorBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorHeadRotationComponent_8hpp.html">File ActorHeadRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorRotationComponent_8hpp.html">File ActorRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorShaderManager_8hpp.html">File ActorShaderManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorTerrainInterlockData_8hpp.html">File ActorTerrainInterlockData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actor_8hpp.html">File Actor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AmethystContext_8hpp.html">File AmethystContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AuxDataBlockItem_8hpp.html">File AuxDataBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderContext_8hpp.html">File BaseActorRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderer_8hpp.html">File BaseActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseGameVersion_8hpp.html">File BaseGameVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseOptions_8hpp.html">File BaseOptions.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BinaryStream_8hpp.html">File BinaryStream.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorDataPacket_8hpp.html">File BlockActorDataPacket.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html">File BlockActorRendererDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererId_8hpp.html">File BlockActorRendererId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRenderer_8hpp.html">File BlockActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActor_8hpp.html">File BlockActor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentBase_8hpp.html">File BlockComponentBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentStorage_8hpp.html">File BlockComponentStorage.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockDefinitionGroup_8hpp.html">File BlockDefinitionGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockGraphics_8hpp.html">File BlockGraphics.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockItem_8hpp.html">File BlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockLegacy_8hpp.html">File BlockLegacy.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockMapColorComponent_8hpp.html">File BlockMapColorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockPos_8hpp.html">File BlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockRenderLayer_8hpp.html">File BlockRenderLayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockShape_8hpp.html">File BlockShape.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSourceListener_8hpp.html">File BlockSourceListener.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSource_8hpp.html">File BlockSource.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockState_8hpp.html">File BlockState.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTessellator_8hpp.html">File BlockTessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTypeRegistry_8hpp.html">File BlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Block_8hpp.html">File Block.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteArrayTag_8hpp.html">File ByteArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteTag_8hpp.html">File ByteTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CallStack_8hpp.html">File CallStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Camera_8hpp.html">File Camera.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChestBlock_8hpp.html">File ChestBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkBlockPos_8hpp.html">File ChunkBlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkPos_8hpp.html">File ChunkPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputHandler_8hpp.html">File ClientInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputMappingFactory_8hpp.html">File ClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInstance_8hpp.html">File ClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientNetworkHandler_8hpp.html">File ClientNetworkHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Color_8hpp.html">File Color.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CommonTypes_8hpp.html">File CommonTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTagVariant_8hpp.html">File CompoundTagVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTag_8hpp.html">File CompoundTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Config_8hpp.html">File Config.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Container_8hpp.html">File Container.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLogTypes_8hpp.html">File ContentLogTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLog_8hpp.html">File ContentLog.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Dimension_8hpp.html">File Dimension.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Direction_8hpp.html">File Direction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DoubleTag_8hpp.html">File DoubleTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EndTag_8hpp.html">File EndTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityContext_8hpp.html">File EntityContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityIdTraits_8hpp.html">File EntityIdTraits.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityId_8hpp.html">File EntityId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ErrorInfo_8hpp.html">File ErrorInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EventManager_8hpp.html">File EventManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Event_8hpp.html">File Event.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FertilizerType_8hpp.html">File FertilizerType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FillingContainer_8hpp.html">File FillingContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FloatTag_8hpp.html">File FloatTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameEvent_8hpp.html">File GameEvent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameModuleClient_8hpp.html">File GameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRefsSharePtr_8hpp.html">File GameRefsSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRules_8hpp.html">File GameRules.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GetCollisionShapeInterface_8hpp.html">File GetCollisionShapeInterface.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GuiData_8hpp.html">File GuiData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HeightRange_8hpp.html">File HeightRange.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HitResult_8hpp.html">File HitResult.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HookManager_8hpp.html">File HookManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverRenderer_8hpp.html">File HoverRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverTextRenderer_8hpp.html">File HoverTextRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IClientInstance_8hpp.html">File IClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ILevel_8hpp.html">File ILevel.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IPacketHandlerDispatcher_8hpp.html">File IPacketHandlerDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IWorldRegistriesProvider_8hpp.html">File IWorldRegistriesProvider.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ImageInfo_8hpp.html">File ImageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InPackagePacks_8hpp.html">File InPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputAction_8hpp.html">File InputAction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputHandler_8hpp.html">File InputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputManager_8hpp.html">File InputManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMappingFactory_8hpp.html">File InputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMapping_8hpp.html">File InputMapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Int64Tag_8hpp.html">File Int64Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntArrayTag_8hpp.html">File IntArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntTag_8hpp.html">File IntTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Inventory_8hpp.html">File Inventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IsotropicFaceData_8hpp.html">File IsotropicFaceData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemCategory_8hpp.html">File ItemCategory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemGroup_8hpp.html">File ItemGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemIconManager_8hpp.html">File ItemIconManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemInstance_8hpp.html">File ItemInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryManager_8hpp.html">File ItemRegistryManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryRef_8hpp.html">File ItemRegistryRef.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistry_8hpp.html">File ItemRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRenderer_8hpp.html">File ItemRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackBase_8hpp.html">File ItemStackBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackNetIdVariant_8hpp.html">File ItemStackNetIdVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStack_8hpp.html">File ItemStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Item_8hpp.html">File Item.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Keymapping_8hpp.html">File Keymapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelChunk_8hpp.html">File LevelChunk.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRendererPlayer_8hpp.html">File LevelRendererPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRenderer_8hpp.html">File LevelRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Level_8hpp.html">File Level.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ListTag_8hpp.html">File ListTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LocalPlayer_8hpp.html">File LocalPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Log_8hpp.html">File Log.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LoopbackPacketSender_8hpp.html">File LoopbackPacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialPtr_8hpp.html">File MaterialPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialType_8hpp.html">File MaterialType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Material_8hpp.html">File Material.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Math_8hpp.html">File Math.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MatrixStack_8hpp.html">File MatrixStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Matrix_8hpp.html">File Matrix.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Memory_8hpp.html">File Memory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshContext_8hpp.html">File MeshContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshData_8hpp.html">File MeshData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshHelpers_8hpp.html">File MeshHelpers.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mesh_8hpp.html">File Mesh.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftGame_8hpp.html">File MinecraftGame.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftInputHandler_8hpp.html">File MinecraftInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftPackageInfo_8hpp.html">File MinecraftPackageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftUIRenderContext_8hpp.html">File MinecraftUIRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftVtables_8hpp.html">File MinecraftVtables.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Minecraft_8hpp.html">File Minecraft.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mob_8hpp.html">File Mob.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mod_8hpp.html">File Mod.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetEventCallback_8hpp.html">File NetEventCallback.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkBlockPosition_8hpp.html">File NetworkBlockPosition.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkPeer_8hpp.html">File NetworkPeer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NewType_8hpp.html">File NewType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceHelper_8hpp.html">File NinesliceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceInfo_8hpp.html">File NinesliceInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NonOwnerPointer_8hpp.html">File NonOwnerPointer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Options_8hpp.html">File Options.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerPtr_8hpp.html">File OwnerPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerStorageSharePtr_8hpp.html">File OwnerStorageSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketHandlerDispatcherInstance_8hpp.html">File PacketHandlerDispatcherInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketPriority_8hpp.html">File PacketPriority.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketSender_8hpp.html">File PacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_8hpp.html">File Packet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PatchManager_8hpp.html">File PatchManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Path_8hpp.html">File Path.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerInventory_8hpp.html">File PlayerInventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerUIContainer_8hpp.html">File PlayerUIContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Player_8hpp.html">File Player.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RandomizableBlockActorContainerBase_8hpp.html">File RandomizableBlockActorContainerBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RemappingLayout_8hpp.html">File RemappingLayout.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderContext_8hpp.html">File RenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroupBase_8hpp.html">File RenderMaterialGroupBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroup_8hpp.html">File RenderMaterialGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResolvedItemIconInfo_8hpp.html">File ResolvedItemIconInfo.hpp</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">File ResourceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceUtil_8hpp.html">File ResourceUtil.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Result_8hpp.html">File Result.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenContext_8hpp.html">File ScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenView_8hpp.html">File ScreenView.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SemVersion_8hpp.html">File SemVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShapeType_8hpp.html">File ShapeType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SharedPtr_8hpp.html">File SharedPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShortTag_8hpp.html">File ShortTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShulkerBoxBlockItem_8hpp.html">File ShulkerBoxBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SimpleContainer_8hpp.html">File SimpleContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SliderComponent_8hpp.html">File SliderComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StateVectorComponent_8hpp.html">File StateVectorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringHash_8hpp.html">File StringHash.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringTag_8hpp.html">File StringTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringUtils_8hpp.html">File StringUtils.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tag_8hpp.html">File Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tessellator_8hpp.html">File Tessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextComponent_8hpp.html">File TextComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureAtlasItem_8hpp.html">File TextureAtlasItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TexturePtr_8hpp.html">File TexturePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureUVCoordinateSet_8hpp.html">File TextureUVCoordinateSet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tick_8hpp.html">File Tick.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ToggleComponent_8hpp.html">File ToggleComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIComponent_8hpp.html">File UIComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIControl_8hpp.html">File UIControl.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIScreenContext_8hpp.html">File UIScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UUID_8hpp.html">File UUID.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UseAnim_8hpp.html">File UseAnim.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Utility_8hpp.html">File Utility.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaBlockTypeRegistry_8hpp.html">File VanillaBlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaClientInputMappingFactory_8hpp.html">File VanillaClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaGameModuleClient_8hpp.html">File VanillaGameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaInPackagePacks_8hpp.html">File VanillaInPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaItems_8hpp.html">File VanillaItems.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec2_8hpp.html">File Vec2.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec3_8hpp.html">File Vec3.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VisualTree_8hpp.html">File VisualTree.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expected_8hpp.html">File expected.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsl__includes_8hpp.html">File gsl_includes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optional__ref_8hpp.html">File optional_ref.hpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/index.html">Examples<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/networking/index.html">Networking<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../../examples/networking/udp.html">UDP Networking Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../getting_started/index.html">Getting Started<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/end_user/installing_amethyst.html">Installing Amethyst</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/devs/compiling_amethyst.html">Compiling Amethyst</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reverse_engineering/index.html">Reverse Engineering</a></li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../how_to_doc/index.html">How to doc<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/setup.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/doxygen.html">Doxygen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/sphinx.html">Sphinx</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../../index.html">
+<span class="hidden md:inline">Amethyst  documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../../autodocs.html">AmethystAPI</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../filelist.html">File list</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">File ResourceHelper.hpp</span>
+</nav>
+<div id="content" role="main">
+<section id="file-resourcehelper-hpp">
+<h1>File ResourceHelper.hpp<a class="headerlink" href="#file-resourcehelper-hpp" title="Link to this heading">¶</a></h1>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv412PackCategory">
+<span id="_CPPv312PackCategory"></span><span id="_CPPv212PackCategory"></span><span class="target" id="ResourceHelper_8hpp_1a43046df2bd04e78cf58b2440fd82cb5b"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PackCategory</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><a class="headerlink" href="#_CPPv412PackCategory" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv412PackCategory'">¶</a><br/></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12PackCategory8_UnknownE">
+<span id="_CPPv3N12PackCategory8_UnknownE"></span><span id="_CPPv2N12PackCategory8_UnknownE"></span><span class="target" id="ResourceHelper_8hpp_1a43046df2bd04e78cf58b2440fd82cb5ba79a06315d21fdb6b42c1beb33b2b4617"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_Unknown</span></span></span><a class="headerlink" href="#_CPPv4N12PackCategory8_UnknownE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N12PackCategory8_UnknownE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12PackCategory14_RealmsUnknownE">
+<span id="_CPPv3N12PackCategory14_RealmsUnknownE"></span><span id="_CPPv2N12PackCategory14_RealmsUnknownE"></span><span class="target" id="ResourceHelper_8hpp_1a43046df2bd04e78cf58b2440fd82cb5bac875ab98565aa148fc92fd0a536e128c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_RealmsUnknown</span></span></span><a class="headerlink" href="#_CPPv4N12PackCategory14_RealmsUnknownE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N12PackCategory14_RealmsUnknownE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12PackCategory8StandardE">
+<span id="_CPPv3N12PackCategory8StandardE"></span><span id="_CPPv2N12PackCategory8StandardE"></span><span class="target" id="ResourceHelper_8hpp_1a43046df2bd04e78cf58b2440fd82cb5baeb6d8ae6f20283755b339c0dc273988b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Standard</span></span></span><a class="headerlink" href="#_CPPv4N12PackCategory8StandardE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N12PackCategory8StandardE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12PackCategory7PremiumE">
+<span id="_CPPv3N12PackCategory7PremiumE"></span><span id="_CPPv2N12PackCategory7PremiumE"></span><span class="target" id="ResourceHelper_8hpp_1a43046df2bd04e78cf58b2440fd82cb5ba8d5e7e72f12067991186cdf3cb7d5d9d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Premium</span></span></span><a class="headerlink" href="#_CPPv4N12PackCategory7PremiumE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N12PackCategory7PremiumE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12PackCategory6CustomE">
+<span id="_CPPv3N12PackCategory6CustomE"></span><span id="_CPPv2N12PackCategory6CustomE"></span><span class="target" id="ResourceHelper_8hpp_1a43046df2bd04e78cf58b2440fd82cb5ba90589c47f06eb971d548591f23c285af"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Custom</span></span></span><a class="headerlink" href="#_CPPv4N12PackCategory6CustomE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N12PackCategory6CustomE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N12PackCategory7SubpackE">
+<span id="_CPPv3N12PackCategory7SubpackE"></span><span id="_CPPv2N12PackCategory7SubpackE"></span><span class="target" id="ResourceHelper_8hpp_1a43046df2bd04e78cf58b2440fd82cb5ba59cf206cd22b4a3116aba5407ff392de"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Subpack</span></span></span><a class="headerlink" href="#_CPPv4N12PackCategory7SubpackE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N12PackCategory7SubpackE'">¶</a><br/></dt>
+<dd></dd></dl>
+</dd></dl>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv48PackType">
+<span id="_CPPv38PackType"></span><span id="_CPPv28PackType"></span><span class="target" id="ResourceHelper_8hpp_1a534ea91d4dbb339086c073df73fbe8e5"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PackType</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><a class="headerlink" href="#_CPPv48PackType" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv48PackType'">¶</a><br/></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8PackType7InvalidE">
+<span id="_CPPv3N8PackType7InvalidE"></span><span id="_CPPv2N8PackType7InvalidE"></span><span class="target" id="ResourceHelper_8hpp_1a534ea91d4dbb339086c073df73fbe8e5a4bbb8f967da6d1a610596d7257179c2b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Invalid</span></span></span><a class="headerlink" href="#_CPPv4N8PackType7InvalidE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N8PackType7InvalidE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8PackType5AddonE">
+<span id="_CPPv3N8PackType5AddonE"></span><span id="_CPPv2N8PackType5AddonE"></span><span class="target" id="ResourceHelper_8hpp_1a534ea91d4dbb339086c073df73fbe8e5a304cb904a1f04e9ae0b7cc5c2c02f7a6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Addon</span></span></span><a class="headerlink" href="#_CPPv4N8PackType5AddonE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N8PackType5AddonE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8PackType6CachedE">
+<span id="_CPPv3N8PackType6CachedE"></span><span id="_CPPv2N8PackType6CachedE"></span><span class="target" id="ResourceHelper_8hpp_1a534ea91d4dbb339086c073df73fbe8e5a064bede9a565190bdde35f978e1b7193"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Cached</span></span></span><a class="headerlink" href="#_CPPv4N8PackType6CachedE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N8PackType6CachedE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8PackType13CopyProtectedE">
+<span id="_CPPv3N8PackType13CopyProtectedE"></span><span id="_CPPv2N8PackType13CopyProtectedE"></span><span class="target" id="ResourceHelper_8hpp_1a534ea91d4dbb339086c073df73fbe8e5a9788872115bc2838c01d14ec78cb591b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CopyProtected</span></span></span><a class="headerlink" href="#_CPPv4N8PackType13CopyProtectedE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N8PackType13CopyProtectedE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8PackType8BehaviorE">
+<span id="_CPPv3N8PackType8BehaviorE"></span><span id="_CPPv2N8PackType8BehaviorE"></span><span class="target" id="ResourceHelper_8hpp_1a534ea91d4dbb339086c073df73fbe8e5ab39a035a995fc6597c8eb942210d1527"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Behavior</span></span></span><a class="headerlink" href="#_CPPv4N8PackType8BehaviorE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N8PackType8BehaviorE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8PackType12PersonaPieceE">
+<span id="_CPPv3N8PackType12PersonaPieceE"></span><span id="_CPPv2N8PackType12PersonaPieceE"></span><span class="target" id="ResourceHelper_8hpp_1a534ea91d4dbb339086c073df73fbe8e5adf9a937ac736995e86edb08a1da5534f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PersonaPiece</span></span></span><a class="headerlink" href="#_CPPv4N8PackType12PersonaPieceE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N8PackType12PersonaPieceE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8PackType9ResourcesE">
+<span id="_CPPv3N8PackType9ResourcesE"></span><span id="_CPPv2N8PackType9ResourcesE"></span><span class="target" id="ResourceHelper_8hpp_1a534ea91d4dbb339086c073df73fbe8e5addcf50c29294d4414f3f7c1bbc892cb5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Resources</span></span></span><a class="headerlink" href="#_CPPv4N8PackType9ResourcesE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N8PackType9ResourcesE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8PackType5SkinsE">
+<span id="_CPPv3N8PackType5SkinsE"></span><span id="_CPPv2N8PackType5SkinsE"></span><span class="target" id="ResourceHelper_8hpp_1a534ea91d4dbb339086c073df73fbe8e5a9ed8544941838fd6f59e6562fb22d57e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Skins</span></span></span><a class="headerlink" href="#_CPPv4N8PackType5SkinsE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N8PackType5SkinsE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8PackType13WorldTemplateE">
+<span id="_CPPv3N8PackType13WorldTemplateE"></span><span id="_CPPv2N8PackType13WorldTemplateE"></span><span class="target" id="ResourceHelper_8hpp_1a534ea91d4dbb339086c073df73fbe8e5a74b6d6b29123999a627a76a525e0f8e8"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WorldTemplate</span></span></span><a class="headerlink" href="#_CPPv4N8PackType13WorldTemplateE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N8PackType13WorldTemplateE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N8PackType5CountE">
+<span id="_CPPv3N8PackType5CountE"></span><span id="_CPPv2N8PackType5CountE"></span><span class="target" id="ResourceHelper_8hpp_1a534ea91d4dbb339086c073df73fbe8e5ae93f994f01c537c4e2f7d8528c3eb5e9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Count</span></span></span><a class="headerlink" href="#_CPPv4N8PackType5CountE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N8PackType5CountE'">¶</a><br/></dt>
+<dd></dd></dl>
+</dd></dl>
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv413PackIdVersion">
+<span id="_CPPv313PackIdVersion"></span><span id="_CPPv213PackIdVersion"></span><span id="PackIdVersion"></span><span class="target" id="structPackIdVersion"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PackIdVersion</span></span></span><a class="headerlink" href="#_CPPv413PackIdVersion" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv413PackIdVersion'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13PackIdVersion3mIdE">
+<span id="_CPPv3N13PackIdVersion3mIdE"></span><span id="_CPPv2N13PackIdVersion3mIdE"></span><span id="PackIdVersion::mId__mce::UUID"></span><span class="target" id="structPackIdVersion_1ad3359993d70cf919911cbd931f61b8a0"></span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="UUID_8hpp.html#_CPPv4N3mce4UUIDE" title="mce::UUID"><span class="n"><span class="pre">UUID</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mId</span></span></span><a class="headerlink" href="#_CPPv4N13PackIdVersion3mIdE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13PackIdVersion3mIdE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13PackIdVersion8mVersionE">
+<span id="_CPPv3N13PackIdVersion8mVersionE"></span><span id="_CPPv2N13PackIdVersion8mVersionE"></span><span id="PackIdVersion::mVersion__SemVersion"></span><span class="target" id="structPackIdVersion_1a792157658948cfe3b5416057cdfa006f"></span><a class="reference internal" href="SemVersion_8hpp.html#_CPPv410SemVersion" title="SemVersion"><span class="n"><span class="pre">SemVersion</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mVersion</span></span></span><a class="headerlink" href="#_CPPv4N13PackIdVersion8mVersionE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13PackIdVersion8mVersionE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13PackIdVersion9mPackTypeE">
+<span id="_CPPv3N13PackIdVersion9mPackTypeE"></span><span id="_CPPv2N13PackIdVersion9mPackTypeE"></span><span id="PackIdVersion::mPackType__PackType"></span><span class="target" id="structPackIdVersion_1a3df7bf3c7e63000daeba53b587a39428"></span><a class="reference internal" href="#_CPPv48PackType" title="PackType"><span class="n"><span class="pre">PackType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mPackType</span></span></span><a class="headerlink" href="#_CPPv4N13PackIdVersion9mPackTypeE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13PackIdVersion9mPackTypeE'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+</dd></dl>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv416ResourceLocation">
+<span id="_CPPv316ResourceLocation"></span><span id="_CPPv216ResourceLocation"></span><span id="ResourceLocation"></span><span class="target" id="classResourceLocation"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ResourceLocation</span></span></span><a class="headerlink" href="#_CPPv416ResourceLocation" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv416ResourceLocation'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N16ResourceLocationD0Ev">
+<span id="_CPPv3N16ResourceLocationD0Ev"></span><span id="_CPPv2N16ResourceLocationD0Ev"></span><span id="ResourceLocation::~ResourceLocation"></span><span class="target" id="classResourceLocation_1aa54a08a66f5a82744f61f00d56a58665"></span><span class="sig-name descname"><span class="n"><span class="pre">~ResourceLocation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16ResourceLocationD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N16ResourceLocationD0Ev'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N16ResourceLocation16ResourceLocationEv">
+<span id="_CPPv3N16ResourceLocation16ResourceLocationEv"></span><span id="_CPPv2N16ResourceLocation16ResourceLocationEv"></span><span id="ResourceLocation::ResourceLocation"></span><span class="target" id="classResourceLocation_1abc047adac6ff06078e7122d29e56a8cd"></span><span class="sig-name descname"><span class="n"><span class="pre">ResourceLocation</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16ResourceLocation16ResourceLocationEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N16ResourceLocation16ResourceLocationEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N16ResourceLocation16ResourceLocationERKNSt6stringE">
+<span id="_CPPv3N16ResourceLocation16ResourceLocationERKNSt6stringE"></span><span id="_CPPv2N16ResourceLocation16ResourceLocationERKNSt6stringE"></span><span id="ResourceLocation::ResourceLocation__ssCR"></span><span class="target" id="classResourceLocation_1a01da32d79ae65ccf57171e05a766b959"></span><span class="sig-name descname"><span class="n"><span class="pre">ResourceLocation</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">path</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16ResourceLocation16ResourceLocationERKNSt6stringE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N16ResourceLocation16ResourceLocationERKNSt6stringE'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16ResourceLocation11mFileSystemE">
+<span id="_CPPv3N16ResourceLocation11mFileSystemE"></span><span id="_CPPv2N16ResourceLocation11mFileSystemE"></span><span id="ResourceLocation::mFileSystem__ResourceFileSystem"></span><span class="target" id="classResourceLocation_1a5451a5d2ec2ee93be18162fa949d6f62"></span><a class="reference internal" href="ResourceUtil_8hpp.html#_CPPv418ResourceFileSystem" title="ResourceFileSystem"><span class="n"><span class="pre">ResourceFileSystem</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mFileSystem</span></span></span><a class="headerlink" href="#_CPPv4N16ResourceLocation11mFileSystemE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N16ResourceLocation11mFileSystemE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16ResourceLocation5mPathE">
+<span id="_CPPv3N16ResourceLocation5mPathE"></span><span id="_CPPv2N16ResourceLocation5mPathE"></span><span id="ResourceLocation::mPath__ss"></span><span class="target" id="classResourceLocation_1a41d7e27cfbd5edbde445c5c1f1c8c8fb"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mPath</span></span></span><a class="headerlink" href="#_CPPv4N16ResourceLocation5mPathE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N16ResourceLocation5mPathE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16ResourceLocation9mPathHashE">
+<span id="_CPPv3N16ResourceLocation9mPathHashE"></span><span id="_CPPv2N16ResourceLocation9mPathHashE"></span><span id="ResourceLocation::mPathHash__uint64_t"></span><span class="target" id="classResourceLocation_1aae5624cbccf4b182e29ecd798337fb19"></span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mPathHash</span></span></span><a class="headerlink" href="#_CPPv4N16ResourceLocation9mPathHashE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N16ResourceLocation9mPathHashE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N16ResourceLocation9mFullHashE">
+<span id="_CPPv3N16ResourceLocation9mFullHashE"></span><span id="_CPPv2N16ResourceLocation9mFullHashE"></span><span id="ResourceLocation::mFullHash__uint64_t"></span><span class="target" id="classResourceLocation_1af24462e7b80104547814f0859a7679dd"></span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mFullHash</span></span></span><a class="headerlink" href="#_CPPv4N16ResourceLocation9mFullHashE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N16ResourceLocation9mFullHashE'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N16ResourceLocation14_computeHashesEv">
+<span id="_CPPv3N16ResourceLocation14_computeHashesEv"></span><span id="_CPPv2N16ResourceLocation14_computeHashesEv"></span><span id="ResourceLocation::_computeHashes"></span><span class="target" id="classResourceLocation_1a05563ea62a47439201e8d394cc86ff52"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_computeHashes</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N16ResourceLocation14_computeHashesEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N16ResourceLocation14_computeHashesEv'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+</dd></dl>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(var(100vh)-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#_CPPv412PackCategory'" class="reference internal" href="#_CPPv412PackCategory"><code class="docutils literal notranslate"><span class="pre">PackCategory</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N12PackCategory8_UnknownE'" class="reference internal" href="#_CPPv4N12PackCategory8_UnknownE"><code class="docutils literal notranslate"><span class="pre">PackCategory::_Unknown</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N12PackCategory14_RealmsUnknownE'" class="reference internal" href="#_CPPv4N12PackCategory14_RealmsUnknownE"><code class="docutils literal notranslate"><span class="pre">PackCategory::_RealmsUnknown</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N12PackCategory8StandardE'" class="reference internal" href="#_CPPv4N12PackCategory8StandardE"><code class="docutils literal notranslate"><span class="pre">PackCategory::Standard</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N12PackCategory7PremiumE'" class="reference internal" href="#_CPPv4N12PackCategory7PremiumE"><code class="docutils literal notranslate"><span class="pre">PackCategory::Premium</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N12PackCategory6CustomE'" class="reference internal" href="#_CPPv4N12PackCategory6CustomE"><code class="docutils literal notranslate"><span class="pre">PackCategory::Custom</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N12PackCategory7SubpackE'" class="reference internal" href="#_CPPv4N12PackCategory7SubpackE"><code class="docutils literal notranslate"><span class="pre">PackCategory::Subpack</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv48PackType'" class="reference internal" href="#_CPPv48PackType"><code class="docutils literal notranslate"><span class="pre">PackType</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N8PackType7InvalidE'" class="reference internal" href="#_CPPv4N8PackType7InvalidE"><code class="docutils literal notranslate"><span class="pre">PackType::Invalid</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N8PackType5AddonE'" class="reference internal" href="#_CPPv4N8PackType5AddonE"><code class="docutils literal notranslate"><span class="pre">PackType::Addon</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N8PackType6CachedE'" class="reference internal" href="#_CPPv4N8PackType6CachedE"><code class="docutils literal notranslate"><span class="pre">PackType::Cached</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N8PackType13CopyProtectedE'" class="reference internal" href="#_CPPv4N8PackType13CopyProtectedE"><code class="docutils literal notranslate"><span class="pre">PackType::CopyProtected</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N8PackType8BehaviorE'" class="reference internal" href="#_CPPv4N8PackType8BehaviorE"><code class="docutils literal notranslate"><span class="pre">PackType::Behavior</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N8PackType12PersonaPieceE'" class="reference internal" href="#_CPPv4N8PackType12PersonaPieceE"><code class="docutils literal notranslate"><span class="pre">PackType::PersonaPiece</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N8PackType9ResourcesE'" class="reference internal" href="#_CPPv4N8PackType9ResourcesE"><code class="docutils literal notranslate"><span class="pre">PackType::Resources</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N8PackType5SkinsE'" class="reference internal" href="#_CPPv4N8PackType5SkinsE"><code class="docutils literal notranslate"><span class="pre">PackType::Skins</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N8PackType13WorldTemplateE'" class="reference internal" href="#_CPPv4N8PackType13WorldTemplateE"><code class="docutils literal notranslate"><span class="pre">PackType::WorldTemplate</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N8PackType5CountE'" class="reference internal" href="#_CPPv4N8PackType5CountE"><code class="docutils literal notranslate"><span class="pre">PackType::Count</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv413PackIdVersion'" class="reference internal" href="#_CPPv413PackIdVersion"><code class="docutils literal notranslate"><span class="pre">PackIdVersion</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N13PackIdVersion3mIdE'" class="reference internal" href="#_CPPv4N13PackIdVersion3mIdE"><code class="docutils literal notranslate"><span class="pre">PackIdVersion::mId</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13PackIdVersion8mVersionE'" class="reference internal" href="#_CPPv4N13PackIdVersion8mVersionE"><code class="docutils literal notranslate"><span class="pre">PackIdVersion::mVersion</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13PackIdVersion9mPackTypeE'" class="reference internal" href="#_CPPv4N13PackIdVersion9mPackTypeE"><code class="docutils literal notranslate"><span class="pre">PackIdVersion::mPackType</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv416ResourceLocation'" class="reference internal" href="#_CPPv416ResourceLocation"><code class="docutils literal notranslate"><span class="pre">ResourceLocation</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N16ResourceLocationD0Ev'" class="reference internal" href="#_CPPv4N16ResourceLocationD0Ev"><code class="docutils literal notranslate"><span class="pre">ResourceLocation::~ResourceLocation()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N16ResourceLocation16ResourceLocationEv'" class="reference internal" href="#_CPPv4N16ResourceLocation16ResourceLocationEv"><code class="docutils literal notranslate"><span class="pre">ResourceLocation::ResourceLocation()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N16ResourceLocation16ResourceLocationERKNSt6stringE'" class="reference internal" href="#_CPPv4N16ResourceLocation16ResourceLocationERKNSt6stringE"><code class="docutils literal notranslate"><span class="pre">ResourceLocation::ResourceLocation()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N16ResourceLocation11mFileSystemE'" class="reference internal" href="#_CPPv4N16ResourceLocation11mFileSystemE"><code class="docutils literal notranslate"><span class="pre">ResourceLocation::mFileSystem</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N16ResourceLocation5mPathE'" class="reference internal" href="#_CPPv4N16ResourceLocation5mPathE"><code class="docutils literal notranslate"><span class="pre">ResourceLocation::mPath</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N16ResourceLocation9mPathHashE'" class="reference internal" href="#_CPPv4N16ResourceLocation9mPathHashE"><code class="docutils literal notranslate"><span class="pre">ResourceLocation::mPathHash</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N16ResourceLocation9mFullHashE'" class="reference internal" href="#_CPPv4N16ResourceLocation9mFullHashE"><code class="docutils literal notranslate"><span class="pre">ResourceLocation::mFullHash</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N16ResourceLocation14_computeHashesEv'" class="reference internal" href="#_CPPv4N16ResourceLocation14_computeHashesEv"><code class="docutils literal notranslate"><span class="pre">ResourceLocation::_computeHashes()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 7.2.6</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+<script src="../../_static/doctools.js?v=888ff710"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=40b7bc71"></script>
+<script src="../../_static/design-tabs.js?v=36754332"></script>
+</body>
+</html>

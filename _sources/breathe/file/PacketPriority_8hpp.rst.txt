@@ -1,0 +1,5 @@
+File PacketPriority.hpp
+=======================
+
+.. doxygenfile:: PacketPriority.hpp
+   :project: AmethystApi

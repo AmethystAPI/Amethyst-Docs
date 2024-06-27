@@ -1,0 +1,5 @@
+File GameModuleClient.hpp
+=========================
+
+.. doxygenfile:: GameModuleClient.hpp
+   :project: AmethystApi

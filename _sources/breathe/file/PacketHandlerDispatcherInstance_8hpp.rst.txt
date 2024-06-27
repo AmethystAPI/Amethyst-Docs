@@ -1,0 +1,5 @@
+File PacketHandlerDispatcherInstance.hpp
+========================================
+
+.. doxygenfile:: PacketHandlerDispatcherInstance.hpp
+   :project: AmethystApi

@@ -1,0 +1,5 @@
+File Options.hpp
+================
+
+.. doxygenfile:: Options.hpp
+   :project: AmethystApi

@@ -1,0 +1,5 @@
+File IWorldRegistriesProvider.hpp
+=================================
+
+.. doxygenfile:: IWorldRegistriesProvider.hpp
+   :project: AmethystApi

@@ -1,0 +1,5 @@
+File HitResult.hpp
+==================
+
+.. doxygenfile:: HitResult.hpp
+   :project: AmethystApi

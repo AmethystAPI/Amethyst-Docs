@@ -1,0 +1,5 @@
+File NewType.hpp
+================
+
+.. doxygenfile:: NewType.hpp
+   :project: AmethystApi

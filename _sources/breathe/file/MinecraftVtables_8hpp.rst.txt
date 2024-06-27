@@ -1,0 +1,5 @@
+File MinecraftVtables.hpp
+=========================
+
+.. doxygenfile:: MinecraftVtables.hpp
+   :project: AmethystApi

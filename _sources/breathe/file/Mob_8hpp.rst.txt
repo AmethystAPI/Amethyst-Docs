@@ -1,0 +1,5 @@
+File Mob.hpp
+============
+
+.. doxygenfile:: Mob.hpp
+   :project: AmethystApi

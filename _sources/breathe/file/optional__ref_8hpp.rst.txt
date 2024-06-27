@@ -1,0 +1,5 @@
+File optional_ref.hpp
+=====================
+
+.. doxygenfile:: optional_ref.hpp
+   :project: AmethystApi

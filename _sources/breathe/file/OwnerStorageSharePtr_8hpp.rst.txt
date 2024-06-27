@@ -1,0 +1,5 @@
+File OwnerStorageSharePtr.hpp
+=============================
+
+.. doxygenfile:: OwnerStorageSharePtr.hpp
+   :project: AmethystApi

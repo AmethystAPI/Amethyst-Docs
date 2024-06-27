@@ -1,0 +1,5 @@
+File MinecraftPackageInfo.hpp
+=============================
+
+.. doxygenfile:: MinecraftPackageInfo.hpp
+   :project: AmethystApi

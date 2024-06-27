@@ -1,0 +1,5 @@
+File EndTag.hpp
+===============
+
+.. doxygenfile:: EndTag.hpp
+   :project: AmethystApi

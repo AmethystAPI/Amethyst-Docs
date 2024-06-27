@@ -1,0 +1,5 @@
+File BaseGameVersion.hpp
+========================
+
+.. doxygenfile:: BaseGameVersion.hpp
+   :project: AmethystApi

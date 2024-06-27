@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+
+<html :class="{'dark': darkMode === 'dark' || (darkMode === 'system' &amp;&amp; window.matchMedia('(prefers-color-scheme: dark)').matches)}" class="scroll-smooth" data-content_root="../../" lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') || localStorage.setItem('darkMode', 'system'), activeSection: '' }" x-init="$watch('darkMode', val =&gt; localStorage.setItem('darkMode', val))">
+<head>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="white" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="black" metia="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>File Tessellator.hpp | Amethyst  documentation</title>
+<meta content="File Tessellator.hpp | Amethyst  documentation" property="og:title"/>
+<meta content="File Tessellator.hpp | Amethyst  documentation" name="twitter:title"/>
+<link href="../../_static/pygments.css?v=5432af51" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=5b4133db" rel="stylesheet" type="text/css"/>
+<link href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-sphinx-design.css?v=a54cf077" rel="stylesheet" type="text/css"/>
+<link href="../../_static/logo-512x.png" rel="icon"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="TextComponent_8hpp.html" rel="next" title="File TextComponent.hpp"/>
+<link href="Tag_8hpp.html" rel="prev" title="File Tag.hpp"/>
+<script>
+    <!-- Prevent Flash of wrong theme -->
+      const userPreference = localStorage.getItem('darkMode');
+      let mode;
+      if (userPreference === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        mode = 'dark';
+        document.documentElement.classList.add('dark');
+      } else {
+        mode = 'light';
+      }
+      if (!userPreference) {localStorage.setItem('darkMode', mode)}
+    </script>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-sm border-border supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a><nav class="flex items-center space-x-6 text-sm font-medium">
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../autodocs.html">AmethystAPI</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../examples/index.html">Examples</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../getting_started/index.html">Getting Started</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../reverse_engineering/index.html">Reverse Engineering</a>
+</nav></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center space-x-1">
+<button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full shrink-0 overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="!justify-start text-sm md:!hidden bg-background" href="../../index.html"><span class="font-bold text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0 h-[calc(100vh-8rem)] md:h-auto">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../autodocs.html">AmethystAPI<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../filelist.html">File list<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="AABB_8hpp.html">File AABB.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorBlock_8hpp.html">File ActorBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorHeadRotationComponent_8hpp.html">File ActorHeadRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorRotationComponent_8hpp.html">File ActorRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorShaderManager_8hpp.html">File ActorShaderManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorTerrainInterlockData_8hpp.html">File ActorTerrainInterlockData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actor_8hpp.html">File Actor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AmethystContext_8hpp.html">File AmethystContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AuxDataBlockItem_8hpp.html">File AuxDataBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderContext_8hpp.html">File BaseActorRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderer_8hpp.html">File BaseActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseGameVersion_8hpp.html">File BaseGameVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseOptions_8hpp.html">File BaseOptions.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BinaryStream_8hpp.html">File BinaryStream.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorDataPacket_8hpp.html">File BlockActorDataPacket.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html">File BlockActorRendererDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererId_8hpp.html">File BlockActorRendererId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRenderer_8hpp.html">File BlockActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActor_8hpp.html">File BlockActor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentBase_8hpp.html">File BlockComponentBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentStorage_8hpp.html">File BlockComponentStorage.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockDefinitionGroup_8hpp.html">File BlockDefinitionGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockGraphics_8hpp.html">File BlockGraphics.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockItem_8hpp.html">File BlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockLegacy_8hpp.html">File BlockLegacy.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockMapColorComponent_8hpp.html">File BlockMapColorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockPos_8hpp.html">File BlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockRenderLayer_8hpp.html">File BlockRenderLayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockShape_8hpp.html">File BlockShape.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSourceListener_8hpp.html">File BlockSourceListener.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSource_8hpp.html">File BlockSource.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockState_8hpp.html">File BlockState.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTessellator_8hpp.html">File BlockTessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTypeRegistry_8hpp.html">File BlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Block_8hpp.html">File Block.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteArrayTag_8hpp.html">File ByteArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteTag_8hpp.html">File ByteTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CallStack_8hpp.html">File CallStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Camera_8hpp.html">File Camera.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChestBlock_8hpp.html">File ChestBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkBlockPos_8hpp.html">File ChunkBlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkPos_8hpp.html">File ChunkPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputHandler_8hpp.html">File ClientInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputMappingFactory_8hpp.html">File ClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInstance_8hpp.html">File ClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientNetworkHandler_8hpp.html">File ClientNetworkHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Color_8hpp.html">File Color.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CommonTypes_8hpp.html">File CommonTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTagVariant_8hpp.html">File CompoundTagVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTag_8hpp.html">File CompoundTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Config_8hpp.html">File Config.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Container_8hpp.html">File Container.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLogTypes_8hpp.html">File ContentLogTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLog_8hpp.html">File ContentLog.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Dimension_8hpp.html">File Dimension.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Direction_8hpp.html">File Direction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DoubleTag_8hpp.html">File DoubleTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EndTag_8hpp.html">File EndTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityContext_8hpp.html">File EntityContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityIdTraits_8hpp.html">File EntityIdTraits.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityId_8hpp.html">File EntityId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ErrorInfo_8hpp.html">File ErrorInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EventManager_8hpp.html">File EventManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Event_8hpp.html">File Event.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FertilizerType_8hpp.html">File FertilizerType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FillingContainer_8hpp.html">File FillingContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FloatTag_8hpp.html">File FloatTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameEvent_8hpp.html">File GameEvent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameModuleClient_8hpp.html">File GameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRefsSharePtr_8hpp.html">File GameRefsSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRules_8hpp.html">File GameRules.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GetCollisionShapeInterface_8hpp.html">File GetCollisionShapeInterface.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GuiData_8hpp.html">File GuiData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HeightRange_8hpp.html">File HeightRange.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HitResult_8hpp.html">File HitResult.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HookManager_8hpp.html">File HookManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverRenderer_8hpp.html">File HoverRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverTextRenderer_8hpp.html">File HoverTextRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IClientInstance_8hpp.html">File IClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ILevel_8hpp.html">File ILevel.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IPacketHandlerDispatcher_8hpp.html">File IPacketHandlerDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IWorldRegistriesProvider_8hpp.html">File IWorldRegistriesProvider.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ImageInfo_8hpp.html">File ImageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InPackagePacks_8hpp.html">File InPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputAction_8hpp.html">File InputAction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputHandler_8hpp.html">File InputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputManager_8hpp.html">File InputManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMappingFactory_8hpp.html">File InputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMapping_8hpp.html">File InputMapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Int64Tag_8hpp.html">File Int64Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntArrayTag_8hpp.html">File IntArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntTag_8hpp.html">File IntTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Inventory_8hpp.html">File Inventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IsotropicFaceData_8hpp.html">File IsotropicFaceData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemCategory_8hpp.html">File ItemCategory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemGroup_8hpp.html">File ItemGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemIconManager_8hpp.html">File ItemIconManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemInstance_8hpp.html">File ItemInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryManager_8hpp.html">File ItemRegistryManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryRef_8hpp.html">File ItemRegistryRef.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistry_8hpp.html">File ItemRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRenderer_8hpp.html">File ItemRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackBase_8hpp.html">File ItemStackBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackNetIdVariant_8hpp.html">File ItemStackNetIdVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStack_8hpp.html">File ItemStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Item_8hpp.html">File Item.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Keymapping_8hpp.html">File Keymapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelChunk_8hpp.html">File LevelChunk.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRendererPlayer_8hpp.html">File LevelRendererPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRenderer_8hpp.html">File LevelRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Level_8hpp.html">File Level.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ListTag_8hpp.html">File ListTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LocalPlayer_8hpp.html">File LocalPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Log_8hpp.html">File Log.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LoopbackPacketSender_8hpp.html">File LoopbackPacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialPtr_8hpp.html">File MaterialPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialType_8hpp.html">File MaterialType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Material_8hpp.html">File Material.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Math_8hpp.html">File Math.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MatrixStack_8hpp.html">File MatrixStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Matrix_8hpp.html">File Matrix.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Memory_8hpp.html">File Memory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshContext_8hpp.html">File MeshContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshData_8hpp.html">File MeshData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshHelpers_8hpp.html">File MeshHelpers.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mesh_8hpp.html">File Mesh.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftGame_8hpp.html">File MinecraftGame.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftInputHandler_8hpp.html">File MinecraftInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftPackageInfo_8hpp.html">File MinecraftPackageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftUIRenderContext_8hpp.html">File MinecraftUIRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftVtables_8hpp.html">File MinecraftVtables.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Minecraft_8hpp.html">File Minecraft.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mob_8hpp.html">File Mob.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mod_8hpp.html">File Mod.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetEventCallback_8hpp.html">File NetEventCallback.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkBlockPosition_8hpp.html">File NetworkBlockPosition.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkPeer_8hpp.html">File NetworkPeer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NewType_8hpp.html">File NewType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceHelper_8hpp.html">File NinesliceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceInfo_8hpp.html">File NinesliceInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NonOwnerPointer_8hpp.html">File NonOwnerPointer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Options_8hpp.html">File Options.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerPtr_8hpp.html">File OwnerPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerStorageSharePtr_8hpp.html">File OwnerStorageSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketHandlerDispatcherInstance_8hpp.html">File PacketHandlerDispatcherInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketPriority_8hpp.html">File PacketPriority.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketSender_8hpp.html">File PacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_8hpp.html">File Packet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PatchManager_8hpp.html">File PatchManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Path_8hpp.html">File Path.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerInventory_8hpp.html">File PlayerInventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerUIContainer_8hpp.html">File PlayerUIContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Player_8hpp.html">File Player.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RandomizableBlockActorContainerBase_8hpp.html">File RandomizableBlockActorContainerBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RemappingLayout_8hpp.html">File RemappingLayout.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderContext_8hpp.html">File RenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroupBase_8hpp.html">File RenderMaterialGroupBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroup_8hpp.html">File RenderMaterialGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResolvedItemIconInfo_8hpp.html">File ResolvedItemIconInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceHelper_8hpp.html">File ResourceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceUtil_8hpp.html">File ResourceUtil.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Result_8hpp.html">File Result.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenContext_8hpp.html">File ScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenView_8hpp.html">File ScreenView.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SemVersion_8hpp.html">File SemVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShapeType_8hpp.html">File ShapeType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SharedPtr_8hpp.html">File SharedPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShortTag_8hpp.html">File ShortTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShulkerBoxBlockItem_8hpp.html">File ShulkerBoxBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SimpleContainer_8hpp.html">File SimpleContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SliderComponent_8hpp.html">File SliderComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StateVectorComponent_8hpp.html">File StateVectorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringHash_8hpp.html">File StringHash.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringTag_8hpp.html">File StringTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringUtils_8hpp.html">File StringUtils.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tag_8hpp.html">File Tag.hpp</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">File Tessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextComponent_8hpp.html">File TextComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureAtlasItem_8hpp.html">File TextureAtlasItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TexturePtr_8hpp.html">File TexturePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureUVCoordinateSet_8hpp.html">File TextureUVCoordinateSet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tick_8hpp.html">File Tick.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ToggleComponent_8hpp.html">File ToggleComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIComponent_8hpp.html">File UIComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIControl_8hpp.html">File UIControl.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIScreenContext_8hpp.html">File UIScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UUID_8hpp.html">File UUID.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UseAnim_8hpp.html">File UseAnim.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Utility_8hpp.html">File Utility.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaBlockTypeRegistry_8hpp.html">File VanillaBlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaClientInputMappingFactory_8hpp.html">File VanillaClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaGameModuleClient_8hpp.html">File VanillaGameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaInPackagePacks_8hpp.html">File VanillaInPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaItems_8hpp.html">File VanillaItems.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec2_8hpp.html">File Vec2.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec3_8hpp.html">File Vec3.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VisualTree_8hpp.html">File VisualTree.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expected_8hpp.html">File expected.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsl__includes_8hpp.html">File gsl_includes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optional__ref_8hpp.html">File optional_ref.hpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/index.html">Examples<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/networking/index.html">Networking<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../../examples/networking/udp.html">UDP Networking Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../getting_started/index.html">Getting Started<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/end_user/installing_amethyst.html">Installing Amethyst</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/devs/compiling_amethyst.html">Compiling Amethyst</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reverse_engineering/index.html">Reverse Engineering</a></li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../how_to_doc/index.html">How to doc<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/setup.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/doxygen.html">Doxygen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/sphinx.html">Sphinx</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../../index.html">
+<span class="hidden md:inline">Amethyst  documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../../autodocs.html">AmethystAPI</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../filelist.html">File list</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">File Tessellator.hpp</span>
+</nav>
+<div id="content" role="main">
+<section id="file-tessellator-hpp">
+<h1>File Tessellator.hpp<a class="headerlink" href="#file-tessellator-hpp" title="Link to this heading">¶</a></h1>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv413PrimitiveMode">
+<span id="_CPPv313PrimitiveMode"></span><span id="_CPPv213PrimitiveMode"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PrimitiveMode</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><a class="headerlink" href="#_CPPv413PrimitiveMode" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv413PrimitiveMode'">¶</a><br/></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13PrimitiveMode4NoneE">
+<span id="_CPPv3N13PrimitiveMode4NoneE"></span><span id="_CPPv2N13PrimitiveMode4NoneE"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986a6adf97f83acf6453d4a6a4b1070f3754"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">None</span></span></span><a class="headerlink" href="#_CPPv4N13PrimitiveMode4NoneE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13PrimitiveMode4NoneE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13PrimitiveMode8QuadListE">
+<span id="_CPPv3N13PrimitiveMode8QuadListE"></span><span id="_CPPv2N13PrimitiveMode8QuadListE"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986a89b690f180ec881a9f25f1ab07bf1547"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QuadList</span></span></span><a class="headerlink" href="#_CPPv4N13PrimitiveMode8QuadListE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13PrimitiveMode8QuadListE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13PrimitiveMode12TriangleListE">
+<span id="_CPPv3N13PrimitiveMode12TriangleListE"></span><span id="_CPPv2N13PrimitiveMode12TriangleListE"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986af5beeab7a1f452e5b0e9b03b44f0de92"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriangleList</span></span></span><a class="headerlink" href="#_CPPv4N13PrimitiveMode12TriangleListE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13PrimitiveMode12TriangleListE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13PrimitiveMode13TriangleStripE">
+<span id="_CPPv3N13PrimitiveMode13TriangleStripE"></span><span id="_CPPv2N13PrimitiveMode13TriangleStripE"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986a1da0b9ead8b051940a89214bae22831c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriangleStrip</span></span></span><a class="headerlink" href="#_CPPv4N13PrimitiveMode13TriangleStripE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13PrimitiveMode13TriangleStripE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13PrimitiveMode8LineListE">
+<span id="_CPPv3N13PrimitiveMode8LineListE"></span><span id="_CPPv2N13PrimitiveMode8LineListE"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986a596e1b7afe8925f3f578c716d5af8fef"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LineList</span></span></span><a class="headerlink" href="#_CPPv4N13PrimitiveMode8LineListE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13PrimitiveMode8LineListE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N13PrimitiveMode9LineStripE">
+<span id="_CPPv3N13PrimitiveMode9LineStripE"></span><span id="_CPPv2N13PrimitiveMode9LineStripE"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986ae7f9e73b8edd21f420a63b3ace5768a2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LineStrip</span></span></span><a class="headerlink" href="#_CPPv4N13PrimitiveMode9LineStripE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13PrimitiveMode9LineStripE'">¶</a><br/></dt>
+<dd></dd></dl>
+</dd></dl>
+</div>
+<dl class="cpp struct">
+<dt class="sig sig-object cpp" id="_CPPv419TessellatorQuadInfo">
+<span id="_CPPv319TessellatorQuadInfo"></span><span id="_CPPv219TessellatorQuadInfo"></span><span id="TessellatorQuadInfo"></span><span class="target" id="structTessellatorQuadInfo"></span><span class="k"><span class="pre">struct</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TessellatorQuadInfo</span></span></span><a class="headerlink" href="#_CPPv419TessellatorQuadInfo" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv419TessellatorQuadInfo'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19TessellatorQuadInfo6facingE">
+<span id="_CPPv3N19TessellatorQuadInfo6facingE"></span><span id="_CPPv2N19TessellatorQuadInfo6facingE"></span><span id="TessellatorQuadInfo::facing__unsigned-c"></span><span class="target" id="structTessellatorQuadInfo_1a716e0a188bea2752e1445af640cbf108"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">facing</span></span></span><a class="headerlink" href="#_CPPv4N19TessellatorQuadInfo6facingE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N19TessellatorQuadInfo6facingE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19TessellatorQuadInfo7twoFaceE">
+<span id="_CPPv3N19TessellatorQuadInfo7twoFaceE"></span><span id="_CPPv2N19TessellatorQuadInfo7twoFaceE"></span><span id="TessellatorQuadInfo::twoFace__unsigned-c"></span><span class="target" id="structTessellatorQuadInfo_1ad694a18d30a446f9b8972e1eaf84d49b"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">twoFace</span></span></span><a class="headerlink" href="#_CPPv4N19TessellatorQuadInfo7twoFaceE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N19TessellatorQuadInfo7twoFaceE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N19TessellatorQuadInfo8centroidE">
+<span id="_CPPv3N19TessellatorQuadInfo8centroidE"></span><span id="_CPPv2N19TessellatorQuadInfo8centroidE"></span><span id="TessellatorQuadInfo::centroid__Vec3"></span><span class="target" id="structTessellatorQuadInfo_1a1d2273117b39137288b320eb18037f12"></span><a class="reference internal" href="Vec3_8hpp.html#_CPPv44Vec3" title="Vec3"><span class="n"><span class="pre">Vec3</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">centroid</span></span></span><a class="headerlink" href="#_CPPv4N19TessellatorQuadInfo8centroidE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N19TessellatorQuadInfo8centroidE'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+</dd></dl>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv411Tessellator">
+<span id="_CPPv311Tessellator"></span><span id="_CPPv211Tessellator"></span><span id="Tessellator"></span><span class="target" id="classTessellator"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Tessellator</span></span></span><a class="headerlink" href="#_CPPv411Tessellator" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv411Tessellator'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator5beginEN3mce13PrimitiveModeEi">
+<span id="_CPPv3N11Tessellator5beginEN3mce13PrimitiveModeEi"></span><span id="_CPPv2N11Tessellator5beginEN3mce13PrimitiveModeEi"></span><span id="Tessellator::begin__mce::PrimitiveMode.i"></span><span class="target" id="classTessellator_1a35d9e8d65625fc99f24fc90ff246e64f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">begin</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="#_CPPv4N3mce13PrimitiveModeE" title="mce::PrimitiveMode"><span class="n"><span class="pre">PrimitiveMode</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">mode</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">maxVertices</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator5beginEN3mce13PrimitiveModeEi" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator5beginEN3mce13PrimitiveModeEi'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator13beginOverrideEv">
+<span id="_CPPv3N11Tessellator13beginOverrideEv"></span><span id="_CPPv2N11Tessellator13beginOverrideEv"></span><span id="Tessellator::beginOverride"></span><span class="target" id="classTessellator_1a5860be32f8257b0d9a1fa8cedc122b6a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">beginOverride</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator13beginOverrideEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator13beginOverrideEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator6vertexEfff">
+<span id="_CPPv3N11Tessellator6vertexEfff"></span><span id="_CPPv2N11Tessellator6vertexEfff"></span><span id="Tessellator::vertex__float.float.float"></span><span class="target" id="classTessellator_1a4352f205b677f057378f71daf1a186a3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vertex</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">y</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator6vertexEfff" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator6vertexEfff'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator6vertexERK4Vec3">
+<span id="_CPPv3N11Tessellator6vertexERK4Vec3"></span><span id="_CPPv2N11Tessellator6vertexERK4Vec3"></span><span id="Tessellator::vertex__Vec3CR"></span><span class="target" id="classTessellator_1ab0af31aa8905e433c4b1f62346a975da"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vertex</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Vec3_8hpp.html#_CPPv44Vec3" title="Vec3"><span class="n"><span class="pre">Vec3</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator6vertexERK4Vec3" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator6vertexERK4Vec3'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator8vertexUVEfffff">
+<span id="_CPPv3N11Tessellator8vertexUVEfffff"></span><span id="_CPPv2N11Tessellator8vertexUVEfffff"></span><span id="Tessellator::vertexUV__float.float.float.float.float"></span><span class="target" id="classTessellator_1a60322f5836aeff0d535c7159dd6bf693"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vertexUV</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">y</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">z</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvX</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvY</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator8vertexUVEfffff" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator8vertexUVEfffff'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator8vertexUVERK4Vec3ff">
+<span id="_CPPv3N11Tessellator8vertexUVERK4Vec3ff"></span><span id="_CPPv2N11Tessellator8vertexUVERK4Vec3ff"></span><span id="Tessellator::vertexUV__Vec3CR.float.float"></span><span class="target" id="classTessellator_1aaf82de0bb724837888cfc61319e9d7bf"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">vertexUV</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Vec3_8hpp.html#_CPPv44Vec3" title="Vec3"><span class="n"><span class="pre">Vec3</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvX</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">uvY</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator8vertexUVERK4Vec3ff" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator8vertexUVERK4Vec3ff'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator5colorEffff">
+<span id="_CPPv3N11Tessellator5colorEffff"></span><span id="_CPPv2N11Tessellator5colorEffff"></span><span id="Tessellator::color__float.float.float.float"></span><span class="target" id="classTessellator_1a7e5721373dac0a92db992be5078d742b"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">color</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">g</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator5colorEffff" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator5colorEffff'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator22setPostTransformOffsetEfff">
+<span id="_CPPv3N11Tessellator22setPostTransformOffsetEfff"></span><span id="_CPPv2N11Tessellator22setPostTransformOffsetEfff"></span><span id="Tessellator::setPostTransformOffset__float.float.float"></span><span class="target" id="classTessellator_1a9bdbba3465662c4ecb88765ff81ead7f"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setPostTransformOffset</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">xo</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">yo</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">zo</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator22setPostTransformOffsetEfff" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator22setPostTransformOffsetEfff'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator21setPosTransformOffsetE4Vec3">
+<span id="_CPPv3N11Tessellator21setPosTransformOffsetE4Vec3"></span><span id="_CPPv2N11Tessellator21setPosTransformOffsetE4Vec3"></span><span id="Tessellator::setPosTransformOffset__Vec3"></span><span class="target" id="classTessellator_1a595dcc7329dde6c7545b22b2d7781cdd"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setPosTransformOffset</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Vec3_8hpp.html#_CPPv44Vec3" title="Vec3"><span class="n"><span class="pre">Vec3</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator21setPosTransformOffsetE4Vec3" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator21setPosTransformOffsetE4Vec3'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator22getPostTransformOffsetEv">
+<span id="_CPPv3N11Tessellator22getPostTransformOffsetEv"></span><span id="_CPPv2N11Tessellator22getPostTransformOffsetEv"></span><span id="Tessellator::getPostTransformOffset"></span><span class="target" id="classTessellator_1a5c91e44b5cfbbb72558c007c4a4feb42"></span><a class="reference internal" href="Vec3_8hpp.html#_CPPv44Vec3" title="Vec3"><span class="n"><span class="pre">Vec3</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">getPostTransformOffset</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator22getPostTransformOffsetEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator22getPostTransformOffsetEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator22addPostTransformOffsetEfff">
+<span id="_CPPv3N11Tessellator22addPostTransformOffsetEfff"></span><span id="_CPPv2N11Tessellator22addPostTransformOffsetEfff"></span><span id="Tessellator::addPostTransformOffset__float.float.float"></span><span class="target" id="classTessellator_1a8ce4e67d1fc5a5af92e2c6164149086e"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addPostTransformOffset</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">x</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">y</span></span>, <span class="kt"><span class="pre">float</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">z</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator22addPostTransformOffsetEfff" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator22addPostTransformOffsetEfff'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator22addPostTransformOffsetE4Vec3">
+<span id="_CPPv3N11Tessellator22addPostTransformOffsetE4Vec3"></span><span id="_CPPv2N11Tessellator22addPostTransformOffsetE4Vec3"></span><span id="Tessellator::addPostTransformOffset__Vec3"></span><span class="target" id="classTessellator_1a648e3d12d2c60ab80c542f7b4da3ff85"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addPostTransformOffset</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Vec3_8hpp.html#_CPPv44Vec3" title="Vec3"><span class="n"><span class="pre">Vec3</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator22addPostTransformOffsetE4Vec3" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator22addPostTransformOffsetE4Vec3'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator23resetPostTransformScaleEv">
+<span id="_CPPv3N11Tessellator23resetPostTransformScaleEv"></span><span id="_CPPv2N11Tessellator23resetPostTransformScaleEv"></span><span id="Tessellator::resetPostTransformScale"></span><span class="target" id="classTessellator_1a2806cf7e043c980fc53f3a249eee1d82"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">resetPostTransformScale</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator23resetPostTransformScaleEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator23resetPostTransformScaleEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator3endE8uint64_tNSt11string_viewEi">
+<span id="_CPPv3N11Tessellator3endE8uint64_tNSt11string_viewEi"></span><span id="_CPPv2N11Tessellator3endE8uint64_tNSt11string_viewEi"></span><span id="Tessellator::end__uint64_t.std::string_view.i"></span><span class="target" id="classTessellator_1a7b66198b16ff6095e1fecf1b074b9cad"></span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Mesh_8hpp.html#_CPPv4N3mce4MeshE" title="mce::Mesh"><span class="n"><span class="pre">Mesh</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">end</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a3</span></span>, <a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">debugName</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a5</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator3endE8uint64_tNSt11string_viewEi" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator3endE8uint64_tNSt11string_viewEi'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator5clearEv">
+<span id="_CPPv3N11Tessellator5clearEv"></span><span id="_CPPv2N11Tessellator5clearEv"></span><span id="Tessellator::clear"></span><span class="target" id="classTessellator_1a8f78162ca88149e842bd23293f0281ec"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">clear</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator5clearEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator5clearEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator11endOverrideE8uint64_tNSt11string_viewEi">
+<span id="_CPPv3N11Tessellator11endOverrideE8uint64_tNSt11string_viewEi"></span><span id="_CPPv2N11Tessellator11endOverrideE8uint64_tNSt11string_viewEi"></span><span id="Tessellator::endOverride__uint64_t.std::string_view.i"></span><span class="target" id="classTessellator_1a4aa10f3ac17c57b9071a57134a4ce189"></span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Mesh_8hpp.html#_CPPv4N3mce4MeshE" title="mce::Mesh"><span class="n"><span class="pre">Mesh</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">endOverride</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">uint64_t</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a3</span></span>, <a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string_view</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">debugName</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">a5</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N11Tessellator11endOverrideE8uint64_tNSt11string_viewEi" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator11endOverrideE8uint64_tNSt11string_viewEi'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator14mIsFormatFixedE">
+<span id="_CPPv3N11Tessellator14mIsFormatFixedE"></span><span id="_CPPv2N11Tessellator14mIsFormatFixedE"></span><span id="Tessellator::mIsFormatFixed__b"></span><span class="target" id="classTessellator_1ae259013855f52ba42865498a9aa54fa4"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mIsFormatFixed</span></span></span><a class="headerlink" href="#_CPPv4N11Tessellator14mIsFormatFixedE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator14mIsFormatFixedE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator8padding1E">
+<span id="_CPPv3N11Tessellator8padding1E"></span><span id="_CPPv2N11Tessellator8padding1E"></span><span id="Tessellator::padding1__std::byteA"></span><span class="target" id="classTessellator_1a8c872df0de668319d2e534fce4b2d382"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">padding1</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">7</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11Tessellator8padding1E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator8padding1E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator9mMeshDataE">
+<span id="_CPPv3N11Tessellator9mMeshDataE"></span><span id="_CPPv2N11Tessellator9mMeshDataE"></span><span id="Tessellator::mMeshData__mce::MeshData"></span><span class="target" id="classTessellator_1a07737f31e485710e26ec6f07ce7797d7"></span><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html#_CPPv43mce" title="mce"><span class="n"><span class="pre">mce</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="MeshData_8hpp.html#_CPPv4N3mce8MeshDataE" title="mce::MeshData"><span class="n"><span class="pre">MeshData</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mMeshData</span></span></span><a class="headerlink" href="#_CPPv4N11Tessellator9mMeshDataE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator9mMeshDataE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator10padding248E">
+<span id="_CPPv3N11Tessellator10padding248E"></span><span id="_CPPv2N11Tessellator10padding248E"></span><span id="Tessellator::padding248__std::byteA"></span><span class="target" id="classTessellator_1a36b913f0e28bbbd9f7b7ed7c59b3cfa5"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">padding248</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">80</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11Tessellator10padding248E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator10padding248E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator10mNextColorE">
+<span id="_CPPv3N11Tessellator10mNextColorE"></span><span id="_CPPv2N11Tessellator10mNextColorE"></span><span id="Tessellator::mNextColor__std::optional:unsigned-i:"></span><span class="target" id="classTessellator_1a534589becb3df5dd7643108e1de14113"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">optional</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mNextColor</span></span></span><a class="headerlink" href="#_CPPv4N11Tessellator10mNextColorE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator10mNextColorE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator10padding336E">
+<span id="_CPPv3N11Tessellator10padding336E"></span><span id="_CPPv2N11Tessellator10padding336E"></span><span id="Tessellator::padding336__std::byteA"></span><span class="target" id="classTessellator_1aa943a259e74f2f7ae53adec37d879a8a"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">padding336</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">12</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11Tessellator10padding336E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator10padding336E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator20mPostTransformOffsetE">
+<span id="_CPPv3N11Tessellator20mPostTransformOffsetE"></span><span id="_CPPv2N11Tessellator20mPostTransformOffsetE"></span><span id="Tessellator::mPostTransformOffset__Vec3"></span><span class="target" id="classTessellator_1a6e8b6690f6b5012d26f82e57b2bec99e"></span><a class="reference internal" href="Vec3_8hpp.html#_CPPv44Vec3" title="Vec3"><span class="n"><span class="pre">Vec3</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mPostTransformOffset</span></span></span><a class="headerlink" href="#_CPPv4N11Tessellator20mPostTransformOffsetE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator20mPostTransformOffsetE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator19mPostTransformScaleE">
+<span id="_CPPv3N11Tessellator19mPostTransformScaleE"></span><span id="_CPPv2N11Tessellator19mPostTransformScaleE"></span><span id="Tessellator::mPostTransformScale__Vec3"></span><span class="target" id="classTessellator_1af8830573f0ee73a0f467f4bbe1c149f0"></span><a class="reference internal" href="Vec3_8hpp.html#_CPPv44Vec3" title="Vec3"><span class="n"><span class="pre">Vec3</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mPostTransformScale</span></span></span><a class="headerlink" href="#_CPPv4N11Tessellator19mPostTransformScaleE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator19mPostTransformScaleE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator10padding372E">
+<span id="_CPPv3N11Tessellator10padding372E"></span><span id="_CPPv2N11Tessellator10padding372E"></span><span id="Tessellator::padding372__std::byteA"></span><span class="target" id="classTessellator_1afcba7362ec8c4166dc15364e97c6f456"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">padding372</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11Tessellator10padding372E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator10padding372E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator13mQuadInfoListE">
+<span id="_CPPv3N11Tessellator13mQuadInfoListE"></span><span id="_CPPv2N11Tessellator13mQuadInfoListE"></span><span id="Tessellator::mQuadInfoList__std::vector:TessellatorQuadInfo:"></span><span class="target" id="classTessellator_1a7c91fdd3ab3499c47c3d41273b958a4f"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv419TessellatorQuadInfo" title="TessellatorQuadInfo"><span class="n"><span class="pre">TessellatorQuadInfo</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mQuadInfoList</span></span></span><a class="headerlink" href="#_CPPv4N11Tessellator13mQuadInfoListE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator13mQuadInfoListE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator10padding400E">
+<span id="_CPPv3N11Tessellator10padding400E"></span><span id="_CPPv2N11Tessellator10padding400E"></span><span id="Tessellator::padding400__std::byteA"></span><span class="target" id="classTessellator_1a3b852373f16ad3eeef3a7d48a0411a14"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">padding400</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">16</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11Tessellator10padding400E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator10padding400E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator15mApplyTransformE">
+<span id="_CPPv3N11Tessellator15mApplyTransformE"></span><span id="_CPPv2N11Tessellator15mApplyTransformE"></span><span id="Tessellator::mApplyTransform__b"></span><span class="target" id="classTessellator_1a7f372d9f250923ecc7328317b6720234"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mApplyTransform</span></span></span><a class="headerlink" href="#_CPPv4N11Tessellator15mApplyTransformE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator15mApplyTransformE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator10padding417E">
+<span id="_CPPv3N11Tessellator10padding417E"></span><span id="_CPPv2N11Tessellator10padding417E"></span><span id="Tessellator::padding417__std::byteA"></span><span class="target" id="classTessellator_1ab2851ba960f51fde59855c64ea553a0f"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">padding417</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">67</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11Tessellator10padding417E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator10padding417E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator8mNoColorE">
+<span id="_CPPv3N11Tessellator8mNoColorE"></span><span id="_CPPv2N11Tessellator8mNoColorE"></span><span id="Tessellator::mNoColor__b"></span><span class="target" id="classTessellator_1a33ac02262638b3e1fef025395dc6c3fd"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mNoColor</span></span></span><a class="headerlink" href="#_CPPv4N11Tessellator8mNoColorE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator8mNoColorE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator13mVoidBeginEndE">
+<span id="_CPPv3N11Tessellator13mVoidBeginEndE"></span><span id="_CPPv2N11Tessellator13mVoidBeginEndE"></span><span id="Tessellator::mVoidBeginEnd__b"></span><span class="target" id="classTessellator_1a5338aeb22add68407720331b39fa4515"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mVoidBeginEnd</span></span></span><a class="headerlink" href="#_CPPv4N11Tessellator13mVoidBeginEndE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator13mVoidBeginEndE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator10padding486E">
+<span id="_CPPv3N11Tessellator10padding486E"></span><span id="_CPPv2N11Tessellator10padding486E"></span><span id="Tessellator::padding486__std::byteA"></span><span class="target" id="classTessellator_1a8700cca1c16e75e0019871fad0d4a7cd"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">padding486</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">46</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11Tessellator10padding486E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator10padding486E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator13mTessellatingE">
+<span id="_CPPv3N11Tessellator13mTessellatingE"></span><span id="_CPPv2N11Tessellator13mTessellatingE"></span><span id="Tessellator::mTessellating__b"></span><span class="target" id="classTessellator_1a231cbe321c25faee8f35df22624d21ef"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mTessellating</span></span></span><a class="headerlink" href="#_CPPv4N11Tessellator13mTessellatingE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator13mTessellatingE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator10padding533E">
+<span id="_CPPv3N11Tessellator10padding533E"></span><span id="_CPPv2N11Tessellator10padding533E"></span><span id="Tessellator::padding533__std::byteA"></span><span class="target" id="classTessellator_1a9df85460d87c3a33fba584d74a4ba64f"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">padding533</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">19</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11Tessellator10padding533E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator10padding533E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator6mCountE">
+<span id="_CPPv3N11Tessellator6mCountE"></span><span id="_CPPv2N11Tessellator6mCountE"></span><span id="Tessellator::mCount__unsigned-i"></span><span class="target" id="classTessellator_1aa026dda803bc2f4e6d50aea0591baf92"></span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mCount</span></span></span><a class="headerlink" href="#_CPPv4N11Tessellator6mCountE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator6mCountE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator10padding556E">
+<span id="_CPPv3N11Tessellator10padding556E"></span><span id="_CPPv2N11Tessellator10padding556E"></span><span id="Tessellator::padding556__std::byteA"></span><span class="target" id="classTessellator_1a36fc1bb8e7af3dd9232fef91757e9eb1"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">byte</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">padding556</span></span></span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">5</span></span><span class="p"><span class="pre">]</span></span><a class="headerlink" href="#_CPPv4N11Tessellator10padding556E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator10padding556E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N11Tessellator14mBuildFaceDataE">
+<span id="_CPPv3N11Tessellator14mBuildFaceDataE"></span><span id="_CPPv2N11Tessellator14mBuildFaceDataE"></span><span id="Tessellator::mBuildFaceData__b"></span><span class="target" id="classTessellator_1a59bee7fd94ecbcb90cfffb6e0463299c"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mBuildFaceData</span></span></span><a class="headerlink" href="#_CPPv4N11Tessellator14mBuildFaceDataE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N11Tessellator14mBuildFaceDataE'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+</dd></dl>
+<dl class="cpp type">
+<dt class="sig sig-object cpp" id="_CPPv43mce">
+<span id="_CPPv33mce"></span><span id="_CPPv23mce"></span><span id="mce"></span><span class="target" id="namespacemce"></span><span class="k"><span class="pre">namespace</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mce</span></span></span><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-enums">Enums</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N3mce13PrimitiveModeE">
+<span id="_CPPv3N3mce13PrimitiveModeE"></span><span id="_CPPv2N3mce13PrimitiveModeE"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PrimitiveMode</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><a class="headerlink" href="#_CPPv4N3mce13PrimitiveModeE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N3mce13PrimitiveModeE'">¶</a><br/></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mce13PrimitiveMode4NoneE">
+<span id="_CPPv3N3mce13PrimitiveMode4NoneE"></span><span id="_CPPv2N3mce13PrimitiveMode4NoneE"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986a6adf97f83acf6453d4a6a4b1070f3754"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">None</span></span></span><a class="headerlink" href="#_CPPv4N3mce13PrimitiveMode4NoneE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N3mce13PrimitiveMode4NoneE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mce13PrimitiveMode8QuadListE">
+<span id="_CPPv3N3mce13PrimitiveMode8QuadListE"></span><span id="_CPPv2N3mce13PrimitiveMode8QuadListE"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986a89b690f180ec881a9f25f1ab07bf1547"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QuadList</span></span></span><a class="headerlink" href="#_CPPv4N3mce13PrimitiveMode8QuadListE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N3mce13PrimitiveMode8QuadListE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mce13PrimitiveMode12TriangleListE">
+<span id="_CPPv3N3mce13PrimitiveMode12TriangleListE"></span><span id="_CPPv2N3mce13PrimitiveMode12TriangleListE"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986af5beeab7a1f452e5b0e9b03b44f0de92"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriangleList</span></span></span><a class="headerlink" href="#_CPPv4N3mce13PrimitiveMode12TriangleListE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N3mce13PrimitiveMode12TriangleListE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mce13PrimitiveMode13TriangleStripE">
+<span id="_CPPv3N3mce13PrimitiveMode13TriangleStripE"></span><span id="_CPPv2N3mce13PrimitiveMode13TriangleStripE"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986a1da0b9ead8b051940a89214bae22831c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TriangleStrip</span></span></span><a class="headerlink" href="#_CPPv4N3mce13PrimitiveMode13TriangleStripE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N3mce13PrimitiveMode13TriangleStripE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mce13PrimitiveMode8LineListE">
+<span id="_CPPv3N3mce13PrimitiveMode8LineListE"></span><span id="_CPPv2N3mce13PrimitiveMode8LineListE"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986a596e1b7afe8925f3f578c716d5af8fef"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LineList</span></span></span><a class="headerlink" href="#_CPPv4N3mce13PrimitiveMode8LineListE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N3mce13PrimitiveMode8LineListE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N3mce13PrimitiveMode9LineStripE">
+<span id="_CPPv3N3mce13PrimitiveMode9LineStripE"></span><span id="_CPPv2N3mce13PrimitiveMode9LineStripE"></span><span class="target" id="Tessellator_8hpp_1a30a6081c729772ed58e939f24143f986ae7f9e73b8edd21f420a63b3ace5768a2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LineStrip</span></span></span><a class="headerlink" href="#_CPPv4N3mce13PrimitiveMode9LineStripE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N3mce13PrimitiveMode9LineStripE'">¶</a><br/></dt>
+<dd></dd></dl>
+</dd></dl>
+</div>
+</dd></dl>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(var(100vh)-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#_CPPv413PrimitiveMode'" class="reference internal" href="#_CPPv413PrimitiveMode"><code class="docutils literal notranslate"><span class="pre">PrimitiveMode</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N13PrimitiveMode4NoneE'" class="reference internal" href="#_CPPv4N13PrimitiveMode4NoneE"><code class="docutils literal notranslate"><span class="pre">PrimitiveMode::None</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13PrimitiveMode8QuadListE'" class="reference internal" href="#_CPPv4N13PrimitiveMode8QuadListE"><code class="docutils literal notranslate"><span class="pre">PrimitiveMode::QuadList</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13PrimitiveMode12TriangleListE'" class="reference internal" href="#_CPPv4N13PrimitiveMode12TriangleListE"><code class="docutils literal notranslate"><span class="pre">PrimitiveMode::TriangleList</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13PrimitiveMode13TriangleStripE'" class="reference internal" href="#_CPPv4N13PrimitiveMode13TriangleStripE"><code class="docutils literal notranslate"><span class="pre">PrimitiveMode::TriangleStrip</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13PrimitiveMode8LineListE'" class="reference internal" href="#_CPPv4N13PrimitiveMode8LineListE"><code class="docutils literal notranslate"><span class="pre">PrimitiveMode::LineList</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13PrimitiveMode9LineStripE'" class="reference internal" href="#_CPPv4N13PrimitiveMode9LineStripE"><code class="docutils literal notranslate"><span class="pre">PrimitiveMode::LineStrip</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv419TessellatorQuadInfo'" class="reference internal" href="#_CPPv419TessellatorQuadInfo"><code class="docutils literal notranslate"><span class="pre">TessellatorQuadInfo</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N19TessellatorQuadInfo6facingE'" class="reference internal" href="#_CPPv4N19TessellatorQuadInfo6facingE"><code class="docutils literal notranslate"><span class="pre">TessellatorQuadInfo::facing</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N19TessellatorQuadInfo7twoFaceE'" class="reference internal" href="#_CPPv4N19TessellatorQuadInfo7twoFaceE"><code class="docutils literal notranslate"><span class="pre">TessellatorQuadInfo::twoFace</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N19TessellatorQuadInfo8centroidE'" class="reference internal" href="#_CPPv4N19TessellatorQuadInfo8centroidE"><code class="docutils literal notranslate"><span class="pre">TessellatorQuadInfo::centroid</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv411Tessellator'" class="reference internal" href="#_CPPv411Tessellator"><code class="docutils literal notranslate"><span class="pre">Tessellator</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator5beginEN3mce13PrimitiveModeEi'" class="reference internal" href="#_CPPv4N11Tessellator5beginEN3mce13PrimitiveModeEi"><code class="docutils literal notranslate"><span class="pre">Tessellator::begin()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator13beginOverrideEv'" class="reference internal" href="#_CPPv4N11Tessellator13beginOverrideEv"><code class="docutils literal notranslate"><span class="pre">Tessellator::beginOverride()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator6vertexEfff'" class="reference internal" href="#_CPPv4N11Tessellator6vertexEfff"><code class="docutils literal notranslate"><span class="pre">Tessellator::vertex()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator6vertexERK4Vec3'" class="reference internal" href="#_CPPv4N11Tessellator6vertexERK4Vec3"><code class="docutils literal notranslate"><span class="pre">Tessellator::vertex()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator8vertexUVEfffff'" class="reference internal" href="#_CPPv4N11Tessellator8vertexUVEfffff"><code class="docutils literal notranslate"><span class="pre">Tessellator::vertexUV()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator8vertexUVERK4Vec3ff'" class="reference internal" href="#_CPPv4N11Tessellator8vertexUVERK4Vec3ff"><code class="docutils literal notranslate"><span class="pre">Tessellator::vertexUV()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator5colorEffff'" class="reference internal" href="#_CPPv4N11Tessellator5colorEffff"><code class="docutils literal notranslate"><span class="pre">Tessellator::color()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator22setPostTransformOffsetEfff'" class="reference internal" href="#_CPPv4N11Tessellator22setPostTransformOffsetEfff"><code class="docutils literal notranslate"><span class="pre">Tessellator::setPostTransformOffset()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator21setPosTransformOffsetE4Vec3'" class="reference internal" href="#_CPPv4N11Tessellator21setPosTransformOffsetE4Vec3"><code class="docutils literal notranslate"><span class="pre">Tessellator::setPosTransformOffset()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator22getPostTransformOffsetEv'" class="reference internal" href="#_CPPv4N11Tessellator22getPostTransformOffsetEv"><code class="docutils literal notranslate"><span class="pre">Tessellator::getPostTransformOffset()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator22addPostTransformOffsetEfff'" class="reference internal" href="#_CPPv4N11Tessellator22addPostTransformOffsetEfff"><code class="docutils literal notranslate"><span class="pre">Tessellator::addPostTransformOffset()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator22addPostTransformOffsetE4Vec3'" class="reference internal" href="#_CPPv4N11Tessellator22addPostTransformOffsetE4Vec3"><code class="docutils literal notranslate"><span class="pre">Tessellator::addPostTransformOffset()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator23resetPostTransformScaleEv'" class="reference internal" href="#_CPPv4N11Tessellator23resetPostTransformScaleEv"><code class="docutils literal notranslate"><span class="pre">Tessellator::resetPostTransformScale()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator3endE8uint64_tNSt11string_viewEi'" class="reference internal" href="#_CPPv4N11Tessellator3endE8uint64_tNSt11string_viewEi"><code class="docutils literal notranslate"><span class="pre">Tessellator::end()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator5clearEv'" class="reference internal" href="#_CPPv4N11Tessellator5clearEv"><code class="docutils literal notranslate"><span class="pre">Tessellator::clear()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator11endOverrideE8uint64_tNSt11string_viewEi'" class="reference internal" href="#_CPPv4N11Tessellator11endOverrideE8uint64_tNSt11string_viewEi"><code class="docutils literal notranslate"><span class="pre">Tessellator::endOverride()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator14mIsFormatFixedE'" class="reference internal" href="#_CPPv4N11Tessellator14mIsFormatFixedE"><code class="docutils literal notranslate"><span class="pre">Tessellator::mIsFormatFixed</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator8padding1E'" class="reference internal" href="#_CPPv4N11Tessellator8padding1E"><code class="docutils literal notranslate"><span class="pre">Tessellator::padding1</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator9mMeshDataE'" class="reference internal" href="#_CPPv4N11Tessellator9mMeshDataE"><code class="docutils literal notranslate"><span class="pre">Tessellator::mMeshData</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator10padding248E'" class="reference internal" href="#_CPPv4N11Tessellator10padding248E"><code class="docutils literal notranslate"><span class="pre">Tessellator::padding248</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator10mNextColorE'" class="reference internal" href="#_CPPv4N11Tessellator10mNextColorE"><code class="docutils literal notranslate"><span class="pre">Tessellator::mNextColor</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator10padding336E'" class="reference internal" href="#_CPPv4N11Tessellator10padding336E"><code class="docutils literal notranslate"><span class="pre">Tessellator::padding336</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator20mPostTransformOffsetE'" class="reference internal" href="#_CPPv4N11Tessellator20mPostTransformOffsetE"><code class="docutils literal notranslate"><span class="pre">Tessellator::mPostTransformOffset</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator19mPostTransformScaleE'" class="reference internal" href="#_CPPv4N11Tessellator19mPostTransformScaleE"><code class="docutils literal notranslate"><span class="pre">Tessellator::mPostTransformScale</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator10padding372E'" class="reference internal" href="#_CPPv4N11Tessellator10padding372E"><code class="docutils literal notranslate"><span class="pre">Tessellator::padding372</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator13mQuadInfoListE'" class="reference internal" href="#_CPPv4N11Tessellator13mQuadInfoListE"><code class="docutils literal notranslate"><span class="pre">Tessellator::mQuadInfoList</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator10padding400E'" class="reference internal" href="#_CPPv4N11Tessellator10padding400E"><code class="docutils literal notranslate"><span class="pre">Tessellator::padding400</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator15mApplyTransformE'" class="reference internal" href="#_CPPv4N11Tessellator15mApplyTransformE"><code class="docutils literal notranslate"><span class="pre">Tessellator::mApplyTransform</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator10padding417E'" class="reference internal" href="#_CPPv4N11Tessellator10padding417E"><code class="docutils literal notranslate"><span class="pre">Tessellator::padding417</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator8mNoColorE'" class="reference internal" href="#_CPPv4N11Tessellator8mNoColorE"><code class="docutils literal notranslate"><span class="pre">Tessellator::mNoColor</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator13mVoidBeginEndE'" class="reference internal" href="#_CPPv4N11Tessellator13mVoidBeginEndE"><code class="docutils literal notranslate"><span class="pre">Tessellator::mVoidBeginEnd</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator10padding486E'" class="reference internal" href="#_CPPv4N11Tessellator10padding486E"><code class="docutils literal notranslate"><span class="pre">Tessellator::padding486</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator13mTessellatingE'" class="reference internal" href="#_CPPv4N11Tessellator13mTessellatingE"><code class="docutils literal notranslate"><span class="pre">Tessellator::mTessellating</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator10padding533E'" class="reference internal" href="#_CPPv4N11Tessellator10padding533E"><code class="docutils literal notranslate"><span class="pre">Tessellator::padding533</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator6mCountE'" class="reference internal" href="#_CPPv4N11Tessellator6mCountE"><code class="docutils literal notranslate"><span class="pre">Tessellator::mCount</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator10padding556E'" class="reference internal" href="#_CPPv4N11Tessellator10padding556E"><code class="docutils literal notranslate"><span class="pre">Tessellator::padding556</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N11Tessellator14mBuildFaceDataE'" class="reference internal" href="#_CPPv4N11Tessellator14mBuildFaceDataE"><code class="docutils literal notranslate"><span class="pre">Tessellator::mBuildFaceData</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv43mce'" class="reference internal" href="#_CPPv43mce"><code class="docutils literal notranslate"><span class="pre">mce</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N3mce13PrimitiveModeE'" class="reference internal" href="#_CPPv4N3mce13PrimitiveModeE"><code class="docutils literal notranslate"><span class="pre">mce::PrimitiveMode</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N3mce13PrimitiveMode4NoneE'" class="reference internal" href="#_CPPv4N3mce13PrimitiveMode4NoneE"><code class="docutils literal notranslate"><span class="pre">mce::PrimitiveMode::None</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N3mce13PrimitiveMode8QuadListE'" class="reference internal" href="#_CPPv4N3mce13PrimitiveMode8QuadListE"><code class="docutils literal notranslate"><span class="pre">mce::PrimitiveMode::QuadList</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N3mce13PrimitiveMode12TriangleListE'" class="reference internal" href="#_CPPv4N3mce13PrimitiveMode12TriangleListE"><code class="docutils literal notranslate"><span class="pre">mce::PrimitiveMode::TriangleList</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N3mce13PrimitiveMode13TriangleStripE'" class="reference internal" href="#_CPPv4N3mce13PrimitiveMode13TriangleStripE"><code class="docutils literal notranslate"><span class="pre">mce::PrimitiveMode::TriangleStrip</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N3mce13PrimitiveMode8LineListE'" class="reference internal" href="#_CPPv4N3mce13PrimitiveMode8LineListE"><code class="docutils literal notranslate"><span class="pre">mce::PrimitiveMode::LineList</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N3mce13PrimitiveMode9LineStripE'" class="reference internal" href="#_CPPv4N3mce13PrimitiveMode9LineStripE"><code class="docutils literal notranslate"><span class="pre">mce::PrimitiveMode::LineStrip</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 7.2.6</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+<script src="../../_static/doctools.js?v=888ff710"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=40b7bc71"></script>
+<script src="../../_static/design-tabs.js?v=36754332"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+File BlockComponentStorage.hpp
+==============================
+
+.. doxygenfile:: BlockComponentStorage.hpp
+   :project: AmethystApi

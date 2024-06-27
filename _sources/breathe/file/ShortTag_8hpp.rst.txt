@@ -1,0 +1,5 @@
+File ShortTag.hpp
+=================
+
+.. doxygenfile:: ShortTag.hpp
+   :project: AmethystApi

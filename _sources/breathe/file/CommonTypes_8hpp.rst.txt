@@ -1,0 +1,5 @@
+File CommonTypes.hpp
+====================
+
+.. doxygenfile:: CommonTypes.hpp
+   :project: AmethystApi

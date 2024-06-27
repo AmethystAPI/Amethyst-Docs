@@ -1,0 +1,5 @@
+File ByteTag.hpp
+================
+
+.. doxygenfile:: ByteTag.hpp
+   :project: AmethystApi

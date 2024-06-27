@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+
+<html :class="{'dark': darkMode === 'dark' || (darkMode === 'system' &amp;&amp; window.matchMedia('(prefers-color-scheme: dark)').matches)}" class="scroll-smooth" data-content_root="../../" lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') || localStorage.setItem('darkMode', 'system'), activeSection: '' }" x-init="$watch('darkMode', val =&gt; localStorage.setItem('darkMode', val))">
+<head>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="white" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="black" metia="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>File VanillaClientInputMappingFactory.hpp | Amethyst  documentation</title>
+<meta content="File VanillaClientInputMappingFactory.hpp | Amethyst  documentation" property="og:title"/>
+<meta content="File VanillaClientInputMappingFactory.hpp | Amethyst  documentation" name="twitter:title"/>
+<link href="../../_static/pygments.css?v=5432af51" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=5b4133db" rel="stylesheet" type="text/css"/>
+<link href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-sphinx-design.css?v=a54cf077" rel="stylesheet" type="text/css"/>
+<link href="../../_static/logo-512x.png" rel="icon"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="VanillaGameModuleClient_8hpp.html" rel="next" title="File VanillaGameModuleClient.hpp"/>
+<link href="VanillaBlockTypeRegistry_8hpp.html" rel="prev" title="File VanillaBlockTypeRegistry.hpp"/>
+<script>
+    <!-- Prevent Flash of wrong theme -->
+      const userPreference = localStorage.getItem('darkMode');
+      let mode;
+      if (userPreference === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        mode = 'dark';
+        document.documentElement.classList.add('dark');
+      } else {
+        mode = 'light';
+      }
+      if (!userPreference) {localStorage.setItem('darkMode', mode)}
+    </script>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-sm border-border supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a><nav class="flex items-center space-x-6 text-sm font-medium">
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../autodocs.html">AmethystAPI</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../examples/index.html">Examples</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../getting_started/index.html">Getting Started</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../reverse_engineering/index.html">Reverse Engineering</a>
+</nav></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center space-x-1">
+<button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full shrink-0 overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="!justify-start text-sm md:!hidden bg-background" href="../../index.html"><span class="font-bold text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0 h-[calc(100vh-8rem)] md:h-auto">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../autodocs.html">AmethystAPI<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../filelist.html">File list<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="AABB_8hpp.html">File AABB.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorBlock_8hpp.html">File ActorBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorHeadRotationComponent_8hpp.html">File ActorHeadRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorRotationComponent_8hpp.html">File ActorRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorShaderManager_8hpp.html">File ActorShaderManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorTerrainInterlockData_8hpp.html">File ActorTerrainInterlockData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actor_8hpp.html">File Actor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AmethystContext_8hpp.html">File AmethystContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AuxDataBlockItem_8hpp.html">File AuxDataBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderContext_8hpp.html">File BaseActorRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderer_8hpp.html">File BaseActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseGameVersion_8hpp.html">File BaseGameVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseOptions_8hpp.html">File BaseOptions.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BinaryStream_8hpp.html">File BinaryStream.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorDataPacket_8hpp.html">File BlockActorDataPacket.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html">File BlockActorRendererDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererId_8hpp.html">File BlockActorRendererId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRenderer_8hpp.html">File BlockActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActor_8hpp.html">File BlockActor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentBase_8hpp.html">File BlockComponentBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentStorage_8hpp.html">File BlockComponentStorage.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockDefinitionGroup_8hpp.html">File BlockDefinitionGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockGraphics_8hpp.html">File BlockGraphics.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockItem_8hpp.html">File BlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockLegacy_8hpp.html">File BlockLegacy.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockMapColorComponent_8hpp.html">File BlockMapColorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockPos_8hpp.html">File BlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockRenderLayer_8hpp.html">File BlockRenderLayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockShape_8hpp.html">File BlockShape.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSourceListener_8hpp.html">File BlockSourceListener.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSource_8hpp.html">File BlockSource.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockState_8hpp.html">File BlockState.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTessellator_8hpp.html">File BlockTessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTypeRegistry_8hpp.html">File BlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Block_8hpp.html">File Block.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteArrayTag_8hpp.html">File ByteArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteTag_8hpp.html">File ByteTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CallStack_8hpp.html">File CallStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Camera_8hpp.html">File Camera.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChestBlock_8hpp.html">File ChestBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkBlockPos_8hpp.html">File ChunkBlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkPos_8hpp.html">File ChunkPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputHandler_8hpp.html">File ClientInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputMappingFactory_8hpp.html">File ClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInstance_8hpp.html">File ClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientNetworkHandler_8hpp.html">File ClientNetworkHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Color_8hpp.html">File Color.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CommonTypes_8hpp.html">File CommonTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTagVariant_8hpp.html">File CompoundTagVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTag_8hpp.html">File CompoundTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Config_8hpp.html">File Config.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Container_8hpp.html">File Container.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLogTypes_8hpp.html">File ContentLogTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLog_8hpp.html">File ContentLog.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Dimension_8hpp.html">File Dimension.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Direction_8hpp.html">File Direction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DoubleTag_8hpp.html">File DoubleTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EndTag_8hpp.html">File EndTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityContext_8hpp.html">File EntityContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityIdTraits_8hpp.html">File EntityIdTraits.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityId_8hpp.html">File EntityId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ErrorInfo_8hpp.html">File ErrorInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EventManager_8hpp.html">File EventManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Event_8hpp.html">File Event.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FertilizerType_8hpp.html">File FertilizerType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FillingContainer_8hpp.html">File FillingContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FloatTag_8hpp.html">File FloatTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameEvent_8hpp.html">File GameEvent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameModuleClient_8hpp.html">File GameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRefsSharePtr_8hpp.html">File GameRefsSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRules_8hpp.html">File GameRules.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GetCollisionShapeInterface_8hpp.html">File GetCollisionShapeInterface.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GuiData_8hpp.html">File GuiData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HeightRange_8hpp.html">File HeightRange.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HitResult_8hpp.html">File HitResult.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HookManager_8hpp.html">File HookManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverRenderer_8hpp.html">File HoverRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverTextRenderer_8hpp.html">File HoverTextRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IClientInstance_8hpp.html">File IClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ILevel_8hpp.html">File ILevel.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IPacketHandlerDispatcher_8hpp.html">File IPacketHandlerDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IWorldRegistriesProvider_8hpp.html">File IWorldRegistriesProvider.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ImageInfo_8hpp.html">File ImageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InPackagePacks_8hpp.html">File InPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputAction_8hpp.html">File InputAction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputHandler_8hpp.html">File InputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputManager_8hpp.html">File InputManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMappingFactory_8hpp.html">File InputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMapping_8hpp.html">File InputMapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Int64Tag_8hpp.html">File Int64Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntArrayTag_8hpp.html">File IntArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntTag_8hpp.html">File IntTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Inventory_8hpp.html">File Inventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IsotropicFaceData_8hpp.html">File IsotropicFaceData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemCategory_8hpp.html">File ItemCategory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemGroup_8hpp.html">File ItemGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemIconManager_8hpp.html">File ItemIconManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemInstance_8hpp.html">File ItemInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryManager_8hpp.html">File ItemRegistryManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryRef_8hpp.html">File ItemRegistryRef.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistry_8hpp.html">File ItemRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRenderer_8hpp.html">File ItemRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackBase_8hpp.html">File ItemStackBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackNetIdVariant_8hpp.html">File ItemStackNetIdVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStack_8hpp.html">File ItemStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Item_8hpp.html">File Item.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Keymapping_8hpp.html">File Keymapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelChunk_8hpp.html">File LevelChunk.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRendererPlayer_8hpp.html">File LevelRendererPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRenderer_8hpp.html">File LevelRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Level_8hpp.html">File Level.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ListTag_8hpp.html">File ListTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LocalPlayer_8hpp.html">File LocalPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Log_8hpp.html">File Log.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LoopbackPacketSender_8hpp.html">File LoopbackPacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialPtr_8hpp.html">File MaterialPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialType_8hpp.html">File MaterialType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Material_8hpp.html">File Material.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Math_8hpp.html">File Math.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MatrixStack_8hpp.html">File MatrixStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Matrix_8hpp.html">File Matrix.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Memory_8hpp.html">File Memory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshContext_8hpp.html">File MeshContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshData_8hpp.html">File MeshData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshHelpers_8hpp.html">File MeshHelpers.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mesh_8hpp.html">File Mesh.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftGame_8hpp.html">File MinecraftGame.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftInputHandler_8hpp.html">File MinecraftInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftPackageInfo_8hpp.html">File MinecraftPackageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftUIRenderContext_8hpp.html">File MinecraftUIRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftVtables_8hpp.html">File MinecraftVtables.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Minecraft_8hpp.html">File Minecraft.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mob_8hpp.html">File Mob.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mod_8hpp.html">File Mod.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetEventCallback_8hpp.html">File NetEventCallback.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkBlockPosition_8hpp.html">File NetworkBlockPosition.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkPeer_8hpp.html">File NetworkPeer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NewType_8hpp.html">File NewType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceHelper_8hpp.html">File NinesliceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceInfo_8hpp.html">File NinesliceInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NonOwnerPointer_8hpp.html">File NonOwnerPointer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Options_8hpp.html">File Options.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerPtr_8hpp.html">File OwnerPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerStorageSharePtr_8hpp.html">File OwnerStorageSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketHandlerDispatcherInstance_8hpp.html">File PacketHandlerDispatcherInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketPriority_8hpp.html">File PacketPriority.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketSender_8hpp.html">File PacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_8hpp.html">File Packet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PatchManager_8hpp.html">File PatchManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Path_8hpp.html">File Path.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerInventory_8hpp.html">File PlayerInventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerUIContainer_8hpp.html">File PlayerUIContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Player_8hpp.html">File Player.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RandomizableBlockActorContainerBase_8hpp.html">File RandomizableBlockActorContainerBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RemappingLayout_8hpp.html">File RemappingLayout.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderContext_8hpp.html">File RenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroupBase_8hpp.html">File RenderMaterialGroupBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroup_8hpp.html">File RenderMaterialGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResolvedItemIconInfo_8hpp.html">File ResolvedItemIconInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceHelper_8hpp.html">File ResourceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceUtil_8hpp.html">File ResourceUtil.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Result_8hpp.html">File Result.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenContext_8hpp.html">File ScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenView_8hpp.html">File ScreenView.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SemVersion_8hpp.html">File SemVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShapeType_8hpp.html">File ShapeType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SharedPtr_8hpp.html">File SharedPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShortTag_8hpp.html">File ShortTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShulkerBoxBlockItem_8hpp.html">File ShulkerBoxBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SimpleContainer_8hpp.html">File SimpleContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SliderComponent_8hpp.html">File SliderComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StateVectorComponent_8hpp.html">File StateVectorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringHash_8hpp.html">File StringHash.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringTag_8hpp.html">File StringTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringUtils_8hpp.html">File StringUtils.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tag_8hpp.html">File Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tessellator_8hpp.html">File Tessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextComponent_8hpp.html">File TextComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureAtlasItem_8hpp.html">File TextureAtlasItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TexturePtr_8hpp.html">File TexturePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureUVCoordinateSet_8hpp.html">File TextureUVCoordinateSet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tick_8hpp.html">File Tick.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ToggleComponent_8hpp.html">File ToggleComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIComponent_8hpp.html">File UIComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIControl_8hpp.html">File UIControl.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIScreenContext_8hpp.html">File UIScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UUID_8hpp.html">File UUID.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UseAnim_8hpp.html">File UseAnim.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Utility_8hpp.html">File Utility.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaBlockTypeRegistry_8hpp.html">File VanillaBlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">File VanillaClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaGameModuleClient_8hpp.html">File VanillaGameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaInPackagePacks_8hpp.html">File VanillaInPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaItems_8hpp.html">File VanillaItems.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec2_8hpp.html">File Vec2.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec3_8hpp.html">File Vec3.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VisualTree_8hpp.html">File VisualTree.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expected_8hpp.html">File expected.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsl__includes_8hpp.html">File gsl_includes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optional__ref_8hpp.html">File optional_ref.hpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/index.html">Examples<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/networking/index.html">Networking<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../../examples/networking/udp.html">UDP Networking Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../getting_started/index.html">Getting Started<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/end_user/installing_amethyst.html">Installing Amethyst</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/devs/compiling_amethyst.html">Compiling Amethyst</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reverse_engineering/index.html">Reverse Engineering</a></li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../how_to_doc/index.html">How to doc<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/setup.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/doxygen.html">Doxygen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/sphinx.html">Sphinx</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../../index.html">
+<span class="hidden md:inline">Amethyst  documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../../autodocs.html">AmethystAPI</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../filelist.html">File list</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">File VanillaClientInputMappingFactory.hpp</span>
+</nav>
+<div id="content" role="main">
+<section id="file-vanillaclientinputmappingfactory-hpp">
+<h1>File VanillaClientInputMappingFactory.hpp<a class="headerlink" href="#file-vanillaclientinputmappingfactory-hpp" title="Link to this heading">¶</a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv49Remapping">
+<span id="_CPPv39Remapping"></span><span id="_CPPv29Remapping"></span><span id="Remapping"></span><span class="target" id="classRemapping"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Remapping</span></span></span><a class="headerlink" href="#_CPPv49Remapping" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv49Remapping'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp enum">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnumE">
+<span id="_CPPv3N9Remapping10ActionEnumE"></span><span id="_CPPv2N9Remapping10ActionEnumE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935f"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ActionEnum</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnumE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnumE'">¶</a><br/></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum6AttackE">
+<span id="_CPPv3N9Remapping10ActionEnum6AttackE"></span><span id="_CPPv2N9Remapping10ActionEnum6AttackE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935faa7a31134e7a5ca88ffbb055a625d1948"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Attack</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum6AttackE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum6AttackE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum8PickItemE">
+<span id="_CPPv3N9Remapping10ActionEnum8PickItemE"></span><span id="_CPPv2N9Remapping10ActionEnum8PickItemE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fac2ecbe95220390145007825b30032061"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">PickItem</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum8PickItemE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum8PickItemE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum3UseE">
+<span id="_CPPv3N9Remapping10ActionEnum3UseE"></span><span id="_CPPv2N9Remapping10ActionEnum3UseE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa1dd33e27c514d16f268ab85bd75c9e1b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Use</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum3UseE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum3UseE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum4DropE">
+<span id="_CPPv3N9Remapping10ActionEnum4DropE"></span><span id="_CPPv2N9Remapping10ActionEnum4DropE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa72160a584f86c7ba1c1992ca5ad46b86"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Drop</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum4DropE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum4DropE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum7Hotbar1E">
+<span id="_CPPv3N9Remapping10ActionEnum7Hotbar1E"></span><span id="_CPPv2N9Remapping10ActionEnum7Hotbar1E"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa41735329c82ea690474beeff81ef758b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hotbar1</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum7Hotbar1E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum7Hotbar1E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum7Hotbar2E">
+<span id="_CPPv3N9Remapping10ActionEnum7Hotbar2E"></span><span id="_CPPv2N9Remapping10ActionEnum7Hotbar2E"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fafd8550e0c188b6ae8c8d573ff28b66cd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hotbar2</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum7Hotbar2E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum7Hotbar2E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum7Hotbar3E">
+<span id="_CPPv3N9Remapping10ActionEnum7Hotbar3E"></span><span id="_CPPv2N9Remapping10ActionEnum7Hotbar3E"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa8e036988214cf6e9dcb61714f737c281"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hotbar3</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum7Hotbar3E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum7Hotbar3E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum7Hotbar4E">
+<span id="_CPPv3N9Remapping10ActionEnum7Hotbar4E"></span><span id="_CPPv2N9Remapping10ActionEnum7Hotbar4E"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa0d2ac24d67fc7a5cc2c68adb6a6f0987"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hotbar4</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum7Hotbar4E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum7Hotbar4E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum7Hotbar5E">
+<span id="_CPPv3N9Remapping10ActionEnum7Hotbar5E"></span><span id="_CPPv2N9Remapping10ActionEnum7Hotbar5E"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa3ab45fe5894662e4683a62c78838b808"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hotbar5</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum7Hotbar5E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum7Hotbar5E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum7Hotbar6E">
+<span id="_CPPv3N9Remapping10ActionEnum7Hotbar6E"></span><span id="_CPPv2N9Remapping10ActionEnum7Hotbar6E"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa625017ac9f6e29171e01ac32cdccdfae"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hotbar6</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum7Hotbar6E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum7Hotbar6E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum7Hotbar7E">
+<span id="_CPPv3N9Remapping10ActionEnum7Hotbar7E"></span><span id="_CPPv2N9Remapping10ActionEnum7Hotbar7E"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa7b1aa3254d4cb77a83a112ddb86b3c3c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hotbar7</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum7Hotbar7E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum7Hotbar7E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum7Hotbar8E">
+<span id="_CPPv3N9Remapping10ActionEnum7Hotbar8E"></span><span id="_CPPv2N9Remapping10ActionEnum7Hotbar8E"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa9a46bd963d65739da8b3b09ad0f7d5db"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hotbar8</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum7Hotbar8E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum7Hotbar8E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum7Hotbar9E">
+<span id="_CPPv3N9Remapping10ActionEnum7Hotbar9E"></span><span id="_CPPv2N9Remapping10ActionEnum7Hotbar9E"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa271b81d5bcb5e9bab7566374ae84ebfd"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Hotbar9</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum7Hotbar9E" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum7Hotbar9E'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum9InventoryE">
+<span id="_CPPv3N9Remapping10ActionEnum9InventoryE"></span><span id="_CPPv2N9Remapping10ActionEnum9InventoryE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa7cd1f012d645368390095e85e51f4436"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Inventory</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum9InventoryE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum9InventoryE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum17TogglePerspectiveE">
+<span id="_CPPv3N9Remapping10ActionEnum17TogglePerspectiveE"></span><span id="_CPPv2N9Remapping10ActionEnum17TogglePerspectiveE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa79d34467b66dc11d9da984a9d01792ef"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TogglePerspective</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum17TogglePerspectiveE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum17TogglePerspectiveE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum12LookUpSlightE">
+<span id="_CPPv3N9Remapping10ActionEnum12LookUpSlightE"></span><span id="_CPPv2N9Remapping10ActionEnum12LookUpSlightE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa2f96a3ca92ac2b329f29e18e0df98477"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookUpSlight</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum12LookUpSlightE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum12LookUpSlightE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum14LookDownSlightE">
+<span id="_CPPv3N9Remapping10ActionEnum14LookDownSlightE"></span><span id="_CPPv2N9Remapping10ActionEnum14LookDownSlightE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa12be11a73d605da266abdf01a5414fe9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookDownSlight</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum14LookDownSlightE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum14LookDownSlightE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum11LookUpRightE">
+<span id="_CPPv3N9Remapping10ActionEnum11LookUpRightE"></span><span id="_CPPv2N9Remapping10ActionEnum11LookUpRightE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935facd9fdc34e6d1d236f1973090b5bf8fc7"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookUpRight</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum11LookUpRightE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum11LookUpRightE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum6LookUpE">
+<span id="_CPPv3N9Remapping10ActionEnum6LookUpE"></span><span id="_CPPv2N9Remapping10ActionEnum6LookUpE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa08676255331005dbed9ef4bcc8f8226f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookUp</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum6LookUpE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum6LookUpE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum10LookUpLeftE">
+<span id="_CPPv3N9Remapping10ActionEnum10LookUpLeftE"></span><span id="_CPPv2N9Remapping10ActionEnum10LookUpLeftE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa3ea9cb4e5d7dd8480c1e07842b2e1509"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookUpLeft</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum10LookUpLeftE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum10LookUpLeftE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum9LookRightE">
+<span id="_CPPv3N9Remapping10ActionEnum9LookRightE"></span><span id="_CPPv2N9Remapping10ActionEnum9LookRightE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa437aa4d16823a04f1f74857209444bc2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookRight</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum9LookRightE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum9LookRightE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum10LookCenterE">
+<span id="_CPPv3N9Remapping10ActionEnum10LookCenterE"></span><span id="_CPPv2N9Remapping10ActionEnum10LookCenterE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa3a2efd33421ba3bd935ed2520164c3a6"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookCenter</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum10LookCenterE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum10LookCenterE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum8LookLeftE">
+<span id="_CPPv3N9Remapping10ActionEnum8LookLeftE"></span><span id="_CPPv2N9Remapping10ActionEnum8LookLeftE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935faacec69b79b1819b06c5f96093af1b646"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookLeft</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum8LookLeftE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum8LookLeftE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum13LookDownRightE">
+<span id="_CPPv3N9Remapping10ActionEnum13LookDownRightE"></span><span id="_CPPv2N9Remapping10ActionEnum13LookDownRightE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa254372dd8b6645739b8b71470204807c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookDownRight</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum13LookDownRightE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum13LookDownRightE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum8LookDownE">
+<span id="_CPPv3N9Remapping10ActionEnum8LookDownE"></span><span id="_CPPv2N9Remapping10ActionEnum8LookDownE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fad875a1a5dbbd0488f0f210368ba1d9b3"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookDown</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum8LookDownE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum8LookDownE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum12LookDownLeftE">
+<span id="_CPPv3N9Remapping10ActionEnum12LookDownLeftE"></span><span id="_CPPv2N9Remapping10ActionEnum12LookDownLeftE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa37548d326548a5ad235c1969d20d377f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookDownLeft</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum12LookDownLeftE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum12LookDownLeftE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum12LookUpSmoothE">
+<span id="_CPPv3N9Remapping10ActionEnum12LookUpSmoothE"></span><span id="_CPPv2N9Remapping10ActionEnum12LookUpSmoothE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fad59ce616e7b942fbfd59c0b43a2f2731"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookUpSmooth</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum12LookUpSmoothE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum12LookUpSmoothE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum14LookDownSmoothE">
+<span id="_CPPv3N9Remapping10ActionEnum14LookDownSmoothE"></span><span id="_CPPv2N9Remapping10ActionEnum14LookDownSmoothE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935faebc9e1d986728d9e136f0de5c09cd22c"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookDownSmooth</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum14LookDownSmoothE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum14LookDownSmoothE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum14LookLeftSmoothE">
+<span id="_CPPv3N9Remapping10ActionEnum14LookLeftSmoothE"></span><span id="_CPPv2N9Remapping10ActionEnum14LookLeftSmoothE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa38924e4f5f7e2208f4028b5d1ee7e245"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookLeftSmooth</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum14LookLeftSmoothE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum14LookLeftSmoothE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum15LookRightSmoothE">
+<span id="_CPPv3N9Remapping10ActionEnum15LookRightSmoothE"></span><span id="_CPPv2N9Remapping10ActionEnum15LookRightSmoothE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935faf481fe3941090faa49935c332845708e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LookRightSmooth</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum15LookRightSmoothE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum15LookRightSmoothE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum4JumpE">
+<span id="_CPPv3N9Remapping10ActionEnum4JumpE"></span><span id="_CPPv2N9Remapping10ActionEnum4JumpE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fabe9273344d4cfb14a3179f17ab19b7cf"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Jump</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum4JumpE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum4JumpE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum5SneakE">
+<span id="_CPPv3N9Remapping10ActionEnum5SneakE"></span><span id="_CPPv2N9Remapping10ActionEnum5SneakE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fadfeb7bbfaee5b05f404afd7a3cbf37ef"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sneak</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum5SneakE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum5SneakE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum6SprintE">
+<span id="_CPPv3N9Remapping10ActionEnum6SprintE"></span><span id="_CPPv2N9Remapping10ActionEnum6SprintE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa9e22d02f4e9e8a1d832322737a1ca267"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Sprint</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum6SprintE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum6SprintE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum4LeftE">
+<span id="_CPPv3N9Remapping10ActionEnum4LeftE"></span><span id="_CPPv2N9Remapping10ActionEnum4LeftE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa4e361dcccdb95677c9718a865d85bbc4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Left</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum4LeftE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum4LeftE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum5RightE">
+<span id="_CPPv3N9Remapping10ActionEnum5RightE"></span><span id="_CPPv2N9Remapping10ActionEnum5RightE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa0c7e369286b34469ea45c070a58e1348"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Right</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum5RightE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum5RightE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum4BackE">
+<span id="_CPPv3N9Remapping10ActionEnum4BackE"></span><span id="_CPPv2N9Remapping10ActionEnum4BackE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa11cf0a8550c501251bd9737d966847a5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Back</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum4BackE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum4BackE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum7ForwardE">
+<span id="_CPPv3N9Remapping10ActionEnum7ForwardE"></span><span id="_CPPv2N9Remapping10ActionEnum7ForwardE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa27e75e5bafc98e4daef848cf6791a6c4"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Forward</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum7ForwardE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum7ForwardE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum4ChatE">
+<span id="_CPPv3N9Remapping10ActionEnum4ChatE"></span><span id="_CPPv2N9Remapping10ActionEnum4ChatE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa40696566170e2b574130769ec3259f7f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Chat</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum4ChatE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum4ChatE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum8CraftingE">
+<span id="_CPPv3N9Remapping10ActionEnum8CraftingE"></span><span id="_CPPv2N9Remapping10ActionEnum8CraftingE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa54860348f70748c7bcc773f27e312855"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Crafting</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum8CraftingE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum8CraftingE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum13CycleItemLeftE">
+<span id="_CPPv3N9Remapping10ActionEnum13CycleItemLeftE"></span><span id="_CPPv2N9Remapping10ActionEnum13CycleItemLeftE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fad7f25045cd5d608b708e57d53635d2b2"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CycleItemLeft</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum13CycleItemLeftE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum13CycleItemLeftE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum14CycleItemRightE">
+<span id="_CPPv3N9Remapping10ActionEnum14CycleItemRightE"></span><span id="_CPPv2N9Remapping10ActionEnum14CycleItemRightE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa6a4cbe43d4c3cd91e249e53d115ab34b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CycleItemRight</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum14CycleItemRightE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum14CycleItemRightE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum5PauseE">
+<span id="_CPPv3N9Remapping10ActionEnum5PauseE"></span><span id="_CPPv2N9Remapping10ActionEnum5PauseE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935faea8bc8db0dd8629a73197c6b5ccb9f16"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Pause</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum5PauseE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum5PauseE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum9FlyUpSlowE">
+<span id="_CPPv3N9Remapping10ActionEnum9FlyUpSlowE"></span><span id="_CPPv2N9Remapping10ActionEnum9FlyUpSlowE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fae4f74a45b08b84e46da47fb67a13318a"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FlyUpSlow</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum9FlyUpSlowE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum9FlyUpSlowE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum11FlyDownSlowE">
+<span id="_CPPv3N9Remapping10ActionEnum11FlyDownSlowE"></span><span id="_CPPv2N9Remapping10ActionEnum11FlyDownSlowE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa244b07569cf32de328b5c0745337181f"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">FlyDownSlow</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum11FlyDownSlowE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum11FlyDownSlowE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum10MobEffectsE">
+<span id="_CPPv3N9Remapping10ActionEnum10MobEffectsE"></span><span id="_CPPv2N9Remapping10ActionEnum10MobEffectsE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fade913c177d6f19326e4b703021503648"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MobEffects</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum10MobEffectsE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum10MobEffectsE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum13ToastInteractE">
+<span id="_CPPv3N9Remapping10ActionEnum13ToastInteractE"></span><span id="_CPPv2N9Remapping10ActionEnum13ToastInteractE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa28ed4adb9c3e52e81f5dbd3c1f9215fa"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ToastInteract</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum13ToastInteractE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum13ToastInteractE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum7CommandE">
+<span id="_CPPv3N9Remapping10ActionEnum7CommandE"></span><span id="_CPPv2N9Remapping10ActionEnum7CommandE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935faf4be1ab696d609a132805438ce53183b"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Command</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum7CommandE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum7CommandE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum11MenuTabLeftE">
+<span id="_CPPv3N9Remapping10ActionEnum11MenuTabLeftE"></span><span id="_CPPv2N9Remapping10ActionEnum11MenuTabLeftE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa3b8d13a77f2dbc1046f891f7cdd0a7e5"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MenuTabLeft</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum11MenuTabLeftE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum11MenuTabLeftE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum12MenuTabRightE">
+<span id="_CPPv3N9Remapping10ActionEnum12MenuTabRightE"></span><span id="_CPPv2N9Remapping10ActionEnum12MenuTabRightE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa023120b2055751d304c4fde604ccfb58"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MenuTabRight</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum12MenuTabRightE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum12MenuTabRightE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum11CodeBuilderE">
+<span id="_CPPv3N9Remapping10ActionEnum11CodeBuilderE"></span><span id="_CPPv2N9Remapping10ActionEnum11CodeBuilderE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa115ea04a01cfb755e83b28e56b8165f9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">CodeBuilder</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum11CodeBuilderE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum11CodeBuilderE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum15ImmersiveReaderE">
+<span id="_CPPv3N9Remapping10ActionEnum15ImmersiveReaderE"></span><span id="_CPPv2N9Remapping10ActionEnum15ImmersiveReaderE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa50140697d2600527a11d9ebd307315d9"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ImmersiveReader</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum15ImmersiveReaderE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum15ImmersiveReaderE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum5EmoteE">
+<span id="_CPPv3N9Remapping10ActionEnum5EmoteE"></span><span id="_CPPv2N9Remapping10ActionEnum5EmoteE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa95d49f3939fc9638bb06e32eb0d3096d"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Emote</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum5EmoteE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum5EmoteE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum26MobEffectsAndToastInteractE">
+<span id="_CPPv3N9Remapping10ActionEnum26MobEffectsAndToastInteractE"></span><span id="_CPPv2N9Remapping10ActionEnum26MobEffectsAndToastInteractE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935faf39ee3be93b46911036d2428e84ff9ec"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">MobEffectsAndToastInteract</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum26MobEffectsAndToastInteractE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum26MobEffectsAndToastInteractE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N9Remapping10ActionEnum5COUNTE">
+<span id="_CPPv3N9Remapping10ActionEnum5COUNTE"></span><span id="_CPPv2N9Remapping10ActionEnum5COUNTE"></span><span class="target" id="classRemapping_1a2d7219a406965663430bd07cd44f935fa46b9cdda17d31495f89727c31174ea1e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">COUNT</span></span></span><a class="headerlink" href="#_CPPv4N9Remapping10ActionEnum5COUNTE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9Remapping10ActionEnum5COUNTE'">¶</a><br/></dt>
+<dd></dd></dl>
+</dd></dl>
+</div>
+</dd></dl>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv432VanillaClientInputMappingFactory">
+<span id="_CPPv332VanillaClientInputMappingFactory"></span><span id="_CPPv232VanillaClientInputMappingFactory"></span><span id="VanillaClientInputMappingFactory"></span><span class="target" id="classVanillaClientInputMappingFactory"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">VanillaClientInputMappingFactory</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="ClientInputMappingFactory_8hpp.html#_CPPv425ClientInputMappingFactory" title="ClientInputMappingFactory"><span class="n"><span class="pre">ClientInputMappingFactory</span></span></a><a class="headerlink" href="#_CPPv432VanillaClientInputMappingFactory" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv432VanillaClientInputMappingFactory'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N32VanillaClientInputMappingFactory29createKeyboardAndMouseBindingEP20KeyboardInputMappingP17MouseInputMappingPKNSt6stringEPKNSt6stringE11FocusImpact">
+<span id="_CPPv3N32VanillaClientInputMappingFactory29createKeyboardAndMouseBindingEP20KeyboardInputMappingP17MouseInputMappingPKNSt6stringEPKNSt6stringE11FocusImpact"></span><span id="_CPPv2N32VanillaClientInputMappingFactory29createKeyboardAndMouseBindingEP20KeyboardInputMappingP17MouseInputMappingPKNSt6stringEPKNSt6stringE11FocusImpact"></span><span id="VanillaClientInputMappingFactory::createKeyboardAndMouseBinding__KeyboardInputMappingP.MouseInputMappingP.ssCP.ssCP.FocusImpact"></span><span class="target" id="classVanillaClientInputMappingFactory_1a296fcf54a265cb6baeae60ced1c453e6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">createKeyboardAndMouseBinding</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="InputMapping_8hpp.html#_CPPv420KeyboardInputMapping" title="KeyboardInputMapping"><span class="n"><span class="pre">KeyboardInputMapping</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">keyboard</span></span>, <a class="reference internal" href="InputMapping_8hpp.html#_CPPv417MouseInputMapping" title="MouseInputMapping"><span class="n"><span class="pre">MouseInputMapping</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">mouse</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">buttonName</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">keyName</span></span>, <a class="reference internal" href="InputHandler_8hpp.html#_CPPv411FocusImpact" title="FocusImpact"><span class="n"><span class="pre">FocusImpact</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">impact</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><a class="reference internal" href="InputHandler_8hpp.html#_CPPv411FocusImpact" title="FocusImpact"><span class="n"><span class="pre">FocusImpact</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="InputHandler_8hpp.html#_CPPv4N11FocusImpact7NeutralE" title="FocusImpact::Neutral"><span class="n"><span class="pre">Neutral</span></span></a><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N32VanillaClientInputMappingFactory29createKeyboardAndMouseBindingEP20KeyboardInputMappingP17MouseInputMappingPKNSt6stringEPKNSt6stringE11FocusImpact" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N32VanillaClientInputMappingFactory29createKeyboardAndMouseBindingEP20KeyboardInputMappingP17MouseInputMappingPKNSt6stringEPKNSt6stringE11FocusImpact'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N32VanillaClientInputMappingFactory32_addFullKeyboardGamePlayControlsEP20KeyboardInputMappingP17MouseInputMapping">
+<span id="_CPPv3N32VanillaClientInputMappingFactory32_addFullKeyboardGamePlayControlsEP20KeyboardInputMappingP17MouseInputMapping"></span><span id="_CPPv2N32VanillaClientInputMappingFactory32_addFullKeyboardGamePlayControlsEP20KeyboardInputMappingP17MouseInputMapping"></span><span id="VanillaClientInputMappingFactory::_addFullKeyboardGamePlayControls__KeyboardInputMappingP.MouseInputMappingP"></span><span class="target" id="classVanillaClientInputMappingFactory_1acd5ba690158adc1423ead95ef99fde63"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">_addFullKeyboardGamePlayControls</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="InputMapping_8hpp.html#_CPPv420KeyboardInputMapping" title="KeyboardInputMapping"><span class="n"><span class="pre">KeyboardInputMapping</span></span></a><span class="p"><span class="pre">*</span></span>, <a class="reference internal" href="InputMapping_8hpp.html#_CPPv417MouseInputMapping" title="MouseInputMapping"><span class="n"><span class="pre">MouseInputMapping</span></span></a><span class="p"><span class="pre">*</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N32VanillaClientInputMappingFactory32_addFullKeyboardGamePlayControlsEP20KeyboardInputMappingP17MouseInputMapping" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N32VanillaClientInputMappingFactory32_addFullKeyboardGamePlayControlsEP20KeyboardInputMappingP17MouseInputMapping'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N32VanillaClientInputMappingFactory27createInputMappingTemplatesEP7Options">
+<span id="_CPPv3N32VanillaClientInputMappingFactory27createInputMappingTemplatesEP7Options"></span><span id="_CPPv2N32VanillaClientInputMappingFactory27createInputMappingTemplatesEP7Options"></span><span id="VanillaClientInputMappingFactory::createInputMappingTemplates__OptionsP"></span><span class="target" id="classVanillaClientInputMappingFactory_1a34c03c08172f3788b8d6de106a4e31bf"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">createInputMappingTemplates</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Options_8hpp.html#_CPPv47Options" title="Options"><span class="n"><span class="pre">Options</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">options</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N32VanillaClientInputMappingFactory27createInputMappingTemplatesEP7Options" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N32VanillaClientInputMappingFactory27createInputMappingTemplatesEP7Options'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+</dd></dl>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(var(100vh)-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#_CPPv49Remapping'" class="reference internal" href="#_CPPv49Remapping"><code class="docutils literal notranslate"><span class="pre">Remapping</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnumE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnumE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum6AttackE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum6AttackE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Attack</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum8PickItemE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum8PickItemE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::PickItem</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum3UseE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum3UseE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Use</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum4DropE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum4DropE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Drop</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum7Hotbar1E'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum7Hotbar1E"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Hotbar1</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum7Hotbar2E'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum7Hotbar2E"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Hotbar2</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum7Hotbar3E'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum7Hotbar3E"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Hotbar3</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum7Hotbar4E'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum7Hotbar4E"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Hotbar4</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum7Hotbar5E'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum7Hotbar5E"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Hotbar5</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum7Hotbar6E'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum7Hotbar6E"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Hotbar6</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum7Hotbar7E'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum7Hotbar7E"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Hotbar7</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum7Hotbar8E'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum7Hotbar8E"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Hotbar8</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum7Hotbar9E'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum7Hotbar9E"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Hotbar9</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum9InventoryE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum9InventoryE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Inventory</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum17TogglePerspectiveE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum17TogglePerspectiveE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::TogglePerspective</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum12LookUpSlightE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum12LookUpSlightE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookUpSlight</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum14LookDownSlightE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum14LookDownSlightE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookDownSlight</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum11LookUpRightE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum11LookUpRightE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookUpRight</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum6LookUpE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum6LookUpE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookUp</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum10LookUpLeftE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum10LookUpLeftE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookUpLeft</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum9LookRightE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum9LookRightE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookRight</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum10LookCenterE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum10LookCenterE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookCenter</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum8LookLeftE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum8LookLeftE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookLeft</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum13LookDownRightE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum13LookDownRightE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookDownRight</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum8LookDownE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum8LookDownE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookDown</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum12LookDownLeftE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum12LookDownLeftE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookDownLeft</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum12LookUpSmoothE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum12LookUpSmoothE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookUpSmooth</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum14LookDownSmoothE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum14LookDownSmoothE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookDownSmooth</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum14LookLeftSmoothE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum14LookLeftSmoothE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookLeftSmooth</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum15LookRightSmoothE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum15LookRightSmoothE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::LookRightSmooth</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum4JumpE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum4JumpE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Jump</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum5SneakE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum5SneakE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Sneak</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum6SprintE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum6SprintE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Sprint</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum4LeftE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum4LeftE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Left</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum5RightE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum5RightE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Right</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum4BackE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum4BackE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Back</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum7ForwardE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum7ForwardE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Forward</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum4ChatE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum4ChatE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Chat</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum8CraftingE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum8CraftingE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Crafting</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum13CycleItemLeftE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum13CycleItemLeftE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::CycleItemLeft</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum14CycleItemRightE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum14CycleItemRightE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::CycleItemRight</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum5PauseE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum5PauseE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Pause</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum9FlyUpSlowE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum9FlyUpSlowE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::FlyUpSlow</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum11FlyDownSlowE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum11FlyDownSlowE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::FlyDownSlow</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum10MobEffectsE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum10MobEffectsE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::MobEffects</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum13ToastInteractE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum13ToastInteractE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::ToastInteract</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum7CommandE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum7CommandE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Command</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum11MenuTabLeftE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum11MenuTabLeftE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::MenuTabLeft</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum12MenuTabRightE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum12MenuTabRightE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::MenuTabRight</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum11CodeBuilderE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum11CodeBuilderE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::CodeBuilder</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum15ImmersiveReaderE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum15ImmersiveReaderE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::ImmersiveReader</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum5EmoteE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum5EmoteE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::Emote</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum26MobEffectsAndToastInteractE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum26MobEffectsAndToastInteractE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::MobEffectsAndToastInteract</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9Remapping10ActionEnum5COUNTE'" class="reference internal" href="#_CPPv4N9Remapping10ActionEnum5COUNTE"><code class="docutils literal notranslate"><span class="pre">Remapping::ActionEnum::COUNT</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv432VanillaClientInputMappingFactory'" class="reference internal" href="#_CPPv432VanillaClientInputMappingFactory"><code class="docutils literal notranslate"><span class="pre">VanillaClientInputMappingFactory</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N32VanillaClientInputMappingFactory29createKeyboardAndMouseBindingEP20KeyboardInputMappingP17MouseInputMappingPKNSt6stringEPKNSt6stringE11FocusImpact'" class="reference internal" href="#_CPPv4N32VanillaClientInputMappingFactory29createKeyboardAndMouseBindingEP20KeyboardInputMappingP17MouseInputMappingPKNSt6stringEPKNSt6stringE11FocusImpact"><code class="docutils literal notranslate"><span class="pre">VanillaClientInputMappingFactory::createKeyboardAndMouseBinding()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N32VanillaClientInputMappingFactory32_addFullKeyboardGamePlayControlsEP20KeyboardInputMappingP17MouseInputMapping'" class="reference internal" href="#_CPPv4N32VanillaClientInputMappingFactory32_addFullKeyboardGamePlayControlsEP20KeyboardInputMappingP17MouseInputMapping"><code class="docutils literal notranslate"><span class="pre">VanillaClientInputMappingFactory::_addFullKeyboardGamePlayControls()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N32VanillaClientInputMappingFactory27createInputMappingTemplatesEP7Options'" class="reference internal" href="#_CPPv4N32VanillaClientInputMappingFactory27createInputMappingTemplatesEP7Options"><code class="docutils literal notranslate"><span class="pre">VanillaClientInputMappingFactory::createInputMappingTemplates()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 7.2.6</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+<script src="../../_static/doctools.js?v=888ff710"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=40b7bc71"></script>
+<script src="../../_static/design-tabs.js?v=36754332"></script>
+</body>
+</html>

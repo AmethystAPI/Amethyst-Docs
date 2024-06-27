@@ -1,0 +1,5 @@
+File UIControl.hpp
+==================
+
+.. doxygenfile:: UIControl.hpp
+   :project: AmethystApi

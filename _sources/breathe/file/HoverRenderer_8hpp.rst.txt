@@ -1,0 +1,5 @@
+File HoverRenderer.hpp
+======================
+
+.. doxygenfile:: HoverRenderer.hpp
+   :project: AmethystApi

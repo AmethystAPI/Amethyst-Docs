@@ -1,0 +1,5 @@
+File CompoundTagVariant.hpp
+===========================
+
+.. doxygenfile:: CompoundTagVariant.hpp
+   :project: AmethystApi

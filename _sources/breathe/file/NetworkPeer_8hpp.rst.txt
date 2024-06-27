@@ -1,0 +1,5 @@
+File NetworkPeer.hpp
+====================
+
+.. doxygenfile:: NetworkPeer.hpp
+   :project: AmethystApi

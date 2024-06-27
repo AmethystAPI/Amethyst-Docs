@@ -1,0 +1,5 @@
+File VanillaBlockTypeRegistry.hpp
+=================================
+
+.. doxygenfile:: VanillaBlockTypeRegistry.hpp
+   :project: AmethystApi

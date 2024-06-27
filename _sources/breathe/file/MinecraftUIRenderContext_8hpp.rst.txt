@@ -1,0 +1,5 @@
+File MinecraftUIRenderContext.hpp
+=================================
+
+.. doxygenfile:: MinecraftUIRenderContext.hpp
+   :project: AmethystApi

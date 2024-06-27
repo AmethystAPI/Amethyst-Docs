@@ -1,0 +1,5 @@
+File IntTag.hpp
+===============
+
+.. doxygenfile:: IntTag.hpp
+   :project: AmethystApi

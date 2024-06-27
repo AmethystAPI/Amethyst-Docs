@@ -1,0 +1,5 @@
+File GameRefsSharePtr.hpp
+=========================
+
+.. doxygenfile:: GameRefsSharePtr.hpp
+   :project: AmethystApi

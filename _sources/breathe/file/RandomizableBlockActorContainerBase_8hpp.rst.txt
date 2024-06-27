@@ -1,0 +1,5 @@
+File RandomizableBlockActorContainerBase.hpp
+============================================
+
+.. doxygenfile:: RandomizableBlockActorContainerBase.hpp
+   :project: AmethystApi

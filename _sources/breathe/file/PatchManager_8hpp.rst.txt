@@ -1,0 +1,5 @@
+File PatchManager.hpp
+=====================
+
+.. doxygenfile:: PatchManager.hpp
+   :project: AmethystApi

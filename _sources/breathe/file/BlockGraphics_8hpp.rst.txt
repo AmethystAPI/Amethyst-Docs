@@ -1,0 +1,5 @@
+File BlockGraphics.hpp
+======================
+
+.. doxygenfile:: BlockGraphics.hpp
+   :project: AmethystApi

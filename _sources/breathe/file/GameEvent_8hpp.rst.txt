@@ -1,0 +1,5 @@
+File GameEvent.hpp
+==================
+
+.. doxygenfile:: GameEvent.hpp
+   :project: AmethystApi

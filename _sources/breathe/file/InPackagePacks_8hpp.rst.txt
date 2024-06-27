@@ -1,0 +1,5 @@
+File InPackagePacks.hpp
+=======================
+
+.. doxygenfile:: InPackagePacks.hpp
+   :project: AmethystApi

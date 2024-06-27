@@ -1,0 +1,5 @@
+File UIScreenContext.hpp
+========================
+
+.. doxygenfile:: UIScreenContext.hpp
+   :project: AmethystApi

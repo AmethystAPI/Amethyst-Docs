@@ -1,0 +1,5 @@
+File expected.hpp
+=================
+
+.. doxygenfile:: expected.hpp
+   :project: AmethystApi

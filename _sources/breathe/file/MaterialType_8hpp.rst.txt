@@ -1,0 +1,5 @@
+File MaterialType.hpp
+=====================
+
+.. doxygenfile:: MaterialType.hpp
+   :project: AmethystApi

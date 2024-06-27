@@ -1,0 +1,5 @@
+File BlockMapColorComponent.hpp
+===============================
+
+.. doxygenfile:: BlockMapColorComponent.hpp
+   :project: AmethystApi

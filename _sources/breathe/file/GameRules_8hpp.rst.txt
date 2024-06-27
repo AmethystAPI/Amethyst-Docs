@@ -1,0 +1,5 @@
+File GameRules.hpp
+==================
+
+.. doxygenfile:: GameRules.hpp
+   :project: AmethystApi

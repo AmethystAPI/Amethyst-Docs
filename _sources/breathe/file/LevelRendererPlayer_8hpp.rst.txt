@@ -1,0 +1,5 @@
+File LevelRendererPlayer.hpp
+============================
+
+.. doxygenfile:: LevelRendererPlayer.hpp
+   :project: AmethystApi

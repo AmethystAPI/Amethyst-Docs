@@ -1,0 +1,5 @@
+File StringHash.hpp
+===================
+
+.. doxygenfile:: StringHash.hpp
+   :project: AmethystApi

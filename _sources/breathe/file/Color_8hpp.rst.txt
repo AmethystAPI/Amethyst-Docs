@@ -1,0 +1,5 @@
+File Color.hpp
+==============
+
+.. doxygenfile:: Color.hpp
+   :project: AmethystApi

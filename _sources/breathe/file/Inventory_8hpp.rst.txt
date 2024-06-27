@@ -1,0 +1,5 @@
+File Inventory.hpp
+==================
+
+.. doxygenfile:: Inventory.hpp
+   :project: AmethystApi

@@ -1,0 +1,5 @@
+File TexturePtr.hpp
+===================
+
+.. doxygenfile:: TexturePtr.hpp
+   :project: AmethystApi

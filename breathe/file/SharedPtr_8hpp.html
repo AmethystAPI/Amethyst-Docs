@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+
+<html :class="{'dark': darkMode === 'dark' || (darkMode === 'system' &amp;&amp; window.matchMedia('(prefers-color-scheme: dark)').matches)}" class="scroll-smooth" data-content_root="../../" lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') || localStorage.setItem('darkMode', 'system'), activeSection: '' }" x-init="$watch('darkMode', val =&gt; localStorage.setItem('darkMode', val))">
+<head>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="white" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="black" metia="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>File SharedPtr.hpp | Amethyst  documentation</title>
+<meta content="File SharedPtr.hpp | Amethyst  documentation" property="og:title"/>
+<meta content="File SharedPtr.hpp | Amethyst  documentation" name="twitter:title"/>
+<link href="../../_static/pygments.css?v=5432af51" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=5b4133db" rel="stylesheet" type="text/css"/>
+<link href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-sphinx-design.css?v=a54cf077" rel="stylesheet" type="text/css"/>
+<link href="../../_static/logo-512x.png" rel="icon"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="ShortTag_8hpp.html" rel="next" title="File ShortTag.hpp"/>
+<link href="ShapeType_8hpp.html" rel="prev" title="File ShapeType.hpp"/>
+<script>
+    <!-- Prevent Flash of wrong theme -->
+      const userPreference = localStorage.getItem('darkMode');
+      let mode;
+      if (userPreference === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        mode = 'dark';
+        document.documentElement.classList.add('dark');
+      } else {
+        mode = 'light';
+      }
+      if (!userPreference) {localStorage.setItem('darkMode', mode)}
+    </script>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-sm border-border supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a><nav class="flex items-center space-x-6 text-sm font-medium">
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../autodocs.html">AmethystAPI</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../examples/index.html">Examples</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../getting_started/index.html">Getting Started</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../reverse_engineering/index.html">Reverse Engineering</a>
+</nav></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center space-x-1">
+<button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full shrink-0 overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="!justify-start text-sm md:!hidden bg-background" href="../../index.html"><span class="font-bold text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0 h-[calc(100vh-8rem)] md:h-auto">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../autodocs.html">AmethystAPI<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../filelist.html">File list<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="AABB_8hpp.html">File AABB.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorBlock_8hpp.html">File ActorBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorHeadRotationComponent_8hpp.html">File ActorHeadRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorRotationComponent_8hpp.html">File ActorRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorShaderManager_8hpp.html">File ActorShaderManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorTerrainInterlockData_8hpp.html">File ActorTerrainInterlockData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actor_8hpp.html">File Actor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AmethystContext_8hpp.html">File AmethystContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AuxDataBlockItem_8hpp.html">File AuxDataBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderContext_8hpp.html">File BaseActorRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderer_8hpp.html">File BaseActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseGameVersion_8hpp.html">File BaseGameVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseOptions_8hpp.html">File BaseOptions.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BinaryStream_8hpp.html">File BinaryStream.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorDataPacket_8hpp.html">File BlockActorDataPacket.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html">File BlockActorRendererDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererId_8hpp.html">File BlockActorRendererId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRenderer_8hpp.html">File BlockActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActor_8hpp.html">File BlockActor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentBase_8hpp.html">File BlockComponentBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentStorage_8hpp.html">File BlockComponentStorage.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockDefinitionGroup_8hpp.html">File BlockDefinitionGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockGraphics_8hpp.html">File BlockGraphics.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockItem_8hpp.html">File BlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockLegacy_8hpp.html">File BlockLegacy.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockMapColorComponent_8hpp.html">File BlockMapColorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockPos_8hpp.html">File BlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockRenderLayer_8hpp.html">File BlockRenderLayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockShape_8hpp.html">File BlockShape.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSourceListener_8hpp.html">File BlockSourceListener.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSource_8hpp.html">File BlockSource.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockState_8hpp.html">File BlockState.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTessellator_8hpp.html">File BlockTessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTypeRegistry_8hpp.html">File BlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Block_8hpp.html">File Block.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteArrayTag_8hpp.html">File ByteArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteTag_8hpp.html">File ByteTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CallStack_8hpp.html">File CallStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Camera_8hpp.html">File Camera.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChestBlock_8hpp.html">File ChestBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkBlockPos_8hpp.html">File ChunkBlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkPos_8hpp.html">File ChunkPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputHandler_8hpp.html">File ClientInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputMappingFactory_8hpp.html">File ClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInstance_8hpp.html">File ClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientNetworkHandler_8hpp.html">File ClientNetworkHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Color_8hpp.html">File Color.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CommonTypes_8hpp.html">File CommonTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTagVariant_8hpp.html">File CompoundTagVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTag_8hpp.html">File CompoundTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Config_8hpp.html">File Config.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Container_8hpp.html">File Container.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLogTypes_8hpp.html">File ContentLogTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLog_8hpp.html">File ContentLog.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Dimension_8hpp.html">File Dimension.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Direction_8hpp.html">File Direction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DoubleTag_8hpp.html">File DoubleTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EndTag_8hpp.html">File EndTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityContext_8hpp.html">File EntityContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityIdTraits_8hpp.html">File EntityIdTraits.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityId_8hpp.html">File EntityId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ErrorInfo_8hpp.html">File ErrorInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EventManager_8hpp.html">File EventManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Event_8hpp.html">File Event.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FertilizerType_8hpp.html">File FertilizerType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FillingContainer_8hpp.html">File FillingContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FloatTag_8hpp.html">File FloatTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameEvent_8hpp.html">File GameEvent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameModuleClient_8hpp.html">File GameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRefsSharePtr_8hpp.html">File GameRefsSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRules_8hpp.html">File GameRules.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GetCollisionShapeInterface_8hpp.html">File GetCollisionShapeInterface.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GuiData_8hpp.html">File GuiData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HeightRange_8hpp.html">File HeightRange.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HitResult_8hpp.html">File HitResult.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HookManager_8hpp.html">File HookManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverRenderer_8hpp.html">File HoverRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverTextRenderer_8hpp.html">File HoverTextRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IClientInstance_8hpp.html">File IClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ILevel_8hpp.html">File ILevel.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IPacketHandlerDispatcher_8hpp.html">File IPacketHandlerDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IWorldRegistriesProvider_8hpp.html">File IWorldRegistriesProvider.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ImageInfo_8hpp.html">File ImageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InPackagePacks_8hpp.html">File InPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputAction_8hpp.html">File InputAction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputHandler_8hpp.html">File InputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputManager_8hpp.html">File InputManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMappingFactory_8hpp.html">File InputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMapping_8hpp.html">File InputMapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Int64Tag_8hpp.html">File Int64Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntArrayTag_8hpp.html">File IntArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntTag_8hpp.html">File IntTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Inventory_8hpp.html">File Inventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IsotropicFaceData_8hpp.html">File IsotropicFaceData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemCategory_8hpp.html">File ItemCategory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemGroup_8hpp.html">File ItemGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemIconManager_8hpp.html">File ItemIconManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemInstance_8hpp.html">File ItemInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryManager_8hpp.html">File ItemRegistryManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryRef_8hpp.html">File ItemRegistryRef.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistry_8hpp.html">File ItemRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRenderer_8hpp.html">File ItemRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackBase_8hpp.html">File ItemStackBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackNetIdVariant_8hpp.html">File ItemStackNetIdVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStack_8hpp.html">File ItemStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Item_8hpp.html">File Item.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Keymapping_8hpp.html">File Keymapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelChunk_8hpp.html">File LevelChunk.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRendererPlayer_8hpp.html">File LevelRendererPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRenderer_8hpp.html">File LevelRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Level_8hpp.html">File Level.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ListTag_8hpp.html">File ListTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LocalPlayer_8hpp.html">File LocalPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Log_8hpp.html">File Log.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LoopbackPacketSender_8hpp.html">File LoopbackPacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialPtr_8hpp.html">File MaterialPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialType_8hpp.html">File MaterialType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Material_8hpp.html">File Material.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Math_8hpp.html">File Math.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MatrixStack_8hpp.html">File MatrixStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Matrix_8hpp.html">File Matrix.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Memory_8hpp.html">File Memory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshContext_8hpp.html">File MeshContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshData_8hpp.html">File MeshData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshHelpers_8hpp.html">File MeshHelpers.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mesh_8hpp.html">File Mesh.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftGame_8hpp.html">File MinecraftGame.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftInputHandler_8hpp.html">File MinecraftInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftPackageInfo_8hpp.html">File MinecraftPackageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftUIRenderContext_8hpp.html">File MinecraftUIRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftVtables_8hpp.html">File MinecraftVtables.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Minecraft_8hpp.html">File Minecraft.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mob_8hpp.html">File Mob.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mod_8hpp.html">File Mod.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetEventCallback_8hpp.html">File NetEventCallback.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkBlockPosition_8hpp.html">File NetworkBlockPosition.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkPeer_8hpp.html">File NetworkPeer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NewType_8hpp.html">File NewType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceHelper_8hpp.html">File NinesliceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceInfo_8hpp.html">File NinesliceInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NonOwnerPointer_8hpp.html">File NonOwnerPointer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Options_8hpp.html">File Options.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerPtr_8hpp.html">File OwnerPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerStorageSharePtr_8hpp.html">File OwnerStorageSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketHandlerDispatcherInstance_8hpp.html">File PacketHandlerDispatcherInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketPriority_8hpp.html">File PacketPriority.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketSender_8hpp.html">File PacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_8hpp.html">File Packet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PatchManager_8hpp.html">File PatchManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Path_8hpp.html">File Path.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerInventory_8hpp.html">File PlayerInventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerUIContainer_8hpp.html">File PlayerUIContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Player_8hpp.html">File Player.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RandomizableBlockActorContainerBase_8hpp.html">File RandomizableBlockActorContainerBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RemappingLayout_8hpp.html">File RemappingLayout.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderContext_8hpp.html">File RenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroupBase_8hpp.html">File RenderMaterialGroupBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroup_8hpp.html">File RenderMaterialGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResolvedItemIconInfo_8hpp.html">File ResolvedItemIconInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceHelper_8hpp.html">File ResourceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceUtil_8hpp.html">File ResourceUtil.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Result_8hpp.html">File Result.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenContext_8hpp.html">File ScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenView_8hpp.html">File ScreenView.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SemVersion_8hpp.html">File SemVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShapeType_8hpp.html">File ShapeType.hpp</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">File SharedPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShortTag_8hpp.html">File ShortTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShulkerBoxBlockItem_8hpp.html">File ShulkerBoxBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SimpleContainer_8hpp.html">File SimpleContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SliderComponent_8hpp.html">File SliderComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StateVectorComponent_8hpp.html">File StateVectorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringHash_8hpp.html">File StringHash.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringTag_8hpp.html">File StringTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringUtils_8hpp.html">File StringUtils.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tag_8hpp.html">File Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tessellator_8hpp.html">File Tessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextComponent_8hpp.html">File TextComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureAtlasItem_8hpp.html">File TextureAtlasItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TexturePtr_8hpp.html">File TexturePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureUVCoordinateSet_8hpp.html">File TextureUVCoordinateSet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tick_8hpp.html">File Tick.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ToggleComponent_8hpp.html">File ToggleComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIComponent_8hpp.html">File UIComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIControl_8hpp.html">File UIControl.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIScreenContext_8hpp.html">File UIScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UUID_8hpp.html">File UUID.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UseAnim_8hpp.html">File UseAnim.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Utility_8hpp.html">File Utility.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaBlockTypeRegistry_8hpp.html">File VanillaBlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaClientInputMappingFactory_8hpp.html">File VanillaClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaGameModuleClient_8hpp.html">File VanillaGameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaInPackagePacks_8hpp.html">File VanillaInPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaItems_8hpp.html">File VanillaItems.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec2_8hpp.html">File Vec2.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec3_8hpp.html">File Vec3.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VisualTree_8hpp.html">File VisualTree.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expected_8hpp.html">File expected.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsl__includes_8hpp.html">File gsl_includes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optional__ref_8hpp.html">File optional_ref.hpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/index.html">Examples<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/networking/index.html">Networking<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../../examples/networking/udp.html">UDP Networking Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../getting_started/index.html">Getting Started<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/end_user/installing_amethyst.html">Installing Amethyst</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/devs/compiling_amethyst.html">Compiling Amethyst</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reverse_engineering/index.html">Reverse Engineering</a></li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../how_to_doc/index.html">How to doc<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/setup.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/doxygen.html">Doxygen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/sphinx.html">Sphinx</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../../index.html">
+<span class="hidden md:inline">Amethyst  documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../../autodocs.html">AmethystAPI</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../filelist.html">File list</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">File SharedPtr.hpp</span>
+</nav>
+<div id="content" role="main">
+<section id="file-sharedptr-hpp">
+<h1>File SharedPtr.hpp<a class="headerlink" href="#file-sharedptr-hpp" title="Link to this heading">¶</a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0E13SharedCounter">
+<span id="_CPPv3I0E13SharedCounter"></span><span id="_CPPv2I0E13SharedCounter"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="classSharedCounter"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SharedCounter</span></span></span><a class="headerlink" href="#_CPPv4I0E13SharedCounter" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4I0E13SharedCounter'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-functions">Private Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13SharedCounter13SharedCounterEP1T">
+<span id="_CPPv3N13SharedCounter13SharedCounterEP1T"></span><span id="_CPPv2N13SharedCounter13SharedCounterEP1T"></span><span id="SharedCounter::SharedCounter__TP"></span><span class="target" id="classSharedCounter_1aa93ba94729685835e8ebb41fecc381e2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SharedCounter</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E13SharedCounter" title="SharedCounter::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13SharedCounter13SharedCounterEP1T" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13SharedCounter13SharedCounterEP1T'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13SharedCounterD0Ev">
+<span id="_CPPv3N13SharedCounterD0Ev"></span><span id="_CPPv2N13SharedCounterD0Ev"></span><span id="SharedCounter::~SharedCounter"></span><span class="target" id="classSharedCounter_1a98c19b300118eb6673a35697a59cfdab"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~SharedCounter</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13SharedCounterD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13SharedCounterD0Ev'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13SharedCounter12addSharedRefEv">
+<span id="_CPPv3N13SharedCounter12addSharedRefEv"></span><span id="_CPPv2N13SharedCounter12addSharedRefEv"></span><span id="SharedCounter::addSharedRef"></span><span class="target" id="classSharedCounter_1a3d91d470835a22d6bbc5a5dd3cb7e6ce"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addSharedRef</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13SharedCounter12addSharedRefEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13SharedCounter12addSharedRefEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13SharedCounter10addWeakRefEv">
+<span id="_CPPv3N13SharedCounter10addWeakRefEv"></span><span id="_CPPv2N13SharedCounter10addWeakRefEv"></span><span id="SharedCounter::addWeakRef"></span><span class="target" id="classSharedCounter_1a0e86cba8b2603e398d88adcb6e721970"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">addWeakRef</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13SharedCounter10addWeakRefEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13SharedCounter10addWeakRefEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13SharedCounter16releaseSharedRefEv">
+<span id="_CPPv3N13SharedCounter16releaseSharedRefEv"></span><span id="_CPPv2N13SharedCounter16releaseSharedRefEv"></span><span id="SharedCounter::releaseSharedRef"></span><span class="target" id="classSharedCounter_1a19299bf1c9e44d94525239c3332a97bc"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">releaseSharedRef</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13SharedCounter16releaseSharedRefEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13SharedCounter16releaseSharedRefEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N13SharedCounter14releaseWeakRefEv">
+<span id="_CPPv3N13SharedCounter14releaseWeakRefEv"></span><span id="_CPPv2N13SharedCounter14releaseWeakRefEv"></span><span id="SharedCounter::releaseWeakRef"></span><span class="target" id="classSharedCounter_1a2d32e77eac69886b3a04513658856522"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">releaseWeakRef</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N13SharedCounter14releaseWeakRefEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13SharedCounter14releaseWeakRefEv'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SharedCounter3ptrE">
+<span id="_CPPv3N13SharedCounter3ptrE"></span><span id="_CPPv2N13SharedCounter3ptrE"></span><span id="SharedCounter::ptr__TP"></span><span class="target" id="classSharedCounter_1ae722a22749b073560237786780854186"></span><a class="reference internal" href="#_CPPv4I0E13SharedCounter" title="SharedCounter::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">ptr</span></span></span><a class="headerlink" href="#_CPPv4N13SharedCounter3ptrE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13SharedCounter3ptrE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SharedCounter11share_countE">
+<span id="_CPPv3N13SharedCounter11share_countE"></span><span id="_CPPv2N13SharedCounter11share_countE"></span><span id="SharedCounter::share_count__std::atomic:i:"></span><span class="target" id="classSharedCounter_1af90981c4ff0198f44aab12159612e54f"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">atomic</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">share_count</span></span></span><a class="headerlink" href="#_CPPv4N13SharedCounter11share_countE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13SharedCounter11share_countE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N13SharedCounter10weak_countE">
+<span id="_CPPv3N13SharedCounter10weak_countE"></span><span id="_CPPv2N13SharedCounter10weak_countE"></span><span id="SharedCounter::weak_count__std::atomic:i:"></span><span class="target" id="classSharedCounter_1a46e0aebcf17eccb76c8c121bfdd64f3b"></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">atomic</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">int</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">weak_count</span></span></span><a class="headerlink" href="#_CPPv4N13SharedCounter10weak_countE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N13SharedCounter10weak_countE'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl>
+<dt class="sig sig-object cpp">
+<em class="property"><span class="pre">friend</span> <span class="pre">class</span></em> <span class="pre">SharedPtr</span></dt>
+</dl>
+<dl>
+<dt class="sig sig-object cpp">
+<em class="property"><span class="pre">friend</span> <span class="pre">class</span></em> <span class="pre">WeakPtr</span></dt>
+</dl>
+</div>
+</dd></dl>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0E9SharedPtr">
+<span id="_CPPv3I0E9SharedPtr"></span><span id="_CPPv2I0E9SharedPtr"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="classSharedPtr"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SharedPtr</span></span></span><a class="headerlink" href="#_CPPv4I0E9SharedPtr" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4I0E9SharedPtr'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9SharedPtr9SharedPtrEv">
+<span id="_CPPv3N9SharedPtr9SharedPtrEv"></span><span id="_CPPv2N9SharedPtr9SharedPtrEv"></span><span id="SharedPtr::SharedPtr"></span><span class="target" id="classSharedPtr_1a8b08806704038d3625f602770ab86b5c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SharedPtr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9SharedPtr9SharedPtrEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9SharedPtr9SharedPtrEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9SharedPtr9SharedPtrENSt9nullptr_tE">
+<span id="_CPPv3N9SharedPtr9SharedPtrENSt9nullptr_tE"></span><span id="_CPPv2N9SharedPtr9SharedPtrENSt9nullptr_tE"></span><span id="SharedPtr::SharedPtr__std::nullptr_t"></span><span class="target" id="classSharedPtr_1a59f281b833dd98f9ef3adb9521e08efa"></span><span class="sig-name descname"><span class="n"><span class="pre">SharedPtr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nullptr_t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9SharedPtr9SharedPtrENSt9nullptr_tE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9SharedPtr9SharedPtrENSt9nullptr_tE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9SharedPtr9SharedPtrEP1T">
+<span id="_CPPv3N9SharedPtr9SharedPtrEP1T"></span><span id="_CPPv2N9SharedPtr9SharedPtrEP1T"></span><span id="SharedPtr::SharedPtr__TP"></span><span class="target" id="classSharedPtr_1a333862a7fd4a94306f716e029b4cee62"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">explicit</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SharedPtr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">rawPtr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9SharedPtr9SharedPtrEP1T" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9SharedPtr9SharedPtrEP1T'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9SharedPtr9SharedPtrERK9SharedPtr">
+<span id="_CPPv3N9SharedPtr9SharedPtrERK9SharedPtr"></span><span id="_CPPv2N9SharedPtr9SharedPtrERK9SharedPtr"></span><span id="SharedPtr::SharedPtr__SharedPtrCR"></span><span class="target" id="classSharedPtr_1a9dd1f84b893ef4598232190190410426"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SharedPtr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N9SharedPtr9SharedPtrERK9SharedPtr" title="SharedPtr::SharedPtr"><span class="n"><span class="pre">SharedPtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9SharedPtr9SharedPtrERK9SharedPtr" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9SharedPtr9SharedPtrERK9SharedPtr'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN9SharedPtr9SharedPtrERK9SharedPtrI8TDerivedE">
+<span id="_CPPv3I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN9SharedPtr9SharedPtrERK9SharedPtrI8TDerivedE"></span><span id="_CPPv2I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN9SharedPtr9SharedPtrERK9SharedPtrI8TDerivedE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TDerived</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_base_of</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN9SharedPtr9SharedPtrERK9SharedPtrI8TDerivedE" title="SharedPtr::SharedPtr::TDerived"><span class="n"><span class="pre">TDerived</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">*</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="classSharedPtr_1ab7b9e4929259c6b714af5c8a0f6ad03d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SharedPtr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN9SharedPtr9SharedPtrERK9SharedPtrI8TDerivedE" title="SharedPtr::SharedPtr"><span class="n"><span class="pre">SharedPtr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN9SharedPtr9SharedPtrERK9SharedPtrI8TDerivedE" title="SharedPtr::SharedPtr::TDerived"><span class="n"><span class="pre">TDerived</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN9SharedPtr9SharedPtrERK9SharedPtrI8TDerivedE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN9SharedPtr9SharedPtrERK9SharedPtrI8TDerivedE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9SharedPtr9SharedPtrERK13SharedCounterI1TE">
+<span id="_CPPv3N9SharedPtr9SharedPtrERK13SharedCounterI1TE"></span><span id="_CPPv2N9SharedPtr9SharedPtrERK13SharedCounterI1TE"></span><span id="SharedPtr::SharedPtr__SharedCounter:T:CR"></span><span class="target" id="classSharedPtr_1a11807de045a1ce9c61c7b3c5d1ff6bd2"></span><span class="sig-name descname"><span class="n"><span class="pre">SharedPtr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E13SharedCounter" title="SharedCounter"><span class="n"><span class="pre">SharedCounter</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9SharedPtr9SharedPtrERK13SharedCounterI1TE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9SharedPtr9SharedPtrERK13SharedCounterI1TE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9SharedPtrD0Ev">
+<span id="_CPPv3N9SharedPtrD0Ev"></span><span id="_CPPv2N9SharedPtrD0Ev"></span><span id="SharedPtr::~SharedPtr"></span><span class="target" id="classSharedPtr_1ae587e1b0f76a90dfa14e0fa14a2f91ef"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~SharedPtr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9SharedPtrD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9SharedPtrD0Ev'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9SharedPtr8isUniqueEv">
+<span id="_CPPv3NK9SharedPtr8isUniqueEv"></span><span id="_CPPv2NK9SharedPtr8isUniqueEv"></span><span id="SharedPtr::isUniqueC"></span><span class="target" id="classSharedPtr_1a54dfb5fa5259b1e230f56f2fb8fd0d25"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isUnique</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9SharedPtr8isUniqueEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9SharedPtr8isUniqueEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9SharedPtr8useCountEv">
+<span id="_CPPv3NK9SharedPtr8useCountEv"></span><span id="_CPPv2NK9SharedPtr8useCountEv"></span><span id="SharedPtr::useCountC"></span><span class="target" id="classSharedPtr_1a66d93dc35864a530c2ece6c6261be28d"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">useCount</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9SharedPtr8useCountEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9SharedPtr8useCountEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9SharedPtr9weakCountEv">
+<span id="_CPPv3NK9SharedPtr9weakCountEv"></span><span id="_CPPv2NK9SharedPtr9weakCountEv"></span><span id="SharedPtr::weakCountC"></span><span class="target" id="classSharedPtr_1a6af0b9ed3cd5f0edabdf83c53a39f11e"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">weakCount</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9SharedPtr9weakCountEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9SharedPtr9weakCountEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9SharedPtreqEP1T">
+<span id="_CPPv3N9SharedPtreqEP1T"></span><span id="_CPPv2N9SharedPtreqEP1T"></span><span id="SharedPtr::eq-operator__TP"></span><span class="target" id="classSharedPtr_1a301c30444bf11460eede2ac92d55fc0f"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9SharedPtreqEP1T" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9SharedPtreqEP1T'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9SharedPtr3getEv">
+<span id="_CPPv3NK9SharedPtr3getEv"></span><span id="_CPPv2NK9SharedPtr3getEv"></span><span id="SharedPtr::getC"></span><span class="target" id="classSharedPtr_1a49ccede7111c7d25c1b1752b8ede30f5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9SharedPtr3getEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9SharedPtr3getEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9SharedPtrcvP1TEv">
+<span id="_CPPv3NK9SharedPtrcvP1TEv"></span><span id="_CPPv2NK9SharedPtrcvP1TEv"></span><span id="SharedPtr::castto-TP-operatorC"></span><span class="target" id="classSharedPtr_1a323aab383a5d04c099c2ae6a051df6a4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9SharedPtrcvP1TEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9SharedPtrcvP1TEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9SharedPtrmlEv">
+<span id="_CPPv3NK9SharedPtrmlEv"></span><span id="_CPPv2NK9SharedPtrmlEv"></span><span id="SharedPtr::mul-operatorC"></span><span class="target" id="classSharedPtr_1a5dd1369844f0aa9b426b7b441c4f21c5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9SharedPtrmlEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9SharedPtrmlEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9SharedPtrptEv">
+<span id="_CPPv3NK9SharedPtrptEv"></span><span id="_CPPv2NK9SharedPtrptEv"></span><span id="SharedPtr::pointer-operatorC"></span><span class="target" id="classSharedPtr_1ae1d89cf0ffab4a7f80aa989c107867f9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9SharedPtrptEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9SharedPtrptEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK9SharedPtrixEi">
+<span id="_CPPv3NK9SharedPtrixEi"></span><span id="_CPPv2NK9SharedPtrixEi"></span><span id="SharedPtr::subscript-operator__iC"></span><span class="target" id="classSharedPtr_1a4ad808a3e12b6aa28310c6d167b27d80"></span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">[]</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK9SharedPtrixEi" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK9SharedPtrixEi'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9SharedPtraSERK9SharedPtr">
+<span id="_CPPv3N9SharedPtraSERK9SharedPtr"></span><span id="_CPPv2N9SharedPtraSERK9SharedPtr"></span><span id="SharedPtr::assign-operator__SharedPtrCR"></span><span class="target" id="classSharedPtr_1a0832a4e68a1f99ce928fc70d170e14be"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr"><span class="n"><span class="pre">SharedPtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr"><span class="n"><span class="pre">SharedPtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9SharedPtraSERK9SharedPtr" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9SharedPtraSERK9SharedPtr'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9SharedPtr5resetEv">
+<span id="_CPPv3N9SharedPtr5resetEv"></span><span id="_CPPv2N9SharedPtr5resetEv"></span><span id="SharedPtr::reset"></span><span class="target" id="classSharedPtr_1a89b33f48e659f14f4b0ee18eb3d32f4a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reset</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9SharedPtr5resetEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9SharedPtr5resetEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9SharedPtr13createWeakPtrEv">
+<span id="_CPPv3N9SharedPtr13createWeakPtrEv"></span><span id="_CPPv2N9SharedPtr13createWeakPtrEv"></span><span id="SharedPtr::createWeakPtr"></span><span class="target" id="classSharedPtr_1ae46ec7294bd13b8fc7c8b5165ebe9aa3"></span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr"><span class="n"><span class="pre">WeakPtr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">createWeakPtr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9SharedPtr13createWeakPtrEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9SharedPtr13createWeakPtrEv'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N9SharedPtr4nullEv">
+<span id="_CPPv3N9SharedPtr4nullEv"></span><span id="_CPPv2N9SharedPtr4nullEv"></span><span id="SharedPtr::null"></span><span class="target" id="classSharedPtr_1a4f1717a8b017ae72cda734f190fd3c5e"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr"><span class="n"><span class="pre">SharedPtr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">null</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N9SharedPtr4nullEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9SharedPtr4nullEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4IDpEN9SharedPtr4makeE9SharedPtrI1TEDpRR4Args">
+<span id="_CPPv3IDpEN9SharedPtr4makeEDpRR4Args"></span><span id="_CPPv2IDpEN9SharedPtr4makeEDpRR4Args"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="sig-name descname"><span class="n"><span class="pre">Args</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="classSharedPtr_1a173be5d65192f9c7250f8a9d957a6f6b"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr"><span class="n"><span class="pre">SharedPtr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">make</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4IDpEN9SharedPtr4makeE9SharedPtrI1TEDpRR4Args" title="SharedPtr::make::Args"><span class="n"><span class="pre">Args</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">&amp;</span></span><span class="p"><span class="pre">...</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">args</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4IDpEN9SharedPtr4makeE9SharedPtrI1TEDpRR4Args" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4IDpEN9SharedPtr4makeE9SharedPtrI1TEDpRR4Args'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N9SharedPtr2pcE">
+<span id="_CPPv3N9SharedPtr2pcE"></span><span id="_CPPv2N9SharedPtr2pcE"></span><span id="SharedPtr::pc__SharedCounter:T:P"></span><span class="target" id="classSharedPtr_1a239faaf7e4130aaa9849f6a424110fe7"></span><a class="reference internal" href="#_CPPv4I0E13SharedCounter" title="SharedCounter"><span class="n"><span class="pre">SharedCounter</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pc</span></span></span><a class="headerlink" href="#_CPPv4N9SharedPtr2pcE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N9SharedPtr2pcE'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl>
+<dt class="sig sig-object cpp">
+<em class="property"><span class="pre">friend</span> <span class="pre">class</span></em> <span class="pre">WeakPtr</span></dt>
+</dl>
+</div>
+</dd></dl>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv4I0E7WeakPtr">
+<span id="_CPPv3I0E7WeakPtr"></span><span id="_CPPv2I0E7WeakPtr"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">T</span></span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="classWeakPtr"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WeakPtr</span></span></span><a class="headerlink" href="#_CPPv4I0E7WeakPtr" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4I0E7WeakPtr'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7WeakPtr7WeakPtrEv">
+<span id="_CPPv3N7WeakPtr7WeakPtrEv"></span><span id="_CPPv2N7WeakPtr7WeakPtrEv"></span><span id="WeakPtr::WeakPtr"></span><span class="target" id="classWeakPtr_1a86cb04adc65b4ea8e49ba8aeb98433d5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WeakPtr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7WeakPtr7WeakPtrEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7WeakPtr7WeakPtrEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7WeakPtr7WeakPtrENSt9nullptr_tE">
+<span id="_CPPv3N7WeakPtr7WeakPtrENSt9nullptr_tE"></span><span id="_CPPv2N7WeakPtr7WeakPtrENSt9nullptr_tE"></span><span id="WeakPtr::WeakPtr__std::nullptr_t"></span><span class="target" id="classWeakPtr_1a92d603664a6a185e98652b188beca9fc"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WeakPtr</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">nullptr_t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7WeakPtr7WeakPtrENSt9nullptr_tE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7WeakPtr7WeakPtrENSt9nullptr_tE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7WeakPtr7WeakPtrERK9SharedPtrI1TE">
+<span id="_CPPv3N7WeakPtr7WeakPtrERK9SharedPtrI1TE"></span><span id="_CPPv2N7WeakPtr7WeakPtrERK9SharedPtrI1TE"></span><span id="WeakPtr::WeakPtr__SharedPtr:T:CR"></span><span class="target" id="classWeakPtr_1aa5e5d000fbc07dcc40a75bb62b959f91"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WeakPtr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr"><span class="n"><span class="pre">SharedPtr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7WeakPtr7WeakPtrERK9SharedPtrI1TE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7WeakPtr7WeakPtrERK9SharedPtrI1TE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7WeakPtr7WeakPtrERK7WeakPtr">
+<span id="_CPPv3N7WeakPtr7WeakPtrERK7WeakPtr"></span><span id="_CPPv2N7WeakPtr7WeakPtrERK7WeakPtr"></span><span id="WeakPtr::WeakPtr__WeakPtrCR"></span><span class="target" id="classWeakPtr_1a992f9c19d1da8207a242651282ccdfcd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WeakPtr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4N7WeakPtr7WeakPtrERK7WeakPtr" title="WeakPtr::WeakPtr"><span class="n"><span class="pre">WeakPtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">wp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7WeakPtr7WeakPtrERK7WeakPtr" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7WeakPtr7WeakPtrERK7WeakPtr'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN7WeakPtr7WeakPtrERK7WeakPtrI8TDerivedE">
+<span id="_CPPv3I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN7WeakPtr7WeakPtrERK7WeakPtrI8TDerivedE"></span><span id="_CPPv2I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN7WeakPtr7WeakPtrERK7WeakPtrI8TDerivedE"></span><span class="k"><span class="pre">template</span></span><span class="p"><span class="pre">&lt;</span></span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">TDerived</span></span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="k"><span class="pre">typename</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">enable_if</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">is_base_of</span></span><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN7WeakPtr7WeakPtrERK7WeakPtrI8TDerivedE" title="WeakPtr::WeakPtr::TDerived"><span class="n"><span class="pre">TDerived</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">&gt;</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">*</span></span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">nullptr</span></span><span class="p"><span class="pre">&gt;</span></span><br/><span class="target" id="classWeakPtr_1a80c8c319f957dbcb3be5dccf56951a3d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">WeakPtr</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN7WeakPtr7WeakPtrERK7WeakPtrI8TDerivedE" title="WeakPtr::WeakPtr"><span class="n"><span class="pre">WeakPtr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN7WeakPtr7WeakPtrERK7WeakPtrI8TDerivedE" title="WeakPtr::WeakPtr::TDerived"><span class="n"><span class="pre">TDerived</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sp</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN7WeakPtr7WeakPtrERK7WeakPtrI8TDerivedE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN7WeakPtr7WeakPtrERK7WeakPtrI8TDerivedE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7WeakPtrD0Ev">
+<span id="_CPPv3N7WeakPtrD0Ev"></span><span id="_CPPv2N7WeakPtrD0Ev"></span><span id="WeakPtr::~WeakPtr"></span><span class="target" id="classWeakPtr_1a410d48542c104968b0d7c0ed80f29cdd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~WeakPtr</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7WeakPtrD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7WeakPtrD0Ev'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7WeakPtraSERK7WeakPtr">
+<span id="_CPPv3N7WeakPtraSERK7WeakPtr"></span><span id="_CPPv2N7WeakPtraSERK7WeakPtr"></span><span id="WeakPtr::assign-operator__WeakPtrCR"></span><span class="target" id="classWeakPtr_1a4e93056c83f0da6502688c6c3671f395"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr"><span class="n"><span class="pre">WeakPtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr"><span class="n"><span class="pre">WeakPtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7WeakPtraSERK7WeakPtr" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7WeakPtraSERK7WeakPtr'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7WeakPtraSERK9SharedPtrI1TE">
+<span id="_CPPv3N7WeakPtraSERK9SharedPtrI1TE"></span><span id="_CPPv2N7WeakPtraSERK9SharedPtrI1TE"></span><span id="WeakPtr::assign-operator__SharedPtr:T:CR"></span><span class="target" id="classWeakPtr_1adefd941f650457015fa4bbc08e5589f2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr"><span class="n"><span class="pre">WeakPtr</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">=</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E9SharedPtr" title="SharedPtr"><span class="n"><span class="pre">SharedPtr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">other</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7WeakPtraSERK9SharedPtrI1TE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7WeakPtraSERK9SharedPtrI1TE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7WeakPtr8useCountEv">
+<span id="_CPPv3NK7WeakPtr8useCountEv"></span><span id="_CPPv2NK7WeakPtr8useCountEv"></span><span id="WeakPtr::useCountC"></span><span class="target" id="classWeakPtr_1a682ef2e59672f8ef9744643e7c048592"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">useCount</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7WeakPtr8useCountEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK7WeakPtr8useCountEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7WeakPtr9weakCountEv">
+<span id="_CPPv3NK7WeakPtr9weakCountEv"></span><span id="_CPPv2NK7WeakPtr9weakCountEv"></span><span id="WeakPtr::weakCountC"></span><span class="target" id="classWeakPtr_1a4dbfeeed4934228ed4dddff95b332776"></span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">weakCount</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7WeakPtr9weakCountEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK7WeakPtr9weakCountEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7WeakPtr6isNullEv">
+<span id="_CPPv3NK7WeakPtr6isNullEv"></span><span id="_CPPv2NK7WeakPtr6isNullEv"></span><span id="WeakPtr::isNullC"></span><span class="target" id="classWeakPtr_1a140b44836479afe8cecda3159366236c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isNull</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7WeakPtr6isNullEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK7WeakPtr6isNullEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7WeakPtreqEP1T">
+<span id="_CPPv3N7WeakPtreqEP1T"></span><span id="_CPPv2N7WeakPtreqEP1T"></span><span id="WeakPtr::eq-operator__TP"></span><span class="target" id="classWeakPtr_1ad8fbaa575ba52cee4761928192a3e7ab"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">==</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7WeakPtreqEP1T" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7WeakPtreqEP1T'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7WeakPtr3getEv">
+<span id="_CPPv3NK7WeakPtr3getEv"></span><span id="_CPPv2NK7WeakPtr3getEv"></span><span id="WeakPtr::getC"></span><span class="target" id="classWeakPtr_1adb95c88a79661ba5c2298a9616d8d8ac"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">get</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7WeakPtr3getEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK7WeakPtr3getEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7WeakPtrcvP1TEv">
+<span id="_CPPv3NK7WeakPtrcvP1TEv"></span><span id="_CPPv2NK7WeakPtrcvP1TEv"></span><span id="WeakPtr::castto-TP-operatorC"></span><span class="target" id="classWeakPtr_1a1e61ab71550370aed15b3a880e72b2e4"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7WeakPtrcvP1TEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK7WeakPtrcvP1TEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7WeakPtrmlEv">
+<span id="_CPPv3NK7WeakPtrmlEv"></span><span id="_CPPv2NK7WeakPtrmlEv"></span><span id="WeakPtr::mul-operatorC"></span><span class="target" id="classWeakPtr_1a4e524c2b6c72ea69a014a8e5491ab80d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">*</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7WeakPtrmlEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK7WeakPtrmlEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7WeakPtrptEv">
+<span id="_CPPv3NK7WeakPtrptEv"></span><span id="_CPPv2NK7WeakPtrptEv"></span><span id="WeakPtr::pointer-operatorC"></span><span class="target" id="classWeakPtr_1a355e2300022fb7f29b5dd670496717d6"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">-&gt;</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7WeakPtrptEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK7WeakPtrptEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK7WeakPtrixEi">
+<span id="_CPPv3NK7WeakPtrixEi"></span><span id="_CPPv2NK7WeakPtrixEi"></span><span id="WeakPtr::subscript-operator__iC"></span><span class="target" id="classWeakPtr_1ab5c9fed4840f643df7fcb5344ac92681"></span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="k"><span class="pre">operator</span></span><span class="o"><span class="pre">[]</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><a class="headerlink" href="#_CPPv4NK7WeakPtrixEi" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK7WeakPtrixEi'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7WeakPtr5resetEv">
+<span id="_CPPv3N7WeakPtr5resetEv"></span><span id="_CPPv2N7WeakPtr5resetEv"></span><span id="WeakPtr::reset"></span><span class="target" id="classWeakPtr_1a9939394e7cd5490fa10aff9e3ee19be0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reset</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7WeakPtr5resetEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7WeakPtr5resetEv'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-static-functions">Public Static Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N7WeakPtr4nullEv">
+<span id="_CPPv3N7WeakPtr4nullEv"></span><span id="_CPPv2N7WeakPtr4nullEv"></span><span id="WeakPtr::null"></span><span class="target" id="classWeakPtr_1a89999ba7f3910466937d3ec4666a1d08"></span><span class="k"><span class="pre">static</span></span><span class="w"> </span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr"><span class="n"><span class="pre">WeakPtr</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">null</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7WeakPtr4nullEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7WeakPtr4nullEv'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-private-members">Private Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N7WeakPtr2pcE">
+<span id="_CPPv3N7WeakPtr2pcE"></span><span id="_CPPv2N7WeakPtr2pcE"></span><span id="WeakPtr::pc__SharedCounter:T:P"></span><span class="target" id="classWeakPtr_1a17b9f96d6c1b8bbcfa18169e24120194"></span><a class="reference internal" href="#_CPPv4I0E13SharedCounter" title="SharedCounter"><span class="n"><span class="pre">SharedCounter</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv4I0E7WeakPtr" title="WeakPtr::T"><span class="n"><span class="pre">T</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="sig-name descname"><span class="n"><span class="pre">pc</span></span></span><a class="headerlink" href="#_CPPv4N7WeakPtr2pcE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N7WeakPtr2pcE'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-friends">Friends</p>
+<dl>
+<dt class="sig sig-object cpp">
+<em class="property"><span class="pre">friend</span> <span class="pre">class</span></em> <span class="pre">SharedPtr</span></dt>
+</dl>
+</div>
+</dd></dl>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(var(100vh)-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#_CPPv4I0E13SharedCounter'" class="reference internal" href="#_CPPv4I0E13SharedCounter"><code class="docutils literal notranslate"><span class="pre">SharedCounter</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N13SharedCounter13SharedCounterEP1T'" class="reference internal" href="#_CPPv4N13SharedCounter13SharedCounterEP1T"><code class="docutils literal notranslate"><span class="pre">SharedCounter::SharedCounter()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13SharedCounterD0Ev'" class="reference internal" href="#_CPPv4N13SharedCounterD0Ev"><code class="docutils literal notranslate"><span class="pre">SharedCounter::~SharedCounter()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13SharedCounter12addSharedRefEv'" class="reference internal" href="#_CPPv4N13SharedCounter12addSharedRefEv"><code class="docutils literal notranslate"><span class="pre">SharedCounter::addSharedRef()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13SharedCounter10addWeakRefEv'" class="reference internal" href="#_CPPv4N13SharedCounter10addWeakRefEv"><code class="docutils literal notranslate"><span class="pre">SharedCounter::addWeakRef()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13SharedCounter16releaseSharedRefEv'" class="reference internal" href="#_CPPv4N13SharedCounter16releaseSharedRefEv"><code class="docutils literal notranslate"><span class="pre">SharedCounter::releaseSharedRef()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13SharedCounter14releaseWeakRefEv'" class="reference internal" href="#_CPPv4N13SharedCounter14releaseWeakRefEv"><code class="docutils literal notranslate"><span class="pre">SharedCounter::releaseWeakRef()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13SharedCounter3ptrE'" class="reference internal" href="#_CPPv4N13SharedCounter3ptrE"><code class="docutils literal notranslate"><span class="pre">SharedCounter::ptr</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13SharedCounter11share_countE'" class="reference internal" href="#_CPPv4N13SharedCounter11share_countE"><code class="docutils literal notranslate"><span class="pre">SharedCounter::share_count</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N13SharedCounter10weak_countE'" class="reference internal" href="#_CPPv4N13SharedCounter10weak_countE"><code class="docutils literal notranslate"><span class="pre">SharedCounter::weak_count</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv4I0E9SharedPtr'" class="reference internal" href="#_CPPv4I0E9SharedPtr"><code class="docutils literal notranslate"><span class="pre">SharedPtr</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N9SharedPtr9SharedPtrEv'" class="reference internal" href="#_CPPv4N9SharedPtr9SharedPtrEv"><code class="docutils literal notranslate"><span class="pre">SharedPtr::SharedPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9SharedPtr9SharedPtrENSt9nullptr_tE'" class="reference internal" href="#_CPPv4N9SharedPtr9SharedPtrENSt9nullptr_tE"><code class="docutils literal notranslate"><span class="pre">SharedPtr::SharedPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9SharedPtr9SharedPtrEP1T'" class="reference internal" href="#_CPPv4N9SharedPtr9SharedPtrEP1T"><code class="docutils literal notranslate"><span class="pre">SharedPtr::SharedPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9SharedPtr9SharedPtrERK9SharedPtr'" class="reference internal" href="#_CPPv4N9SharedPtr9SharedPtrERK9SharedPtr"><code class="docutils literal notranslate"><span class="pre">SharedPtr::SharedPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN9SharedPtr9SharedPtrERK9SharedPtrI8TDerivedE'" class="reference internal" href="#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN9SharedPtr9SharedPtrERK9SharedPtrI8TDerivedE"><code class="docutils literal notranslate"><span class="pre">SharedPtr::SharedPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9SharedPtr9SharedPtrERK13SharedCounterI1TE'" class="reference internal" href="#_CPPv4N9SharedPtr9SharedPtrERK13SharedCounterI1TE"><code class="docutils literal notranslate"><span class="pre">SharedPtr::SharedPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9SharedPtrD0Ev'" class="reference internal" href="#_CPPv4N9SharedPtrD0Ev"><code class="docutils literal notranslate"><span class="pre">SharedPtr::~SharedPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9SharedPtr8isUniqueEv'" class="reference internal" href="#_CPPv4NK9SharedPtr8isUniqueEv"><code class="docutils literal notranslate"><span class="pre">SharedPtr::isUnique()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9SharedPtr8useCountEv'" class="reference internal" href="#_CPPv4NK9SharedPtr8useCountEv"><code class="docutils literal notranslate"><span class="pre">SharedPtr::useCount()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9SharedPtr9weakCountEv'" class="reference internal" href="#_CPPv4NK9SharedPtr9weakCountEv"><code class="docutils literal notranslate"><span class="pre">SharedPtr::weakCount()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9SharedPtreqEP1T'" class="reference internal" href="#_CPPv4N9SharedPtreqEP1T"><code class="docutils literal notranslate"><span class="pre">SharedPtr::operator==()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9SharedPtr3getEv'" class="reference internal" href="#_CPPv4NK9SharedPtr3getEv"><code class="docutils literal notranslate"><span class="pre">SharedPtr::get()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9SharedPtrcvP1TEv'" class="reference internal" href="#_CPPv4NK9SharedPtrcvP1TEv"><code class="docutils literal notranslate"><span class="pre">SharedPtr::operator</span> <span class="pre">T*()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9SharedPtrmlEv'" class="reference internal" href="#_CPPv4NK9SharedPtrmlEv"><code class="docutils literal notranslate"><span class="pre">SharedPtr::operator*()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9SharedPtrptEv'" class="reference internal" href="#_CPPv4NK9SharedPtrptEv"><code class="docutils literal notranslate"><span class="pre">SharedPtr::operator-&gt;()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK9SharedPtrixEi'" class="reference internal" href="#_CPPv4NK9SharedPtrixEi"><code class="docutils literal notranslate"><span class="pre">SharedPtr::operator[]()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9SharedPtraSERK9SharedPtr'" class="reference internal" href="#_CPPv4N9SharedPtraSERK9SharedPtr"><code class="docutils literal notranslate"><span class="pre">SharedPtr::operator=()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9SharedPtr5resetEv'" class="reference internal" href="#_CPPv4N9SharedPtr5resetEv"><code class="docutils literal notranslate"><span class="pre">SharedPtr::reset()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9SharedPtr13createWeakPtrEv'" class="reference internal" href="#_CPPv4N9SharedPtr13createWeakPtrEv"><code class="docutils literal notranslate"><span class="pre">SharedPtr::createWeakPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9SharedPtr4nullEv'" class="reference internal" href="#_CPPv4N9SharedPtr4nullEv"><code class="docutils literal notranslate"><span class="pre">SharedPtr::null()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4IDpEN9SharedPtr4makeE9SharedPtrI1TEDpRR4Args'" class="reference internal" href="#_CPPv4IDpEN9SharedPtr4makeE9SharedPtrI1TEDpRR4Args"><code class="docutils literal notranslate"><span class="pre">SharedPtr::make()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N9SharedPtr2pcE'" class="reference internal" href="#_CPPv4N9SharedPtr2pcE"><code class="docutils literal notranslate"><span class="pre">SharedPtr::pc</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv4I0E7WeakPtr'" class="reference internal" href="#_CPPv4I0E7WeakPtr"><code class="docutils literal notranslate"><span class="pre">WeakPtr</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N7WeakPtr7WeakPtrEv'" class="reference internal" href="#_CPPv4N7WeakPtr7WeakPtrEv"><code class="docutils literal notranslate"><span class="pre">WeakPtr::WeakPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7WeakPtr7WeakPtrENSt9nullptr_tE'" class="reference internal" href="#_CPPv4N7WeakPtr7WeakPtrENSt9nullptr_tE"><code class="docutils literal notranslate"><span class="pre">WeakPtr::WeakPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7WeakPtr7WeakPtrERK9SharedPtrI1TE'" class="reference internal" href="#_CPPv4N7WeakPtr7WeakPtrERK9SharedPtrI1TE"><code class="docutils literal notranslate"><span class="pre">WeakPtr::WeakPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7WeakPtr7WeakPtrERK7WeakPtr'" class="reference internal" href="#_CPPv4N7WeakPtr7WeakPtrERK7WeakPtr"><code class="docutils literal notranslate"><span class="pre">WeakPtr::WeakPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN7WeakPtr7WeakPtrERK7WeakPtrI8TDerivedE'" class="reference internal" href="#_CPPv4I0_PNSt9enable_ifINSt10is_base_ofI1T8TDerivedE5valueEE4typeEEN7WeakPtr7WeakPtrERK7WeakPtrI8TDerivedE"><code class="docutils literal notranslate"><span class="pre">WeakPtr::WeakPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7WeakPtrD0Ev'" class="reference internal" href="#_CPPv4N7WeakPtrD0Ev"><code class="docutils literal notranslate"><span class="pre">WeakPtr::~WeakPtr()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7WeakPtraSERK7WeakPtr'" class="reference internal" href="#_CPPv4N7WeakPtraSERK7WeakPtr"><code class="docutils literal notranslate"><span class="pre">WeakPtr::operator=()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7WeakPtraSERK9SharedPtrI1TE'" class="reference internal" href="#_CPPv4N7WeakPtraSERK9SharedPtrI1TE"><code class="docutils literal notranslate"><span class="pre">WeakPtr::operator=()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK7WeakPtr8useCountEv'" class="reference internal" href="#_CPPv4NK7WeakPtr8useCountEv"><code class="docutils literal notranslate"><span class="pre">WeakPtr::useCount()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK7WeakPtr9weakCountEv'" class="reference internal" href="#_CPPv4NK7WeakPtr9weakCountEv"><code class="docutils literal notranslate"><span class="pre">WeakPtr::weakCount()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK7WeakPtr6isNullEv'" class="reference internal" href="#_CPPv4NK7WeakPtr6isNullEv"><code class="docutils literal notranslate"><span class="pre">WeakPtr::isNull()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7WeakPtreqEP1T'" class="reference internal" href="#_CPPv4N7WeakPtreqEP1T"><code class="docutils literal notranslate"><span class="pre">WeakPtr::operator==()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK7WeakPtr3getEv'" class="reference internal" href="#_CPPv4NK7WeakPtr3getEv"><code class="docutils literal notranslate"><span class="pre">WeakPtr::get()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK7WeakPtrcvP1TEv'" class="reference internal" href="#_CPPv4NK7WeakPtrcvP1TEv"><code class="docutils literal notranslate"><span class="pre">WeakPtr::operator</span> <span class="pre">T*()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK7WeakPtrmlEv'" class="reference internal" href="#_CPPv4NK7WeakPtrmlEv"><code class="docutils literal notranslate"><span class="pre">WeakPtr::operator*()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK7WeakPtrptEv'" class="reference internal" href="#_CPPv4NK7WeakPtrptEv"><code class="docutils literal notranslate"><span class="pre">WeakPtr::operator-&gt;()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK7WeakPtrixEi'" class="reference internal" href="#_CPPv4NK7WeakPtrixEi"><code class="docutils literal notranslate"><span class="pre">WeakPtr::operator[]()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7WeakPtr5resetEv'" class="reference internal" href="#_CPPv4N7WeakPtr5resetEv"><code class="docutils literal notranslate"><span class="pre">WeakPtr::reset()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7WeakPtr4nullEv'" class="reference internal" href="#_CPPv4N7WeakPtr4nullEv"><code class="docutils literal notranslate"><span class="pre">WeakPtr::null()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N7WeakPtr2pcE'" class="reference internal" href="#_CPPv4N7WeakPtr2pcE"><code class="docutils literal notranslate"><span class="pre">WeakPtr::pc</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 7.2.6</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+<script src="../../_static/doctools.js?v=888ff710"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=40b7bc71"></script>
+<script src="../../_static/design-tabs.js?v=36754332"></script>
+</body>
+</html>

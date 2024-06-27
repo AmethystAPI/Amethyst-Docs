@@ -1,0 +1,5 @@
+File EntityContext.hpp
+======================
+
+.. doxygenfile:: EntityContext.hpp
+   :project: AmethystApi

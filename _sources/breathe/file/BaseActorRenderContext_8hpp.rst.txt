@@ -1,0 +1,5 @@
+File BaseActorRenderContext.hpp
+===============================
+
+.. doxygenfile:: BaseActorRenderContext.hpp
+   :project: AmethystApi

@@ -1,0 +1,5 @@
+File UIComponent.hpp
+====================
+
+.. doxygenfile:: UIComponent.hpp
+   :project: AmethystApi

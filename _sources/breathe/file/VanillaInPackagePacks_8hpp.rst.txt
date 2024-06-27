@@ -1,0 +1,5 @@
+File VanillaInPackagePacks.hpp
+==============================
+
+.. doxygenfile:: VanillaInPackagePacks.hpp
+   :project: AmethystApi

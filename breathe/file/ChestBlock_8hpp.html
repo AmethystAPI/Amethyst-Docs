@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+
+<html :class="{'dark': darkMode === 'dark' || (darkMode === 'system' &amp;&amp; window.matchMedia('(prefers-color-scheme: dark)').matches)}" class="scroll-smooth" data-content_root="../../" lang="en" x-data="{ darkMode: localStorage.getItem('darkMode') || localStorage.setItem('darkMode', 'system'), activeSection: '' }" x-init="$watch('darkMode', val =&gt; localStorage.setItem('darkMode', val))">
+<head>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="white" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="black" metia="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>File ChestBlock.hpp | Amethyst  documentation</title>
+<meta content="File ChestBlock.hpp | Amethyst  documentation" property="og:title"/>
+<meta content="File ChestBlock.hpp | Amethyst  documentation" name="twitter:title"/>
+<link href="../../_static/pygments.css?v=5432af51" rel="stylesheet" type="text/css"/>
+<link href="../../_static/theme.css?v=5b4133db" rel="stylesheet" type="text/css"/>
+<link href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" rel="stylesheet" type="text/css"/>
+<link href="../../_static/awesome-sphinx-design.css?v=a54cf077" rel="stylesheet" type="text/css"/>
+<link href="../../_static/logo-512x.png" rel="icon"/>
+<link href="../../search.html" rel="search" title="Search"/>
+<link href="../../genindex.html" rel="index" title="Index"/>
+<link href="ChunkBlockPos_8hpp.html" rel="next" title="File ChunkBlockPos.hpp"/>
+<link href="Camera_8hpp.html" rel="prev" title="File Camera.hpp"/>
+<script>
+    <!-- Prevent Flash of wrong theme -->
+      const userPreference = localStorage.getItem('darkMode');
+      let mode;
+      if (userPreference === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        mode = 'dark';
+        document.documentElement.classList.add('dark');
+      } else {
+        mode = 'light';
+      }
+      if (!userPreference) {localStorage.setItem('darkMode', mode)}
+    </script>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-sm border-border supports-backdrop-blur:bg-background/60 bg-background/95 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../../index.html"><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a><nav class="flex items-center space-x-6 text-sm font-medium">
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../autodocs.html">AmethystAPI</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../examples/index.html">Examples</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../getting_started/index.html">Getting Started</a>
+<a class="transition-colors hover:text-foreground/80 text-foreground/60" href="../../reverse_engineering/index.html">Reverse Engineering</a>
+</nav></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 space-x-2 sm:space-x-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center space-x-1">
+<button @click="darkMode = darkMode === 'light' ? 'dark' : 'light'" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full shrink-0 overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="!justify-start text-sm md:!hidden bg-background" href="../../index.html"><span class="font-bold text-clip whitespace-nowrap">Amethyst  documentation</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0 h-[calc(100vh-8rem)] md:h-auto">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<ul class="current">
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../autodocs.html">AmethystAPI<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../filelist.html">File list<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="AABB_8hpp.html">File AABB.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorBlock_8hpp.html">File ActorBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorHeadRotationComponent_8hpp.html">File ActorHeadRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorRotationComponent_8hpp.html">File ActorRotationComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorShaderManager_8hpp.html">File ActorShaderManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ActorTerrainInterlockData_8hpp.html">File ActorTerrainInterlockData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Actor_8hpp.html">File Actor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AmethystContext_8hpp.html">File AmethystContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AuxDataBlockItem_8hpp.html">File AuxDataBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderContext_8hpp.html">File BaseActorRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseActorRenderer_8hpp.html">File BaseActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseGameVersion_8hpp.html">File BaseGameVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BaseOptions_8hpp.html">File BaseOptions.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BinaryStream_8hpp.html">File BinaryStream.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorDataPacket_8hpp.html">File BlockActorDataPacket.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererDispatcher_8hpp.html">File BlockActorRendererDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRendererId_8hpp.html">File BlockActorRendererId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActorRenderer_8hpp.html">File BlockActorRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockActor_8hpp.html">File BlockActor.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentBase_8hpp.html">File BlockComponentBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockComponentStorage_8hpp.html">File BlockComponentStorage.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockDefinitionGroup_8hpp.html">File BlockDefinitionGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockGraphics_8hpp.html">File BlockGraphics.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockItem_8hpp.html">File BlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockLegacy_8hpp.html">File BlockLegacy.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockMapColorComponent_8hpp.html">File BlockMapColorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockPos_8hpp.html">File BlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockRenderLayer_8hpp.html">File BlockRenderLayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockShape_8hpp.html">File BlockShape.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSourceListener_8hpp.html">File BlockSourceListener.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockSource_8hpp.html">File BlockSource.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockState_8hpp.html">File BlockState.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTessellator_8hpp.html">File BlockTessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="BlockTypeRegistry_8hpp.html">File BlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Block_8hpp.html">File Block.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteArrayTag_8hpp.html">File ByteArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ByteTag_8hpp.html">File ByteTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CallStack_8hpp.html">File CallStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Camera_8hpp.html">File Camera.hpp</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">File ChestBlock.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkBlockPos_8hpp.html">File ChunkBlockPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ChunkPos_8hpp.html">File ChunkPos.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputHandler_8hpp.html">File ClientInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInputMappingFactory_8hpp.html">File ClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientInstance_8hpp.html">File ClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClientNetworkHandler_8hpp.html">File ClientNetworkHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Color_8hpp.html">File Color.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CommonTypes_8hpp.html">File CommonTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTagVariant_8hpp.html">File CompoundTagVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CompoundTag_8hpp.html">File CompoundTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Config_8hpp.html">File Config.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Container_8hpp.html">File Container.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLogTypes_8hpp.html">File ContentLogTypes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ContentLog_8hpp.html">File ContentLog.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Dimension_8hpp.html">File Dimension.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Direction_8hpp.html">File Direction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="DoubleTag_8hpp.html">File DoubleTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EndTag_8hpp.html">File EndTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityContext_8hpp.html">File EntityContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityIdTraits_8hpp.html">File EntityIdTraits.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EntityId_8hpp.html">File EntityId.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ErrorInfo_8hpp.html">File ErrorInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="EventManager_8hpp.html">File EventManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Event_8hpp.html">File Event.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FertilizerType_8hpp.html">File FertilizerType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FillingContainer_8hpp.html">File FillingContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="FloatTag_8hpp.html">File FloatTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameEvent_8hpp.html">File GameEvent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameModuleClient_8hpp.html">File GameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRefsSharePtr_8hpp.html">File GameRefsSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GameRules_8hpp.html">File GameRules.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GetCollisionShapeInterface_8hpp.html">File GetCollisionShapeInterface.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GuiData_8hpp.html">File GuiData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HeightRange_8hpp.html">File HeightRange.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HitResult_8hpp.html">File HitResult.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HookManager_8hpp.html">File HookManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverRenderer_8hpp.html">File HoverRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="HoverTextRenderer_8hpp.html">File HoverTextRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IClientInstance_8hpp.html">File IClientInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ILevel_8hpp.html">File ILevel.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IPacketHandlerDispatcher_8hpp.html">File IPacketHandlerDispatcher.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IWorldRegistriesProvider_8hpp.html">File IWorldRegistriesProvider.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ImageInfo_8hpp.html">File ImageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InPackagePacks_8hpp.html">File InPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputAction_8hpp.html">File InputAction.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputHandler_8hpp.html">File InputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputManager_8hpp.html">File InputManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMappingFactory_8hpp.html">File InputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="InputMapping_8hpp.html">File InputMapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Int64Tag_8hpp.html">File Int64Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntArrayTag_8hpp.html">File IntArrayTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IntTag_8hpp.html">File IntTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Inventory_8hpp.html">File Inventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="IsotropicFaceData_8hpp.html">File IsotropicFaceData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemCategory_8hpp.html">File ItemCategory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemGroup_8hpp.html">File ItemGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemIconManager_8hpp.html">File ItemIconManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemInstance_8hpp.html">File ItemInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryManager_8hpp.html">File ItemRegistryManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistryRef_8hpp.html">File ItemRegistryRef.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRegistry_8hpp.html">File ItemRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemRenderer_8hpp.html">File ItemRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackBase_8hpp.html">File ItemStackBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStackNetIdVariant_8hpp.html">File ItemStackNetIdVariant.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ItemStack_8hpp.html">File ItemStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Item_8hpp.html">File Item.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Keymapping_8hpp.html">File Keymapping.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelChunk_8hpp.html">File LevelChunk.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRendererPlayer_8hpp.html">File LevelRendererPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LevelRenderer_8hpp.html">File LevelRenderer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Level_8hpp.html">File Level.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ListTag_8hpp.html">File ListTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LocalPlayer_8hpp.html">File LocalPlayer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Log_8hpp.html">File Log.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="LoopbackPacketSender_8hpp.html">File LoopbackPacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialPtr_8hpp.html">File MaterialPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MaterialType_8hpp.html">File MaterialType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Material_8hpp.html">File Material.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Math_8hpp.html">File Math.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MatrixStack_8hpp.html">File MatrixStack.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Matrix_8hpp.html">File Matrix.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Memory_8hpp.html">File Memory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshContext_8hpp.html">File MeshContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshData_8hpp.html">File MeshData.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MeshHelpers_8hpp.html">File MeshHelpers.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mesh_8hpp.html">File Mesh.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftGame_8hpp.html">File MinecraftGame.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftInputHandler_8hpp.html">File MinecraftInputHandler.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftPackageInfo_8hpp.html">File MinecraftPackageInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftUIRenderContext_8hpp.html">File MinecraftUIRenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MinecraftVtables_8hpp.html">File MinecraftVtables.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Minecraft_8hpp.html">File Minecraft.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mob_8hpp.html">File Mob.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mod_8hpp.html">File Mod.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetEventCallback_8hpp.html">File NetEventCallback.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkBlockPosition_8hpp.html">File NetworkBlockPosition.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NetworkPeer_8hpp.html">File NetworkPeer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NewType_8hpp.html">File NewType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceHelper_8hpp.html">File NinesliceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NinesliceInfo_8hpp.html">File NinesliceInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NonOwnerPointer_8hpp.html">File NonOwnerPointer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Options_8hpp.html">File Options.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerPtr_8hpp.html">File OwnerPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="OwnerStorageSharePtr_8hpp.html">File OwnerStorageSharePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketHandlerDispatcherInstance_8hpp.html">File PacketHandlerDispatcherInstance.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketPriority_8hpp.html">File PacketPriority.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PacketSender_8hpp.html">File PacketSender.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Packet_8hpp.html">File Packet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PatchManager_8hpp.html">File PatchManager.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Path_8hpp.html">File Path.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerInventory_8hpp.html">File PlayerInventory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="PlayerUIContainer_8hpp.html">File PlayerUIContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Player_8hpp.html">File Player.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RandomizableBlockActorContainerBase_8hpp.html">File RandomizableBlockActorContainerBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RemappingLayout_8hpp.html">File RemappingLayout.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderContext_8hpp.html">File RenderContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroupBase_8hpp.html">File RenderMaterialGroupBase.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RenderMaterialGroup_8hpp.html">File RenderMaterialGroup.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResolvedItemIconInfo_8hpp.html">File ResolvedItemIconInfo.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceHelper_8hpp.html">File ResourceHelper.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ResourceUtil_8hpp.html">File ResourceUtil.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Result_8hpp.html">File Result.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenContext_8hpp.html">File ScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ScreenView_8hpp.html">File ScreenView.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SemVersion_8hpp.html">File SemVersion.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShapeType_8hpp.html">File ShapeType.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SharedPtr_8hpp.html">File SharedPtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShortTag_8hpp.html">File ShortTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ShulkerBoxBlockItem_8hpp.html">File ShulkerBoxBlockItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SimpleContainer_8hpp.html">File SimpleContainer.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="SliderComponent_8hpp.html">File SliderComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StateVectorComponent_8hpp.html">File StateVectorComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringHash_8hpp.html">File StringHash.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringTag_8hpp.html">File StringTag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="StringUtils_8hpp.html">File StringUtils.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tag_8hpp.html">File Tag.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tessellator_8hpp.html">File Tessellator.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextComponent_8hpp.html">File TextComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureAtlasItem_8hpp.html">File TextureAtlasItem.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TexturePtr_8hpp.html">File TexturePtr.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="TextureUVCoordinateSet_8hpp.html">File TextureUVCoordinateSet.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Tick_8hpp.html">File Tick.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ToggleComponent_8hpp.html">File ToggleComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIComponent_8hpp.html">File UIComponent.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIControl_8hpp.html">File UIControl.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UIScreenContext_8hpp.html">File UIScreenContext.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UUID_8hpp.html">File UUID.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="UseAnim_8hpp.html">File UseAnim.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Utility_8hpp.html">File Utility.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaBlockTypeRegistry_8hpp.html">File VanillaBlockTypeRegistry.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaClientInputMappingFactory_8hpp.html">File VanillaClientInputMappingFactory.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaGameModuleClient_8hpp.html">File VanillaGameModuleClient.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaInPackagePacks_8hpp.html">File VanillaInPackagePacks.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VanillaItems_8hpp.html">File VanillaItems.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec2_8hpp.html">File Vec2.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Vec3_8hpp.html">File Vec3.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="VisualTree_8hpp.html">File VisualTree.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expected_8hpp.html">File expected.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gsl__includes_8hpp.html">File gsl_includes.hpp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="optional__ref_8hpp.html">File optional_ref.hpp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/index.html">Examples<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../examples/networking/index.html">Networking<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l3"><a class="reference internal" href="../../examples/networking/udp.html">UDP Networking Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../getting_started/index.html">Getting Started<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/end_user/installing_amethyst.html">Installing Amethyst</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../getting_started/devs/compiling_amethyst.html">Compiling Amethyst</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../reverse_engineering/index.html">Reverse Engineering</a></li>
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../../how_to_doc/index.html">How to doc<button @click.prevent.stop="expanded = !expanded" type="button"><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/setup.html">Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/doxygen.html">Doxygen</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../how_to_doc/sphinx.html">Sphinx</a></li>
+</ul>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../../index.html">
+<span class="hidden md:inline">Amethyst  documentation</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../../autodocs.html">AmethystAPI</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="../filelist.html">File list</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">File ChestBlock.hpp</span>
+</nav>
+<div id="content" role="main">
+<section id="file-chestblock-hpp">
+<h1>File ChestBlock.hpp<a class="headerlink" href="#file-chestblock-hpp" title="Link to this heading">¶</a></h1>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv410ChestBlock">
+<span id="_CPPv310ChestBlock"></span><span id="_CPPv210ChestBlock"></span><span id="ChestBlock"></span><span class="target" id="classChestBlock"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ChestBlock</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><a class="reference internal" href="ActorBlock_8hpp.html#_CPPv410ActorBlock" title="ActorBlock"><span class="n"><span class="pre">ActorBlock</span></span></a><a class="headerlink" href="#_CPPv410ChestBlock" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv410ChestBlock'">¶</a><br/></dt>
+<dd><div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-types">Public Types</p>
+<dl class="cpp enum-class">
+<dt class="sig sig-object cpp" id="_CPPv4N10ChestBlock9ChestTypeE">
+<span id="_CPPv3N10ChestBlock9ChestTypeE"></span><span id="_CPPv2N10ChestBlock9ChestTypeE"></span><span class="target" id="classChestBlock_1af61c14244bde1d6c0992cadf6c827029"></span><span class="k"><span class="pre">enum</span></span><span class="w"> </span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ChestType</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><a class="headerlink" href="#_CPPv4N10ChestBlock9ChestTypeE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10ChestBlock9ChestTypeE'">¶</a><br/></dt>
+<dd><p><em>Values:</em></p>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10ChestBlock9ChestType7DefaultE">
+<span id="_CPPv3N10ChestBlock9ChestType7DefaultE"></span><span id="_CPPv2N10ChestBlock9ChestType7DefaultE"></span><span class="target" id="classChestBlock_1af61c14244bde1d6c0992cadf6c827029a7a1920d61156abc05a60135aefe8bc67"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Default</span></span></span><a class="headerlink" href="#_CPPv4N10ChestBlock9ChestType7DefaultE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10ChestBlock9ChestType7DefaultE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10ChestBlock9ChestType7TrappedE">
+<span id="_CPPv3N10ChestBlock9ChestType7TrappedE"></span><span id="_CPPv2N10ChestBlock9ChestType7TrappedE"></span><span class="target" id="classChestBlock_1af61c14244bde1d6c0992cadf6c827029a43259c4ede4a0d1c7d2e375414868e3e"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Trapped</span></span></span><a class="headerlink" href="#_CPPv4N10ChestBlock9ChestType7TrappedE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10ChestBlock9ChestType7TrappedE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp enumerator">
+<dt class="sig sig-object cpp" id="_CPPv4N10ChestBlock9ChestType5OtherE">
+<span id="_CPPv3N10ChestBlock9ChestType5OtherE"></span><span id="_CPPv2N10ChestBlock9ChestType5OtherE"></span><span class="target" id="classChestBlock_1af61c14244bde1d6c0992cadf6c827029a6311ae17c1ee52b36e68aaf4ad066387"></span><span class="k"><span class="pre">enumerator</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Other</span></span></span><a class="headerlink" href="#_CPPv4N10ChestBlock9ChestType5OtherE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10ChestBlock9ChestType5OtherE'">¶</a><br/></dt>
+<dd></dd></dl>
+</dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10ChestBlock10ChestBlockERKNSt6stringEs9ChestType12MaterialType">
+<span id="_CPPv3N10ChestBlock10ChestBlockERKNSt6stringEs9ChestType12MaterialType"></span><span id="_CPPv2N10ChestBlock10ChestBlockERKNSt6stringEs9ChestType12MaterialType"></span><span id="ChestBlock::ChestBlock__ssCR.short.ChestType.MaterialType"></span><span class="target" id="classChestBlock_1a58f9939f9c0a89344c46631e8348cc55"></span><span class="sig-name descname"><span class="n"><span class="pre">ChestBlock</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv4St" title="std"><span class="n"><span class="pre">std</span></span></a><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">nameId</span></span>, <span class="kt"><span class="pre">short</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">id</span></span>, <a class="reference internal" href="#_CPPv4N10ChestBlock9ChestTypeE" title="ChestBlock::ChestType"><span class="n"><span class="pre">ChestType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span>, <a class="reference internal" href="MaterialType_8hpp.html#_CPPv412MaterialType" title="MaterialType"><span class="n"><span class="pre">MaterialType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">materialType</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N10ChestBlock10ChestBlockERKNSt6stringEs9ChestType12MaterialType" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10ChestBlock10ChestBlockERKNSt6stringEs9ChestType12MaterialType'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10ChestBlockD0Ev">
+<span id="_CPPv3N10ChestBlockD0Ev"></span><span id="_CPPv2N10ChestBlockD0Ev"></span><span id="ChestBlock::~ChestBlock"></span><span class="target" id="classChestBlock_1a1f66e98f77f83afcf4e08d341f39b08c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~ChestBlock</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="k"><span class="pre">default</span></span><a class="headerlink" href="#_CPPv4N10ChestBlockD0Ev" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10ChestBlockD0Ev'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock17canProvideSupportERK5Blockh16BlockSupportType">
+<span id="_CPPv3NK10ChestBlock17canProvideSupportERK5Blockh16BlockSupportType"></span><span id="_CPPv2NK10ChestBlock17canProvideSupportERK5Blockh16BlockSupportType"></span><span id="ChestBlock::canProvideSupport__BlockCR.unsigned-c.BlockSupportTypeC"></span><span class="target" id="classChestBlock_1a105004fa668e6002bff5c9e091439702"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">canProvideSupport</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Block_8hpp.html#_CPPv45Block" title="Block"><span class="n"><span class="pre">Block</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">block</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">face</span></span>, <a class="reference internal" href="BlockLegacy_8hpp.html#_CPPv416BlockSupportType" title="BlockSupportType"><span class="n"><span class="pre">BlockSupportType</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">type</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock17canProvideSupportERK5Blockh16BlockSupportType" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock17canProvideSupportERK5Blockh16BlockSupportType'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock16isContainerBlockEv">
+<span id="_CPPv3NK10ChestBlock16isContainerBlockEv"></span><span id="_CPPv2NK10ChestBlock16isContainerBlockEv"></span><span id="ChestBlock::isContainerBlockC"></span><span class="target" id="classChestBlock_1a947304392122d999e486c40b4310f146"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isContainerBlock</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock16isContainerBlockEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock16isContainerBlockEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock14isSignalSourceEv">
+<span id="_CPPv3NK10ChestBlock14isSignalSourceEv"></span><span id="_CPPv2NK10ChestBlock14isSignalSourceEv"></span><span id="ChestBlock::isSignalSourceC"></span><span class="target" id="classChestBlock_1aa399afaa485d0d6003e6b4d69cba2074"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isSignalSource</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock14isSignalSourceEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock14isSignalSourceEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock23shouldConnectToRedstoneER11BlockSourceRK8BlockPosN9Direction4TypeE">
+<span id="_CPPv3NK10ChestBlock23shouldConnectToRedstoneER11BlockSourceRK8BlockPosN9Direction4TypeE"></span><span id="_CPPv2NK10ChestBlock23shouldConnectToRedstoneER11BlockSourceRK8BlockPosN9Direction4TypeE"></span><span id="ChestBlock::shouldConnectToRedstone__BlockSourceR.BlockPosCR.Direction::TypeC"></span><span class="target" id="classChestBlock_1adffcc134cd6f87548964a390b2f19bf6"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shouldConnectToRedstone</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockSource_8hpp.html#_CPPv411BlockSource" title="BlockSource"><span class="n"><span class="pre">BlockSource</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv48BlockPos" title="BlockPos"><span class="n"><span class="pre">BlockPos</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <a class="reference internal" href="BlockLegacy_8hpp.html#_CPPv49Direction" title="Direction"><span class="n"><span class="pre">Direction</span></span></a><span class="p"><span class="pre">::</span></span><a class="reference internal" href="Direction_8hpp.html#_CPPv4N9Direction4TypeE" title="Direction::Type"><span class="n"><span class="pre">Type</span></span></a><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock23shouldConnectToRedstoneER11BlockSourceRK8BlockPosN9Direction4TypeE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock23shouldConnectToRedstoneER11BlockSourceRK8BlockPosN9Direction4TypeE'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock8dispenseER11BlockSourceR9ContaineriRK4Vec3h">
+<span id="_CPPv3NK10ChestBlock8dispenseER11BlockSourceR9ContaineriRK4Vec3h"></span><span id="_CPPv2NK10ChestBlock8dispenseER11BlockSourceR9ContaineriRK4Vec3h"></span><span id="ChestBlock::dispense__BlockSourceR.ContainerR.i.Vec3CR.unsigned-cC"></span><span class="target" id="classChestBlock_1a6d995f1b9b9978a733780433cef19cda"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dispense</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockSource_8hpp.html#_CPPv411BlockSource" title="BlockSource"><span class="n"><span class="pre">BlockSource</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">region</span></span>, <a class="reference internal" href="Container_8hpp.html#_CPPv49Container" title="Container"><span class="n"><span class="pre">Container</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">container</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">slot</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Vec3_8hpp.html#_CPPv44Vec3" title="Vec3"><span class="n"><span class="pre">Vec3</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pos</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">face</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock8dispenseER11BlockSourceR9ContaineriRK4Vec3h" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock8dispenseER11BlockSourceR9ContaineriRK4Vec3h'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock6onMoveER11BlockSourceRK8BlockPosRK8BlockPos">
+<span id="_CPPv3NK10ChestBlock6onMoveER11BlockSourceRK8BlockPosRK8BlockPos"></span><span id="_CPPv2NK10ChestBlock6onMoveER11BlockSourceRK8BlockPosRK8BlockPos"></span><span id="ChestBlock::onMove__BlockSourceR.BlockPosCR.BlockPosCRC"></span><span class="target" id="classChestBlock_1abfce36f42148239bd558c3484cf1f1bf"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">onMove</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockSource_8hpp.html#_CPPv411BlockSource" title="BlockSource"><span class="n"><span class="pre">BlockSource</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">region</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv48BlockPos" title="BlockPos"><span class="n"><span class="pre">BlockPos</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">from</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv48BlockPos" title="BlockPos"><span class="n"><span class="pre">BlockPos</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">to</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock6onMoveER11BlockSourceRK8BlockPosRK8BlockPos" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock6onMoveER11BlockSourceRK8BlockPosRK8BlockPos'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock20detachesOnPistonMoveER11BlockSourceRK8BlockPos">
+<span id="_CPPv3NK10ChestBlock20detachesOnPistonMoveER11BlockSourceRK8BlockPos"></span><span id="_CPPv2NK10ChestBlock20detachesOnPistonMoveER11BlockSourceRK8BlockPos"></span><span id="ChestBlock::detachesOnPistonMove__BlockSourceR.BlockPosCRC"></span><span class="target" id="classChestBlock_1a0af62a80988ab7f6d368981f0d3a9cb1"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">detachesOnPistonMove</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockSource_8hpp.html#_CPPv411BlockSource" title="BlockSource"><span class="n"><span class="pre">BlockSource</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <a class="reference internal" href="BlockPos_8hpp.html#_CPPv48BlockPos" title="BlockPos"><span class="n"><span class="pre">BlockPos</span></span></a><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock20detachesOnPistonMoveER11BlockSourceRK8BlockPos" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock20detachesOnPistonMoveER11BlockSourceRK8BlockPos'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock22setupRedstoneComponentER11BlockSourceRK8BlockPos">
+<span id="_CPPv3NK10ChestBlock22setupRedstoneComponentER11BlockSourceRK8BlockPos"></span><span id="_CPPv2NK10ChestBlock22setupRedstoneComponentER11BlockSourceRK8BlockPos"></span><span id="ChestBlock::setupRedstoneComponent__BlockSourceR.BlockPosCRC"></span><span class="target" id="classChestBlock_1aa6263c60a8fc3fa063b1e1088e6d3788"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setupRedstoneComponent</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockSource_8hpp.html#_CPPv411BlockSource" title="BlockSource"><span class="n"><span class="pre">BlockSource</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">region</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv48BlockPos" title="BlockPos"><span class="n"><span class="pre">BlockPos</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pos</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock22setupRedstoneComponentER11BlockSourceRK8BlockPos" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock22setupRedstoneComponentER11BlockSourceRK8BlockPos'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock19breaksFallingBlocksERK5Block15BaseGameVersion">
+<span id="_CPPv3NK10ChestBlock19breaksFallingBlocksERK5Block15BaseGameVersion"></span><span id="_CPPv2NK10ChestBlock19breaksFallingBlocksERK5Block15BaseGameVersion"></span><span id="ChestBlock::breaksFallingBlocks__BlockCR.BaseGameVersionC"></span><span class="target" id="classChestBlock_1a59f6141d545c0c52e1604830898952d9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">breaksFallingBlocks</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Block_8hpp.html#_CPPv45Block" title="Block"><span class="n"><span class="pre">Block</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">block</span></span>, <a class="reference internal" href="BaseGameVersion_8hpp.html#_CPPv415BaseGameVersion" title="BaseGameVersion"><span class="n"><span class="pre">BaseGameVersion</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">version</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock19breaksFallingBlocksERK5Block15BaseGameVersion" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock19breaksFallingBlocksERK5Block15BaseGameVersion'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock13getSecondPartERK17IConstBlockSourceRK8BlockPosR8BlockPos">
+<span id="_CPPv3NK10ChestBlock13getSecondPartERK17IConstBlockSourceRK8BlockPosR8BlockPos"></span><span id="_CPPv2NK10ChestBlock13getSecondPartERK17IConstBlockSourceRK8BlockPosR8BlockPos"></span><span id="ChestBlock::getSecondPart__IConstBlockSourceCR.BlockPosCR.BlockPosRC"></span><span class="target" id="classChestBlock_1ac642fd60186f79b7eb57facad9cc4bd0"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getSecondPart</span></span></span><span class="sig-paren">(</span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="n"><span class="pre">IConstBlockSource</span></span><span class="p"><span class="pre">&amp;</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv48BlockPos" title="BlockPos"><span class="n"><span class="pre">BlockPos</span></span></a><span class="p"><span class="pre">&amp;</span></span>, <a class="reference internal" href="BlockPos_8hpp.html#_CPPv48BlockPos" title="BlockPos"><span class="n"><span class="pre">BlockPos</span></span></a><span class="p"><span class="pre">&amp;</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock13getSecondPartERK17IConstBlockSourceRK8BlockPosR8BlockPos" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock13getSecondPartERK17IConstBlockSourceRK8BlockPosR8BlockPos'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock19hasComparatorSignalEv">
+<span id="_CPPv3NK10ChestBlock19hasComparatorSignalEv"></span><span id="_CPPv2NK10ChestBlock19hasComparatorSignalEv"></span><span id="ChestBlock::hasComparatorSignalC"></span><span class="target" id="classChestBlock_1a88f676e186e28e7e175c3160f4254228"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">hasComparatorSignal</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock19hasComparatorSignalEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock19hasComparatorSignalEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock19getComparatorSignalER11BlockSourceRK8BlockPosRK5Blockh">
+<span id="_CPPv3NK10ChestBlock19getComparatorSignalER11BlockSourceRK8BlockPosRK5Blockh"></span><span id="_CPPv2NK10ChestBlock19getComparatorSignalER11BlockSourceRK8BlockPosRK5Blockh"></span><span id="ChestBlock::getComparatorSignal__BlockSourceR.BlockPosCR.BlockCR.unsigned-cC"></span><span class="target" id="classChestBlock_1a55558718db05185405a8dacbd78babdc"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getComparatorSignal</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockSource_8hpp.html#_CPPv411BlockSource" title="BlockSource"><span class="n"><span class="pre">BlockSource</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">region</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv48BlockPos" title="BlockPos"><span class="n"><span class="pre">BlockPos</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pos</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Block_8hpp.html#_CPPv45Block" title="Block"><span class="n"><span class="pre">Block</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">block</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">dir</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock19getComparatorSignalER11BlockSourceRK8BlockPosRK5Blockh" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock19getComparatorSignalER11BlockSourceRK8BlockPosRK5Blockh'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock13getMappedFaceEhRK5Block">
+<span id="_CPPv3NK10ChestBlock13getMappedFaceEhRK5Block"></span><span id="_CPPv2NK10ChestBlock13getMappedFaceEhRK5Block"></span><span id="ChestBlock::getMappedFace__unsigned-c.BlockCRC"></span><span class="target" id="classChestBlock_1af02a5e2342428ee79d50c41c1fea731c"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getMappedFace</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">face</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="Block_8hpp.html#_CPPv45Block" title="Block"><span class="n"><span class="pre">Block</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">block</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock13getMappedFaceEhRK5Block" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock13getMappedFaceEhRK5Block'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N10ChestBlock4initEv">
+<span id="_CPPv3N10ChestBlock4initEv"></span><span id="_CPPv2N10ChestBlock4initEv"></span><span id="ChestBlock::init"></span><span class="target" id="classChestBlock_1a8ad67da2a31f32378d6094fed8ad5bd9"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="BlockLegacy_8hpp.html#_CPPv411BlockLegacy" title="BlockLegacy"><span class="n"><span class="pre">BlockLegacy</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="sig-name descname"><span class="n"><span class="pre">init</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4N10ChestBlock4initEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10ChestBlock4initEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock8onRemoveER11BlockSourceRK8BlockPos">
+<span id="_CPPv3NK10ChestBlock8onRemoveER11BlockSourceRK8BlockPos"></span><span id="_CPPv2NK10ChestBlock8onRemoveER11BlockSourceRK8BlockPos"></span><span id="ChestBlock::onRemove__BlockSourceR.BlockPosCRC"></span><span class="target" id="classChestBlock_1a4f56ca6e21c140ebc2328cc41289db8e"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">onRemove</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockSource_8hpp.html#_CPPv411BlockSource" title="BlockSource"><span class="n"><span class="pre">BlockSource</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">region</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv48BlockPos" title="BlockPos"><span class="n"><span class="pre">BlockPos</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pos</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock8onRemoveER11BlockSourceRK8BlockPos" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock8onRemoveER11BlockSourceRK8BlockPos'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock7onPlaceER11BlockSourceRK8BlockPos">
+<span id="_CPPv3NK10ChestBlock7onPlaceER11BlockSourceRK8BlockPos"></span><span id="_CPPv2NK10ChestBlock7onPlaceER11BlockSourceRK8BlockPos"></span><span id="ChestBlock::onPlace__BlockSourceR.BlockPosCRC"></span><span class="target" id="classChestBlock_1a6094ddb771613dd414bd76c26c8e1583"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">onPlace</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="BlockSource_8hpp.html#_CPPv411BlockSource" title="BlockSource"><span class="n"><span class="pre">BlockSource</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">region</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv48BlockPos" title="BlockPos"><span class="n"><span class="pre">BlockPos</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pos</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock7onPlaceER11BlockSourceRK8BlockPos" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock7onPlaceER11BlockSourceRK8BlockPos'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock13isInteractiveEv">
+<span id="_CPPv3NK10ChestBlock13isInteractiveEv"></span><span id="_CPPv2NK10ChestBlock13isInteractiveEv"></span><span id="ChestBlock::isInteractiveC"></span><span class="target" id="classChestBlock_1a670c316c61807c74231883466599c802"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">isInteractive</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock13isInteractiveEv" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock13isInteractiveEv'">¶</a><br/></dt>
+<dd></dd></dl>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4NK10ChestBlock3useER6PlayerRK8BlockPosh">
+<span id="_CPPv3NK10ChestBlock3useER6PlayerRK8BlockPosh"></span><span id="_CPPv2NK10ChestBlock3useER6PlayerRK8BlockPosh"></span><span id="ChestBlock::use__PlayerR.BlockPosCR.unsigned-cC"></span><span class="target" id="classChestBlock_1af2ab6b8e090b4bdf07455f1d8ebcc8b3"></span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">use</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="Player_8hpp.html#_CPPv46Player" title="Player"><span class="n"><span class="pre">Player</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">player</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><a class="reference internal" href="BlockPos_8hpp.html#_CPPv48BlockPos" title="BlockPos"><span class="n"><span class="pre">BlockPos</span></span></a><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">pos</span></span>, <span class="kt"><span class="pre">unsigned</span></span><span class="w"> </span><span class="kt"><span class="pre">char</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">face</span></span><span class="sig-paren">)</span><span class="w"> </span><span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="k"><span class="pre">override</span></span><a class="headerlink" href="#_CPPv4NK10ChestBlock3useER6PlayerRK8BlockPosh" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4NK10ChestBlock3useER6PlayerRK8BlockPosh'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N10ChestBlock10mChestTypeE">
+<span id="_CPPv3N10ChestBlock10mChestTypeE"></span><span id="_CPPv2N10ChestBlock10mChestTypeE"></span><span id="ChestBlock::mChestType__ChestType"></span><span class="target" id="classChestBlock_1a4b958303e32e38ef1ede311465398787"></span><a class="reference internal" href="#_CPPv4N10ChestBlock9ChestTypeE" title="ChestBlock::ChestType"><span class="n"><span class="pre">ChestType</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">mChestType</span></span></span><a class="headerlink" href="#_CPPv4N10ChestBlock10mChestTypeE" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#_CPPv4N10ChestBlock10mChestTypeE'">¶</a><br/></dt>
+<dd></dd></dl>
+</div>
+</dd></dl>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(var(100vh)-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#_CPPv410ChestBlock'" class="reference internal" href="#_CPPv410ChestBlock"><code class="docutils literal notranslate"><span class="pre">ChestBlock</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N10ChestBlock9ChestTypeE'" class="reference internal" href="#_CPPv4N10ChestBlock9ChestTypeE"><code class="docutils literal notranslate"><span class="pre">ChestBlock::ChestType</span></code></a><ul>
+<li><a :data-current="activeSection === '#_CPPv4N10ChestBlock9ChestType7DefaultE'" class="reference internal" href="#_CPPv4N10ChestBlock9ChestType7DefaultE"><code class="docutils literal notranslate"><span class="pre">ChestBlock::ChestType::Default</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10ChestBlock9ChestType7TrappedE'" class="reference internal" href="#_CPPv4N10ChestBlock9ChestType7TrappedE"><code class="docutils literal notranslate"><span class="pre">ChestBlock::ChestType::Trapped</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10ChestBlock9ChestType5OtherE'" class="reference internal" href="#_CPPv4N10ChestBlock9ChestType5OtherE"><code class="docutils literal notranslate"><span class="pre">ChestBlock::ChestType::Other</span></code></a></li>
+</ul>
+</li>
+<li><a :data-current="activeSection === '#_CPPv4N10ChestBlock10ChestBlockERKNSt6stringEs9ChestType12MaterialType'" class="reference internal" href="#_CPPv4N10ChestBlock10ChestBlockERKNSt6stringEs9ChestType12MaterialType"><code class="docutils literal notranslate"><span class="pre">ChestBlock::ChestBlock()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10ChestBlockD0Ev'" class="reference internal" href="#_CPPv4N10ChestBlockD0Ev"><code class="docutils literal notranslate"><span class="pre">ChestBlock::~ChestBlock()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock17canProvideSupportERK5Blockh16BlockSupportType'" class="reference internal" href="#_CPPv4NK10ChestBlock17canProvideSupportERK5Blockh16BlockSupportType"><code class="docutils literal notranslate"><span class="pre">ChestBlock::canProvideSupport()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock16isContainerBlockEv'" class="reference internal" href="#_CPPv4NK10ChestBlock16isContainerBlockEv"><code class="docutils literal notranslate"><span class="pre">ChestBlock::isContainerBlock()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock14isSignalSourceEv'" class="reference internal" href="#_CPPv4NK10ChestBlock14isSignalSourceEv"><code class="docutils literal notranslate"><span class="pre">ChestBlock::isSignalSource()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock23shouldConnectToRedstoneER11BlockSourceRK8BlockPosN9Direction4TypeE'" class="reference internal" href="#_CPPv4NK10ChestBlock23shouldConnectToRedstoneER11BlockSourceRK8BlockPosN9Direction4TypeE"><code class="docutils literal notranslate"><span class="pre">ChestBlock::shouldConnectToRedstone()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock8dispenseER11BlockSourceR9ContaineriRK4Vec3h'" class="reference internal" href="#_CPPv4NK10ChestBlock8dispenseER11BlockSourceR9ContaineriRK4Vec3h"><code class="docutils literal notranslate"><span class="pre">ChestBlock::dispense()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock6onMoveER11BlockSourceRK8BlockPosRK8BlockPos'" class="reference internal" href="#_CPPv4NK10ChestBlock6onMoveER11BlockSourceRK8BlockPosRK8BlockPos"><code class="docutils literal notranslate"><span class="pre">ChestBlock::onMove()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock20detachesOnPistonMoveER11BlockSourceRK8BlockPos'" class="reference internal" href="#_CPPv4NK10ChestBlock20detachesOnPistonMoveER11BlockSourceRK8BlockPos"><code class="docutils literal notranslate"><span class="pre">ChestBlock::detachesOnPistonMove()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock22setupRedstoneComponentER11BlockSourceRK8BlockPos'" class="reference internal" href="#_CPPv4NK10ChestBlock22setupRedstoneComponentER11BlockSourceRK8BlockPos"><code class="docutils literal notranslate"><span class="pre">ChestBlock::setupRedstoneComponent()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock19breaksFallingBlocksERK5Block15BaseGameVersion'" class="reference internal" href="#_CPPv4NK10ChestBlock19breaksFallingBlocksERK5Block15BaseGameVersion"><code class="docutils literal notranslate"><span class="pre">ChestBlock::breaksFallingBlocks()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock13getSecondPartERK17IConstBlockSourceRK8BlockPosR8BlockPos'" class="reference internal" href="#_CPPv4NK10ChestBlock13getSecondPartERK17IConstBlockSourceRK8BlockPosR8BlockPos"><code class="docutils literal notranslate"><span class="pre">ChestBlock::getSecondPart()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock19hasComparatorSignalEv'" class="reference internal" href="#_CPPv4NK10ChestBlock19hasComparatorSignalEv"><code class="docutils literal notranslate"><span class="pre">ChestBlock::hasComparatorSignal()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock19getComparatorSignalER11BlockSourceRK8BlockPosRK5Blockh'" class="reference internal" href="#_CPPv4NK10ChestBlock19getComparatorSignalER11BlockSourceRK8BlockPosRK5Blockh"><code class="docutils literal notranslate"><span class="pre">ChestBlock::getComparatorSignal()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock13getMappedFaceEhRK5Block'" class="reference internal" href="#_CPPv4NK10ChestBlock13getMappedFaceEhRK5Block"><code class="docutils literal notranslate"><span class="pre">ChestBlock::getMappedFace()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10ChestBlock4initEv'" class="reference internal" href="#_CPPv4N10ChestBlock4initEv"><code class="docutils literal notranslate"><span class="pre">ChestBlock::init()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock8onRemoveER11BlockSourceRK8BlockPos'" class="reference internal" href="#_CPPv4NK10ChestBlock8onRemoveER11BlockSourceRK8BlockPos"><code class="docutils literal notranslate"><span class="pre">ChestBlock::onRemove()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock7onPlaceER11BlockSourceRK8BlockPos'" class="reference internal" href="#_CPPv4NK10ChestBlock7onPlaceER11BlockSourceRK8BlockPos"><code class="docutils literal notranslate"><span class="pre">ChestBlock::onPlace()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock13isInteractiveEv'" class="reference internal" href="#_CPPv4NK10ChestBlock13isInteractiveEv"><code class="docutils literal notranslate"><span class="pre">ChestBlock::isInteractive()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4NK10ChestBlock3useER6PlayerRK8BlockPosh'" class="reference internal" href="#_CPPv4NK10ChestBlock3useER6PlayerRK8BlockPosh"><code class="docutils literal notranslate"><span class="pre">ChestBlock::use()</span></code></a></li>
+<li><a :data-current="activeSection === '#_CPPv4N10ChestBlock10mChestTypeE'" class="reference internal" href="#_CPPv4N10ChestBlock10mChestTypeE"><code class="docutils literal notranslate"><span class="pre">ChestBlock::mChestType</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 7.2.6</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+<script src="../../_static/doctools.js?v=888ff710"></script>
+<script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script defer="defer" src="../../_static/theme.js?v=40b7bc71"></script>
+<script src="../../_static/design-tabs.js?v=36754332"></script>
+</body>
+</html>

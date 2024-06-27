@@ -1,0 +1,5 @@
+File ImageInfo.hpp
+==================
+
+.. doxygenfile:: ImageInfo.hpp
+   :project: AmethystApi

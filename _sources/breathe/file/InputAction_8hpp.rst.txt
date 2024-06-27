@@ -1,0 +1,5 @@
+File InputAction.hpp
+====================
+
+.. doxygenfile:: InputAction.hpp
+   :project: AmethystApi

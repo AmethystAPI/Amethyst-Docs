@@ -1,0 +1,5 @@
+File Math.hpp
+=============
+
+.. doxygenfile:: Math.hpp
+   :project: AmethystApi

@@ -1,0 +1,5 @@
+File BlockPos.hpp
+=================
+
+.. doxygenfile:: BlockPos.hpp
+   :project: AmethystApi

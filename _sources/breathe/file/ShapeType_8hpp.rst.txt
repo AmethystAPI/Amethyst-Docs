@@ -1,0 +1,5 @@
+File ShapeType.hpp
+==================
+
+.. doxygenfile:: ShapeType.hpp
+   :project: AmethystApi

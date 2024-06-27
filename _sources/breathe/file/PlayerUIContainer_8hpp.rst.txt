@@ -1,0 +1,5 @@
+File PlayerUIContainer.hpp
+==========================
+
+.. doxygenfile:: PlayerUIContainer.hpp
+   :project: AmethystApi

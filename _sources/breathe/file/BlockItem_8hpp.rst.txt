@@ -1,0 +1,5 @@
+File BlockItem.hpp
+==================
+
+.. doxygenfile:: BlockItem.hpp
+   :project: AmethystApi

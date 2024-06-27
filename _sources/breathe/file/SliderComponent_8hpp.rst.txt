@@ -1,0 +1,5 @@
+File SliderComponent.hpp
+========================
+
+.. doxygenfile:: SliderComponent.hpp
+   :project: AmethystApi
