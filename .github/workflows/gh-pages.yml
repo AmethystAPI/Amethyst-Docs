@@ -29,11 +29,20 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
+      - name: Notify discord
+        uses: th0th/notify-discord@v0.4.1
+        if: ${{ always() }}
+        env:
+            DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+            GITHUB_ACTOR: ${{ github.actor }}
+            GITHUB_JOB_NAME: "Amethyst Docs"
+            GITHUB_JOB_STATUS: ${{ job.status }}
+      
       - name: Set up Python 3.10
         uses: actions/setup-python@v2
         with:
            python-version: "3.10"
-           
+  
       - name: Set up Git
         run: sudo apt install git
 
